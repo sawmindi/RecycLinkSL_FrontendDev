@@ -1,0 +1,605 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 178 24% 26%;
+    --muted: 178 18% 95%;
+    --muted-foreground: 178 24% 40%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 178 24% 26%;
+    --border: 178 18% 85%;
+    --input: 178 18% 85%;
+    --card: 0 0% 100%;
+    --card-foreground: 178 24% 26%;
+    --primary: 178 18% 35%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 178 18% 95%;
+    --secondary-foreground: 178 24% 26%;
+    --accent: 178 18% 95%;
+    --accent-foreground: 178 24% 26%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 178 18% 35%;
+    --radius: 0.5rem;
+    --font-sans: 'Cormorant Garamond', ui-serif, serif;
+  }
+  :root[class~="dark"] {
+    --background: 178 24% 8%;
+    --foreground: 178 24% 92%;
+    --muted: 178 24% 15%;
+    --muted-foreground: 178 24% 60%;
+    --accent: 178 24% 20%;
+    --accent-foreground: 178 24% 92%;
+    --popover: 178 24% 8%;
+    --popover-foreground: 178 24% 92%;
+    --border: 178 24% 20%;
+    --input: 178 24% 20%;
+    --card: 178 24% 8%;
+    --card-foreground: 178 24% 92%;
+    --primary: 178 18% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 178 24% 15%;
+    --secondary-foreground: 178 24% 92%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 178 24% 20%;
+    --radius: 0.5rem;
+    --font-sans: 'Cormorant Garamond', ui-serif, serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+.auth-container {
+  @apply flex min-h-screen w-full flex-col items-center justify-center bg-white p-4;
+}
+
+.auth-form {
+  @apply w-full max-w-md space-y-6;
+}
+
+.auth-logo {
+  @apply mx-auto mb-8 h-24 w-auto;
+}
+
+.auth-heading {
+  @apply text-center text-3xl font-bold;
+}
+
+.auth-subheading {
+  @apply text-center text-xl mb-8;
+}
+
+.auth-button {
+  @apply w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-md transition-colors;
+}
+
+.auth-link {
+  @apply text-primary hover:text-primary/80 font-medium;
+}
+
+.auth-back-button {
+  @apply absolute top-8 left-8 flex items-center justify-center w-10 h-10 bg-primary/10 text-foreground hover:bg-primary/20 transition-colors;
+}
+
+.otp-input-container {
+  @apply flex gap-2 justify-center my-8;
+}
+
+.otp-input {
+  @apply w-14 h-14 text-2xl text-center border-2 border-primary/20 rounded-md focus:border-primary focus:outline-none;
+}
+
+
+.ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  background: hsl(var(--muted)) !important;
+  padding: 8px 12px !important;
+  font-family: var(--font-sans) !important;
+}
+
+.ql-container {
+  border: none !important;
+  font-family: var(--font-sans) !important;
+  font-size: 14px !important;
+}
+
+.ql-editor {
+  min-height: 300px !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  padding: 16px !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.ql-toolbar .ql-formats {
+  margin-right: 12px !important;
+}
+
+.ql-toolbar .ql-formats:last-child {
+  margin-right: 0 !important;
+}
+
+.ql-toolbar button {
+  width: 28px !important;
+  height: 28px !important;
+  margin: 1px !important;
+  border-radius: 3px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.ql-toolbar button:hover {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.ql-toolbar button.ql-active {
+  background-color: hsl(var(--primary)/0.1) !important;
+  border-color: hsl(var(--primary)/0.5) !important;
+  color: hsl(var(--primary)) !important;
+}
+
+.ql-picker {
+  color: hsl(var(--foreground)) !important;
+}
+
+.ql-picker-label {
+  border-radius: 3px !important;
+  padding: 4px 8px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  font-size: 13px !important;
+}
+
+.ql-picker-label:hover {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.ql-picker.ql-expanded .ql-picker-label {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.ql-picker-options {
+  background: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 6px -1px hsl(var(--foreground)/0.1) !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+  z-index: 1000 !important;
+  position: absolute !important;
+}
+
+.ql-picker-item {
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.ql-picker-item:hover {
+  background-color: hsl(var(--muted)) !important;
+}
+
+.ql-picker-options::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.ql-picker-options::-webkit-scrollbar-track {
+  background: hsl(var(--muted)) !important;
+  border-radius: 3px !important;
+}
+
+.ql-picker-options::-webkit-scrollbar-thumb {
+  background: hsl(var(--border)) !important;
+  border-radius: 3px !important;
+}
+
+.ql-picker-options::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary)/0.5) !important;
+}
+
+.ql-picker {
+  position: relative !important;
+}
+
+.ql-color-picker .ql-picker-label {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 2px !important;
+}
+
+.ql-color-picker .ql-picker-label svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.ql-font .ql-picker-label,
+.ql-size .ql-picker-label {
+  min-width: 80px !important;
+  text-align: left !important;
+}
+
+.ql-font .ql-picker-label::before {
+  content: "Font" !important;
+}
+
+.ql-size .ql-picker-label::before {
+  content: "Size" !important;
+}
+
+.ql-font-arial {
+  font-family: Arial, sans-serif !important;
+}
+
+.ql-font-comic-sans {
+  font-family: "Comic Sans MS", cursive !important;
+}
+
+.ql-font-georgia {
+  font-family: Georgia, serif !important;
+}
+
+.ql-font-times-new-roman {
+  font-family: "Times New Roman", serif !important;
+}
+
+.ql-font-roboto {
+  font-family: "Roboto", sans-serif !important;
+}
+
+.ql-font-open-sans {
+  font-family: "Open Sans", sans-serif !important;
+}
+
+/* .ql-font-montserrat {
+  font-family: "Montserrat", sans-serif !important;
+} */
+
+.ql-font-poppins {
+  font-family: "Poppins", sans-serif !important;
+}
+
+.ql-font-inter {
+  font-family: "Inter", sans-serif !important;
+}
+
+.ql-font-source-sans-pro {
+  font-family: "Source Sans Pro", sans-serif !important;
+}
+
+.ql-font-cormorant {
+  font-family: "Cormorant Garamond", serif !important;
+}
+
+/* Custom size styles for Quill editor */
+.ql-size-8px {
+  font-size: 8px !important;
+}
+
+.ql-size-9px {
+  font-size: 9px !important;
+}
+
+.ql-size-10px {
+  font-size: 10px !important;
+}
+
+.ql-size-11px {
+  font-size: 11px !important;
+}
+
+.ql-size-12px {
+  font-size: 12px !important;
+}
+
+.ql-size-14px {
+  font-size: 14px !important;
+}
+
+.ql-size-16px {
+  font-size: 16px !important;
+}
+
+.ql-size-18px {
+  font-size: 18px !important;
+}
+
+.ql-size-20px {
+  font-size: 20px !important;
+}
+
+.ql-size-22px {
+  font-size: 22px !important;
+}
+
+.ql-size-24px {
+  font-size: 24px !important;
+}
+
+.ql-size-26px {
+  font-size: 26px !important;
+}
+
+.ql-size-28px {
+  font-size: 28px !important;
+}
+
+.ql-size-32px {
+  font-size: 32px !important;
+}
+
+.ql-size-36px {
+  font-size: 36px !important;
+}
+
+.ql-size-48px {
+  font-size: 48px !important;
+}
+
+.ql-size-72px {
+  font-size: 72px !important;
+}
+
+.ql-font .ql-picker-item[data-value="arial"]::before {
+  content: "Arial" !important;
+  font-family: Arial, sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="comic-sans"]::before {
+  content: "Comic Sans MS" !important;
+  font-family: "Comic Sans MS", cursive !important;
+}
+
+.ql-font .ql-picker-item[data-value="courier-new"]::before {
+  content: "Courier New" !important;
+  font-family: "Courier New", monospace !important;
+}
+
+.ql-font .ql-picker-item[data-value="georgia"]::before {
+  content: "Georgia" !important;
+  font-family: Georgia, serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="helvetica"]::before {
+  content: "Helvetica" !important;
+  font-family: Helvetica, sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="lucida"]::before {
+  content: "Lucida Console" !important;
+  font-family: "Lucida Console", monospace !important;
+}
+
+.ql-font .ql-picker-item[data-value="times-new-roman"]::before {
+  content: "Times New Roman" !important;
+  font-family: "Times New Roman", serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="trebuchet-ms"]::before {
+  content: "Trebuchet MS" !important;
+  font-family: "Trebuchet MS", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="verdana"]::before {
+  content: "Verdana" !important;
+  font-family: Verdana, sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="roboto"]::before {
+  content: "Roboto" !important;
+  font-family: "Roboto", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="open-sans"]::before {
+  content: "Open Sans" !important;
+  font-family: "Open Sans", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="lato"]::before {
+  content: "Lato" !important;
+  font-family: "Lato", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="cormorant"]::before {
+  content: "Cormorant Garamond" !important;
+  font-family: "Cormorant Garamond", serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="poppins"]::before {
+  content: "Poppins" !important;
+  font-family: "Poppins", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="inter"]::before {
+  content: "Inter" !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="source-sans-pro"]::before {
+  content: "Source Sans Pro" !important;
+  font-family: "Source Sans Pro", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="nunito"]::before {
+  content: "Nunito" !important;
+  font-family: "Nunito", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="raleway"]::before {
+  content: "Raleway" !important;
+  font-family: "Raleway", sans-serif !important;
+}
+
+.ql-font .ql-picker-item[data-value="ubuntu"]::before {
+  content: "Ubuntu" !important;
+  font-family: "Ubuntu", sans-serif !important;
+}
+
+.ql-size .ql-picker-item[data-value="8px"]::before {
+  content: "8px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="9px"]::before {
+  content: "9px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="10px"]::before {
+  content: "10px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="11px"]::before {
+  content: "11px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="12px"]::before {
+  content: "12px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="14px"]::before {
+  content: "14px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="16px"]::before {
+  content: "16px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="18px"]::before {
+  content: "18px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="20px"]::before {
+  content: "20px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="22px"]::before {
+  content: "22px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="24px"]::before {
+  content: "24px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="26px"]::before {
+  content: "26px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="28px"]::before {
+  content: "28px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="32px"]::before {
+  content: "32px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="36px"]::before {
+  content: "36px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="48px"]::before {
+  content: "48px" !important;
+}
+
+.ql-size .ql-picker-item[data-value="72px"]::before {
+  content: "72px" !important;
+}
+
+.ql-font .ql-picker-label[data-value="arial"]::before,
+.ql-font .ql-picker-label[data-label]::before {
+  content: attr(data-label) !important;
+}
+
+.ql-font .ql-picker-label:not([data-value]):not([data-label])::before {
+  content: "Font" !important;
+}
+
+.ql-size .ql-picker-label[data-value]::before,
+.ql-size .ql-picker-label[data-label]::before {
+  content: attr(data-label) !important;
+}
+
+.ql-size .ql-picker-label:not([data-value]):not([data-label])::before {
+  content: "Size" !important;
+}
+
+[data-state='closed'] > .select-trigger-icon {
+    transform: rotate(0deg);
+    transition: transform 0.2s ease-in-out;
+}
+
+[data-state='open'] > .select-trigger-icon {
+    transform: rotate(180deg);
+    transition: transform 0.2s ease-in-out;
+}
+
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) hsl(var(--background));
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+  border-radius: 4px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary)/0.8);
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:active {
+  background: hsl(var(--primary)/0.9);
+}
+
+
+
+.form-wrapper {
+  height: 100vh;         
+  overflow: hidden;      
+}
+
+.form {
+  height: 100%;            
+  overflow: hidden !important; 
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.form::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.form {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.form {
+  overscroll-behavior: none;
+}
