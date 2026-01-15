@@ -31,36 +31,16 @@ export function LoginPage() {
         {/* Main Card */}
         <div className="bg-white rounded-3xl shadow-sm p-8 md:p-12">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl mb-3 font-medium font-serif">RecycleLinkSL</h1>
+          <div className="flex flex-col items-center mb-10">
+            <img
+              src="/logo.png" alt="RecycleLinkSL Logo"
+              onClick={() => navigate('/')} 
+              className="h-16 w-auto mb-4 object-contain cursor-pointer" 
+            />
             <p className="text-gray-600 text-sm">
               Join our platform to sell your recyclable items and earn money
             </p>
           </div>
-
-          {/* Tab Switcher */}
-          {/* <div className="bg-[#325251] rounded-full p-1.5 mb-8 flex">
-            <Button
-              onClick={() => setActiveTab('login')}
-              className={`flex-1 py-3 rounded-full text-sm font-medium transition-all ${
-                activeTab === 'login'
-                  ? 'bg-[#4A6B6A] text-white'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Login
-            </Button>
-            <Button
-              onClick={() => setActiveTab('signup')}
-              className={`flex-1 py-3 rounded-full text-sm font-medium transition-all ${
-                activeTab === 'signup'
-                  ? 'bg-[#4A6B6A] text-white'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Sign Up
-            </Button>
-          </div> */}
 
           {/* Login Form */}
           <div className="space-y-6">
@@ -109,6 +89,7 @@ export function LoginPage() {
             <div className="flex justify-end">
               <Button
                 variant="ghost"
+                onClick={() => navigate('/forgot-password')}
                 className="text-sm text-gray-600 hover:text-gray-800 transition-colors"
               >
                 Forgot Your Password ?

@@ -1,8 +1,9 @@
 import React from 'react';
-import { HandCoins, Recycle, Truck, Users } from 'lucide-react';
+import { HandCoins, Truck, Users } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import FooterPage from '../components/layout/Footer';
 
 export function LandingPage() {
 
@@ -46,6 +47,14 @@ export function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+
+        <div className="fixed top-4 left-4 md:top-6 md:left-8 z-50">
+        <img
+          src="/logo.png" alt="RecycLinkSL Logo"
+          className="h-10 md:h-14 w-auto object-contain drop-shadow-md cursor-pointer"
+          onClick={() => navigate('/')}
+        />
+      </div>
 
       {/* Hero Section */}
       <div className="relative container mx-auto px-4 py-20 md:py-32">
@@ -200,22 +209,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative bg-gradient-to-br from-slate-900 to-slate-800 text-slate-300 py-4 mt-16">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Recycle className="w-6 h-6 text-emerald-400" />
-              <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-                RecycLinkSL
-              </span>
-            </div>
-            <p className="text-sm text-slate-400">
-              &copy; 2026 RecycLinkSL. Making waste collection smarter and quieter.
-            </p>
-          </div>
-        </div>
-      </footer>
+        <FooterPage />
     </div>
   );
 };
