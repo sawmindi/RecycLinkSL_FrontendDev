@@ -43,36 +43,16 @@ export function SignUpPage() {
         {/* Main Card */}
         <div className="bg-white rounded-3xl shadow-sm p-8 md:p-12">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl mb-3 font-medium font-serif">RecycleLinkSL</h1>
+          <div className="flex flex-col items-center mb-10">
+            <img
+              src="/logo.png" alt="RecycleLinkSL Logo"
+              onClick={() => navigate('/')} 
+              className="h-16 w-auto mb-4 object-contain cursor-pointer" 
+            />
             <p className="text-gray-600 text-sm">
               Join our platform to sell your recyclable items and earn money
             </p>
           </div>
-
-          {/* Tab Switcher */}
-          {/* <div className="bg-[#4a5f5c] rounded-full p-1.5 mb-8 flex">
-            <button
-              onClick={() => setActiveTab('login')}
-              className={`flex-1 py-3 rounded-full text-sm font-medium transition-all ${
-                activeTab === 'login'
-                  ? 'bg-[#5a716d] text-white'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Login
-            </button>
-            <button
-              onClick={() => setActiveTab('signup')}
-              className={`flex-1 py-3 rounded-full text-sm font-medium transition-all ${
-                activeTab === 'signup'
-                  ? 'bg-[#5a716d] text-white'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Sign Up
-            </button>
-          </div> */}
 
           {/* Sign Up Form */}
           <div className="space-y-6">
