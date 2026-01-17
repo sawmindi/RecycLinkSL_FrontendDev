@@ -5,14 +5,17 @@ import { Button } from '../../components/ui/button';
 
 interface EmailVerificationPageProps {
   onBack?: () => void;
+  onSendCode?: (email: string) => void;
 }
 
-export default function EmailVerificationPage({ onBack }: EmailVerificationPageProps) {
+export default function EmailVerificationPage({ onBack, onSendCode }: EmailVerificationPageProps) {
   const [email, setEmail] = useState('');
 
   const handleSend = () => {
     // console.log('Sending code to:', email);
-    
+    if (onSendCode) {
+      onSendCode(email);
+    }
   };
 
   return (
@@ -64,6 +67,7 @@ export default function EmailVerificationPage({ onBack }: EmailVerificationPageP
           <div className="max-w-lg mx-auto">
             <Button
               onClick={handleSend}
+              disabled={!email.trim()}
               className="w-full bg-[#325251] hover:bg-[#3d4f4c] text-white py-6 rounded-xl text-base font-medium transition-colors"
             >
               Send

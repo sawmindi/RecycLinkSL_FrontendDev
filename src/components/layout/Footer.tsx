@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export default function FooterPage() {
   const navigate = useNavigate();
   return (
-    <footer className="relative bg-gradient-to-br from-slate-900 to-slate-800 text-slate-300 py-4 mt-16">
+    <footer className="relative bg-[#043937] py-4 mt-16">
     <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-4">
         <img src="/logo.png" alt="RecycLinkSL Logo"

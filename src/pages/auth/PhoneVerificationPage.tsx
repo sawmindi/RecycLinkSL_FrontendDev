@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface PhoneVerificationPageProps {
   onBack?: () => void;
+  onSendCode?: (phoneNumber: string) => void;
 }
 
-export default function PhoneVerificationPage({ onBack }: PhoneVerificationPageProps) {
+export default function PhoneVerificationPage({ onBack, onSendCode }: PhoneVerificationPageProps) {
   const [phoneNumber, setPhoneNumber] = useState('');
+  const navigate = useNavigate();
 
-  const handleSend = () => {
-    // console.log('Sending code to:', phoneNumber);
-    
-  };
+  // const handleSend = () => {
+  //   // console.log('Sending code to:', phoneNumber);
+  //   if (onSendCode) {
+  //     onSendCode(phoneNumber);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -64,7 +69,9 @@ export default function PhoneVerificationPage({ onBack }: PhoneVerificationPageP
           {/* Send Button */}
           <div className="max-w-lg mx-auto">
             <Button
-              onClick={handleSend}
+              // onClick={handleSend}
+              onClick={() => navigate('/sms-otp')}
+              disabled={!phoneNumber.trim()}
               className="w-full bg-[#325251] hover:bg-[#3d4f4c] text-white py-6 rounded-xl text-base font-medium transition-colors"
             >
               Send

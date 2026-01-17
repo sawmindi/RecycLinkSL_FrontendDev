@@ -4,34 +4,68 @@ import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import PhoneVerificationPage from './PhoneVerificationPage';
 import EmailVerificationPage from './EmailVerificationPage';
+import SmsOtpPage from './SmsOTP';
+import EmailOtpPage from './EmailOTP';
+
+type Step = 'select-method' | 'enter-phone' | 'enter-email' | 'verify-phone-otp' | 'verify-email-otp';
+
 
 export function ForgotPasswordPage() {
-  const [selectedMethod, setSelectedMethod] = useState<'sms' | 'email' | null>(null);
-  const [showVerification, setShowVerification] = useState(false);
+  const [currentStep, setCurrentStep] = useState<Step>('select-method');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
   const handleMethodSelect = (method: 'sms' | 'email') => {
-    setSelectedMethod(method);
-    setShowVerification(true);
-    // console.log(`Selected method: ${method}`);
+    if (method === 'sms') {
+      setCurrentStep('enter-phone');
+    } else {
+      setCurrentStep('enter-email');
+    }
+  };
+
+  const handlePhoneSubmit = (phone: string) => {
+    setPhoneNumber(phone);
+    setCurrentStep('verify-phone-otp');
+  };
+
+  const handleEmailSubmit = (emailAddress: string) => {
+    setEmail(emailAddress);
+    setCurrentStep('verify-email-otp');
   };
 
   const handleBack = () => {
-    if (showVerification) {
-      setShowVerification(false);
-      setSelectedMethod(null);
-    } else {
-      navigate('/');
+    switch (currentStep) {
+      case 'enter-phone':
+      case 'enter-email':
+        setCurrentStep('select-method');
+        break;
+      case 'verify-phone-otp':
+        setCurrentStep('enter-phone');
+        break;
+      case 'verify-email-otp':
+        setCurrentStep('enter-email');
+        break;
+      default:
+        navigate('/');
     }
   };
 
 
-  if (showVerification && selectedMethod === 'sms') {
-    return <PhoneVerificationPage onBack={handleBack} />;
+  if (currentStep === 'enter-phone') {
+    return <PhoneVerificationPage onBack={handleBack} onSendCode={handlePhoneSubmit} />;
   }
 
-  if (showVerification && selectedMethod === 'email') {
-    return <EmailVerificationPage onBack={handleBack} />;
+  if (currentStep === 'enter-email') {
+    return <EmailVerificationPage onBack={handleBack} onSendCode={handleEmailSubmit} />;
+  }
+
+  if (currentStep === 'verify-phone-otp') {
+    return <SmsOtpPage onBack={handleBack} phoneNumber={phoneNumber} />;
+  }
+
+  if (currentStep === 'verify-email-otp') {
+    return <EmailOtpPage onBack={handleBack} email={email} />;
   }
 
   return (
@@ -41,7 +75,7 @@ export function ForgotPasswordPage() {
         <div className="absolute top-6 left-6 md:top-8 md:left-10 z-10">
           <Button
             variant="ghost"
-            onClick={handleBack}
+            onClick={() => navigate('/')}
             className="flex items-center gap-2 text-gray-600 mb-12 hover:text-gray-800 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -72,11 +106,12 @@ export function ForgotPasswordPage() {
             <Button
               onClick={() => handleMethodSelect('sms')}
               variant="outline"
-              className={`w-full py-6 rounded-xl text-base font-medium transition-all border-2 ${
-                selectedMethod === 'sms'
-                  ? 'border-[#4a5f5c] bg-[#4a5f5c]/5'
-                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-              }`}
+              // className={`w-full py-6 rounded-xl text-base font-medium transition-all border-2 ${
+              //   selectedMethod === 'sms'
+              //     ? 'border-[#4a5f5c] bg-[#4a5f5c]/5'
+              //     : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+              // }`}
+              className="w-full py-6 rounded-xl text-base font-medium transition-all border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50"
             >
               <div className="flex items-center justify-center gap-3 ">
                 <MessageSquare className="w-5 h-5 text-gray-600" />
@@ -88,11 +123,12 @@ export function ForgotPasswordPage() {
             <Button
               onClick={() => handleMethodSelect('email')}
               variant="outline"
-              className={`w-full py-6 rounded-xl text-base font-medium transition-all border-2 ${
-                selectedMethod === 'email'
-                  ? 'border-[#4a5f5c] bg-[#4a5f5c]/5'
-                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-              }`}
+              // className={`w-full py-6 rounded-xl text-base font-medium transition-all border-2 ${
+              //   selectedMethod === 'email'
+              //     ? 'border-[#4a5f5c] bg-[#4a5f5c]/5'
+              //     : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+              // }`}
+              className="w-full py-6 rounded-xl text-base font-medium transition-all border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50"
             >
               <div className="flex items-center justify-center gap-3">
                 <Mail className="w-5 h-5 text-gray-600" />
