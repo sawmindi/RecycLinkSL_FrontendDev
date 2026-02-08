@@ -603,3 +603,21 @@
 .form {
   overscroll-behavior: none;
 }
+
+.Toastify__toast--warning {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  border-left: 6px solid #d97706 !important;
+}
+
+.Toastify__toast--success {
+  background: #ecfdf5 !important;
+  color: #065f46 !important;
+  border-left: 6px solid #059669 !important;
+}
+
+.Toastify__toast {
+  font-family: 'Inter', system-ui, sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}

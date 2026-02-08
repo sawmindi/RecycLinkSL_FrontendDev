@@ -106,11 +106,6 @@ export function ForgotPasswordPage() {
             <Button
               onClick={() => handleMethodSelect('sms')}
               variant="outline"
-              // className={`w-full py-6 rounded-xl text-base font-medium transition-all border-2 ${
-              //   selectedMethod === 'sms'
-              //     ? 'border-[#4a5f5c] bg-[#4a5f5c]/5'
-              //     : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-              // }`}
               className="w-full py-6 rounded-xl text-base font-medium transition-all border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50"
             >
               <div className="flex items-center justify-center gap-3 ">
@@ -123,11 +118,6 @@ export function ForgotPasswordPage() {
             <Button
               onClick={() => handleMethodSelect('email')}
               variant="outline"
-              // className={`w-full py-6 rounded-xl text-base font-medium transition-all border-2 ${
-              //   selectedMethod === 'email'
-              //     ? 'border-[#4a5f5c] bg-[#4a5f5c]/5'
-              //     : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-              // }`}
               className="w-full py-6 rounded-xl text-base font-medium transition-all border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50"
             >
               <div className="flex items-center justify-center gap-3">

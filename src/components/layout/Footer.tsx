@@ -1,8 +1,10 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 export default function FooterPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
     <footer className="relative bg-[#043937] py-4 mt-16">
     <div className="container mx-auto px-4">
@@ -14,7 +16,7 @@ export default function FooterPage() {
 
         <p className="text-sm text-slate-400 mt-2">
             &copy; {new Date().getFullYear()} RecycLinkSL.  
-            Making waste collection smarter and quieter.
+            {t('footer.copyright')}
         </p>
         </div>
     </div>

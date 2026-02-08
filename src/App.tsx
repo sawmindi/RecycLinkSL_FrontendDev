@@ -1,4 +1,4 @@
-import { useState } from 'react'
+
 import './App.css'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -10,6 +10,9 @@ import PhoneVerificationPage from './pages/auth/PhoneVerificationPage';
 import EmailVerificationPage from './pages/auth/EmailVerificationPage';
 import SmsOtpPage from './pages/auth/SmsOTP';
 import EmailOtpPage from './pages/auth/EmailOTP';
+import { CitizenRoutes } from './routes/citizen/citizen-routes';
+import { CollectorRoutes } from './routes/collector/collector-routes';
+import { AdminRoutes } from './routes/admin/admin-routes';
 
 
 function App() {
@@ -27,6 +30,10 @@ function App() {
         <Route path="/verify-email" element={<EmailVerificationPage />} />
         <Route path="/sms-otp" element={<SmsOtpPage />} />
         <Route path="/email-otp" element={<EmailOtpPage />} />
+
+        <Route path="/citizen/*" element={<CitizenRoutes />} />
+        <Route path="/collector/*" element={<CollectorRoutes />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
       </Routes>
 
     </Router>

@@ -1,0 +1,79 @@
+{
+  "welcome": "සාදරයෙන් පිළිගනිමු,",
+  "location": "කොළඹ 7",
+  "name": "සමන්",
+
+  "sidebar": {
+    "overview": "දළ විශ්ලේෂණය",
+    "schedules": "කාලසටහන්",
+    "addItems": "භාණ්ඩ එකතු කරන්න",
+    "myItems": "මගේ භාණ්ඩ",
+    "earnings": "ආදායම්",
+    "history": "ඉතිහාසය",
+    "notifications": "දැනුම්දීම්",
+    "myProfile": "මගේ පැතිකඩ",
+    "logOut": "පිටවීම",
+    "pickups": "ලබාගැනීම්",
+    "scheduleManagement": "කාලසටහන කළමනාකරණය",
+    "collectionHistory": "එකතු කිරීමේ ඉතිහාසය",
+    "pickupSchedule": "ලබාගැනීම් කාලසටහන",
+    "categories": "වර්ග",
+    "collectorAssignment": "එකතු කරන්නන්ගේ පවරාදීම",
+    "priceManagement": "මිල කළමනාකරණය",
+    "userManagement": "පරිශීලක කළමනාකරණය",
+    "routeOptimisation": "මාර්ග සකස් කිරීම",
+    "reports": "වාර්තා"
+  },
+
+  "landing":{
+    "howItWorks":"ක්‍රියා කරන ආකාරය",
+    "admin":"පරිපාලක",
+    "smartWasteCollectionForSriLanka":"ශ්‍රී ලංකාව සඳහා ස්මාර්ට් අපද්‍රව්‍ය එකතු කිරීම",
+    "connectCitizensAndWasteCollectorsThroughIntelligentSchedulingAI-poweredPricePredictionsAndSeamlessCoordinationReduceNoisePollutionSaveFuelAndEarnMoneyFromYourRecyclableItems":"බුද්ධිමත් උපලේඛනගත කිරීම, AI බලයෙන් ක්‍රියාත්මක වන මිල අනාවැකි සහ බාධාවකින් තොරව සම්බන්ධීකරණය හරහා පුරවැසියන් සහ අපද්‍රව්‍ය එකතු කරන්නන් සම්බන්ධ කිරීම. ශබ්ද දූෂණය අඩු කිරීම, ඉන්ධන ඉතිරි කිරීම, සහ ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි භාණ්ඩවලින් මුදල් උපයන්න." ,
+    "getStartedAsCitizen":"පුරවැසියෙකු ලෙස ආරම්භ කරන්න",
+    "joinAsCollector":"එකතුකරන්නෙකු ලෙස එක්වන්න",
+    "aiPoweredPricing":"AI-බලගැන්වූ මිලකරණය",
+    "getInstantPriceEstimatesForYourRecyclableItemsUsingAdvancedAIAlgorithms":"උසස් AI ඇල්ගොරිතම භාවිතයෙන් ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම සඳහා ක්ෂණික මිල ඇස්තමේන්තු ලබා ගැනීම",
+    "smartScheduling":"ස්මාර්ට් කාලසටහන්ගත කිරීම",
+    "optimiseCollectionRoutesAndSchedulesToReduceFuelCostsAndTimeWastage":"ඉන්ධන පිරිවැය සහ කාලය නාස්තිය අඩු කිරීම සඳහා එකතු කිරීමේ මාර්ග සහ කාලසටහන් ප්‍රශස්ත කිරීම",
+    "communityConnection":"ප්‍රජා සම්බන්ධතාවය",
+    "connectCitizensAndCollectorsDirectlyEliminatingTheNeedForLoudAnnouncements":"පුරවැසියන් සහ එකතුකරන්නන් සෘජුවම සම්බන්ධ කිරීම, ශබ්ද නඟා නිවේදන සඳහා අවශ්‍යතාවය ඉවත් කිරීම",
+    "forCitizen":"පුරවැසියන් සඳහා",
+    "addYourItems":"ඔබේ අයිතම එකතු කරන්න",
+    "listRecyclableItems":"ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම ලැයිස්තුගත කරන්න",
+    "getPriceSuggestions":"මිල යෝජනා ලබා ගන්න",
+    "receiveInstantPriceEstimatesAndEarningPotential":"ක්ෂණික මිල ඇස්තමේන්තු සහ ඉපැයීමේ විභවය ලබා ගන්න",
+    "schedulePickup":"ලබාගැනීම් කාලසටහන්ගත කරන්න",
+    "chooseFromAvailablePickupSlotsInYourArea":"ඔබේ ප්‍රදේශයේ ඇති ලබාගැනීම් ස්ථාන වලින් තෝරන්න",
+    "forCollectors":"එකතුකරන්නන් සඳහා",
+    "":"",
+    "":""
+  
+
+  },
+
+  "citizen": {
+    "totalEarnings": "මුළු ආදායම",
+    "pendingPickups": "අපේක්ෂිත ලබාගැනීම්",
+    "totalWeight": "මුළු බර",
+    "addItems": "අයිතම එක් කරන්න",
+    "selectYourRecyclableItemsAndGetReal-timeEstimates":"ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම තෝරා තත්‍ය කාලීන ඇස්තමේන්තු ලබා ගන්න",
+    "itemType":"අයිතම වර්ගය",
+    "selectItemType":"අයිතම වර්ගය තෝරන්න",
+    "weight":"බර",
+    "enterWeight":"බර ඇතුළත් කරන්න",
+    "description":"විස්තරය",
+    "optional":"විකල්ප",
+    "addAnyExtraDetails":"ඕනෑම අමතර විස්තර එකතු කරන්න...",
+    "getEstimate":"ඇස්තමේන්තුගත ඉපැයීම් සඳහා",
+    "estimatedEarningFor":"ඇස්තමේන්තුගත ආදායම",
+    "addToList":"ලැයිස්තුවට එක් කරන්න",
+    "addedItems":"එකතු කළ අයිතම",
+    "totalEst":"මුළු ඇස්තමේන්තුව.",
+    "proceedToSchedulePickup":"ලබාගැනීම් කාලසටහන්ගත කිරීමට ඉදිරියට යන්න"
+  },
+
+  "footer": {
+    "copyright": "කුණු එකතු කිරීම වඩාත් බුද්ධිමත් හා නිහඬව කිරීම."
+  }
+}
