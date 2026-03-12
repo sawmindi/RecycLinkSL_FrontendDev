@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, Edit, X, Trash2, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Plus, Edit, Trash2, Calendar } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
@@ -10,65 +10,50 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 
-
-const schedules = [
-  {
-    id: '1',
-    area: 'Colombo 07',
-    date: '05/02/2026',
-    time: '09:00',
-    items: 'Paper, Plastic',
-    collector: 'Kasun Silva',
-    status: 'Assigned',
-  },
-  {
-    id: '2',
-    area: 'Kandy Central',
-    date: '06/02/2026',
-    time: '10:30',
-    items: 'Iron, Glass',
-    collector: 'Unassigned',
-    status: 'Pending',
-  },
-  {
-    id: '3',
-    area: 'Galle Fort',
-    date: '07/02/2026',
-    time: '14:00',
-    items: 'Coconut shells',
-    collector: 'Nimal Perera',
-    status: 'Assigned',
-  },
-  {
-    id: '4',
-    area: 'Negombo',
-    date: '08/02/2026',
-    time: '11:00',
-    items: 'Cardboard',
-    collector: 'Ravi Fernando',
-    status: 'Completed',
-  },
-];
+interface Schedule {
+  id: number;
+  area: string;
+  schedule_date: string;
+  schedule_time: string;
+  items: string;
+  collector_name: string;
+  status: string;
+}
 
 export function PickupScheduleManagementPage() {
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [currentSchedule, setCurrentSchedule] = useState<any>(null);
+  const [currentSchedule, setCurrentSchedule] = useState<Schedule | null>(null);
+
   const [formData, setFormData] = useState({
     area: '',
-    date: '',
-    time: '',
+    schedule_date: '',
+    schedule_time: '',
     items: '',
   });
-  const [localSchedules, setLocalSchedules] = useState(schedules);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
+
+  const fetchSchedules = async () => {
+    try {
+      const res = await fetch('http://localhost:4000/api/pickup-schedules');
+      if (!res.ok) throw new Error('Failed to load schedules');
+      const data = await res.json();
+      setSchedules(data);
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not load schedules');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const resetForm = () => {
-    setFormData({ area: '', date: '', time: '', items: '' });
+    setFormData({ area: '', schedule_date: '', schedule_time: '', items: '' });
     setCurrentSchedule(null);
   };
 
@@ -77,63 +62,83 @@ export function PickupScheduleManagementPage() {
     setIsAddModalOpen(true);
   };
 
-  const handleOpenEditModal = (schedule: any) => {
+  const handleOpenEditModal = (schedule: Schedule) => {
     setCurrentSchedule(schedule);
     setFormData({
       area: schedule.area,
-      date: schedule.date,
-      time: schedule.time,
+      schedule_date: schedule.schedule_date.split('T')[0], // format for date input
+      schedule_time: schedule.schedule_time,                // HH:mm
       items: schedule.items,
     });
     setIsEditModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.area || !formData.date || !formData.time || !formData.items) {
+    if (!formData.area || !formData.schedule_date || !formData.schedule_time || !formData.items) {
       toast.error('Please fill all required fields');
       return;
     }
 
-    if (currentSchedule) {
-      // Edit mode
-      const updatedSchedules = localSchedules.map((s) =>
-        s.id === currentSchedule.id ? { ...s, ...formData } : s
-      );
-      setLocalSchedules(updatedSchedules);
-      toast.success('Schedule updated successfully!');
-      setIsEditModalOpen(false);
-    } else {
-      // Add mode
-      const newSchedule = {
-        id: Date.now().toString(),
-        ...formData,
-        collector: 'Unassigned', 
-        status: 'Pending',
-      };
-      setLocalSchedules([...localSchedules, newSchedule]);
-      toast.success('New schedule created successfully!');
-      setIsAddModalOpen(false);
-    }
+    const payload = {
+      area: formData.area,
+      schedule_date: formData.schedule_date,
+      schedule_time: formData.schedule_time,
+      items: formData.items,
+    };
 
-    resetForm();
+    const url = currentSchedule
+      ? `http://localhost:4000/api/pickup-schedules/${currentSchedule.id}`
+      : 'http://localhost:4000/api/pickup-schedules';
+
+    const method = currentSchedule ? 'PUT' : 'POST';
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Operation failed');
+      }
+
+      toast.success(currentSchedule ? 'Schedule updated!' : 'Schedule created!');
+      resetForm();
+      setIsAddModalOpen(false);
+      setIsEditModalOpen(false);
+      fetchSchedules(); // refresh list
+    } catch (err: any) {
+      toast.error(err.message || 'Something went wrong');
+    }
   };
 
-  const handleDelete = (id: string) => {
-    const updated = localSchedules.filter((s) => s.id !== id);
-    setLocalSchedules(updated);
-    toast.success('Schedule deleted successfully!');
+  const handleDelete = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this schedule?')) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/api/pickup-schedules/${id}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Delete failed');
+      toast.success('Schedule deleted');
+      fetchSchedules();
+    } catch (err) {
+      toast.error('Delete failed');
+    }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'Assigned':
-        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Assigned</Badge>;
+        return <Badge className="bg-blue-100 text-blue-800">Assigned</Badge>;
       case 'Pending':
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Pending</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>;
       case 'Completed':
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Completed</Badge>;
+        return <Badge className="bg-green-100 text-green-800">Completed</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -141,18 +146,18 @@ export function PickupScheduleManagementPage() {
 
   return (
     <div className="space-y-10">
-      {/* Header with Add Button */}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
             Pickup Schedule Management
           </h1>
           <p className="text-lg text-gray-600">
-            Your pickup schedules for different areas
+            Manage pickup schedules for different areas
           </p>
         </div>
 
-        <Button 
+        <Button
           className="bg-teal-700 hover:bg-teal-800 text-white gap-2"
           onClick={handleOpenAddModal}
         >
@@ -161,7 +166,7 @@ export function PickupScheduleManagementPage() {
         </Button>
       </div>
 
-      {/* Table Card */}
+      {/* Table */}
       <Card className="border-none shadow-lg">
         <CardContent className="p-0">
           <div className="p-6 border-b border-gray-200">
@@ -171,36 +176,42 @@ export function PickupScheduleManagementPage() {
             </h3>
           </div>
 
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50">
-                  <TableHead className="font-medium text-gray-700">Area</TableHead>
-                  <TableHead className="font-medium text-gray-700">Date</TableHead>
-                  <TableHead className="font-medium text-gray-700">Time</TableHead>
-                  <TableHead className="font-medium text-gray-700">Items</TableHead>
-                  <TableHead className="font-medium text-gray-700">Collector</TableHead>
-                  <TableHead className="font-medium text-gray-700">Status</TableHead>
-                  <TableHead className="font-medium text-gray-700 text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-
-              <TableBody>
-                {localSchedules.map((schedule) => (
-                  <TableRow key={schedule.id} className="hover:bg-gray-50">
-                    <TableCell className="font-medium">{schedule.area}</TableCell>
-                    <TableCell>{schedule.date}</TableCell>
-                    <TableCell>{schedule.time}</TableCell>
-                    <TableCell>{schedule.items}</TableCell>
-                    <TableCell>{schedule.collector}</TableCell>
-                    <TableCell>{getStatusBadge(schedule.status)}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
+          {loading ? (
+            <div className="p-10 text-center text-gray-500">Loading schedules...</div>
+          ) : schedules.length === 0 ? (
+            <div className="text-center py-20 text-gray-500">
+              <Calendar className="h-16 w-16 mx-auto mb-6 opacity-40" />
+              <p className="text-xl font-medium">No schedules yet</p>
+              <p className="mt-3">Click "Add Schedule" to create one.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead>Area</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Time</TableHead>
+                    <TableHead>Items</TableHead>
+                    <TableHead>Collector</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {schedules.map((sch) => (
+                    <TableRow key={sch.id} className="hover:bg-gray-50">
+                      <TableCell className="font-medium">{sch.area}</TableCell>
+                      <TableCell>{new Date(sch.schedule_date).toLocaleDateString()}</TableCell>
+                      <TableCell>{sch.schedule_time.slice(0, 5)}</TableCell>
+                      <TableCell>{sch.items}</TableCell>
+                      <TableCell>{sch.collector_name || 'Unassigned'}</TableCell>
+                      <TableCell>{getStatusBadge(sch.status)}</TableCell>
+                      <TableCell className="text-right space-x-2">
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8"
-                          onClick={() => handleOpenEditModal(schedule)}
+                          onClick={() => handleOpenEditModal(sch)}
                         >
                           <Edit className="h-4 w-4 text-gray-600" />
                         </Button>
@@ -212,16 +223,15 @@ export function PickupScheduleManagementPage() {
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                              <AlertDialogTitle>Delete Schedule?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                This will permanently delete the schedule for <strong>{schedule.area}</strong>.
-                                This action cannot be undone.
+                                This will delete the schedule for <strong>{sch.area}</strong> on {sch.schedule_date}.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
-                                onClick={() => handleDelete(schedule.id)}
+                                onClick={() => handleDelete(sch.id)}
                                 className="bg-red-600 hover:bg-red-700 text-white"
                               >
                                 Delete
@@ -229,138 +239,84 @@ export function PickupScheduleManagementPage() {
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          {/* Pagination */}
-          <div className="flex items-center justify-center gap-4 p-6 border-t border-gray-200 text-gray-600">
-            <Button variant="outline" size="sm" disabled>
-              Previous
-            </Button>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="bg-teal-700 text-white border-teal-700 hover:bg-teal-800">
-                1
-              </Button>
-              <Button variant="outline" size="sm">2</Button>
-              <Button variant="outline" size="sm">3</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
-            <Button variant="outline" size="sm">
-              Next
-            </Button>
-          </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* Add/Edit Schedule Modal */}
+      {/* Add/Edit Modal */}
       <Dialog open={isAddModalOpen || isEditModalOpen} onOpenChange={() => {
         setIsAddModalOpen(false);
         setIsEditModalOpen(false);
         resetForm();
       }}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader className="flex flex-row items-center justify-between">
-            <DialogTitle className="text-xl font-semibold">
+          <DialogHeader>
+            <DialogTitle>
               {currentSchedule ? 'Edit Schedule' : 'Add New Schedule'}
             </DialogTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 rounded-full"
-              onClick={() => {
-                setIsAddModalOpen(false);
-                setIsEditModalOpen(false);
-                resetForm();
-              }}
-            >
-            </Button>
           </DialogHeader>
 
-          <div className="py-6 space-y-6">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Area */}
-              <div className="space-y-2">
-                <Label htmlFor="area">Area</Label>
-                <Input
-                  id="area"
-                  placeholder="e.g., Colombo 07"
-                  value={formData.area}
-                  onChange={handleInputChange}
-                  className="h-11"
-                />
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-6 py-4">
+            <div className="space-y-2">
+              <Label>Area</Label>
+              <Input
+                value={formData.area}
+                onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                placeholder="e.g. Colombo 07"
+              />
+            </div>
 
-              {/* Date */}
-              <div className="space-y-2">
-                <Label htmlFor="date">Date</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  className="h-11"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label>Date</Label>
+              <Input
+                type="date"
+                value={formData.schedule_date}
+                onChange={(e) => setFormData({ ...formData, schedule_date: e.target.value })}
+              />
+            </div>
 
-              {/* Time */}
-              <div className="space-y-2">
-                <Label htmlFor="time">Time</Label>
-                <Input
-                  id="time"
-                  type="time"
-                  value={formData.time}
-                  onChange={handleInputChange}
-                  className="h-11"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label>Time</Label>
+              <Input
+                type="time"
+                value={formData.schedule_time}
+                onChange={(e) => setFormData({ ...formData, schedule_time: e.target.value })}
+              />
+            </div>
 
-              {/* Items */}
-              <div className="space-y-2">
-                <Label htmlFor="items">Items</Label>
-                <Input
-                  id="items"
-                  placeholder="e.g., Paper, Plastic, Iron"
-                  value={formData.items}
-                  onChange={handleInputChange}
-                  className="h-11"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label>Items (comma separated)</Label>
+              <Input
+                value={formData.items}
+                onChange={(e) => setFormData({ ...formData, items: e.target.value })}
+                placeholder="e.g. Paper, Plastic, Iron"
+              />
+            </div>
 
-              {/* Submit */}
-              <DialogFooter className="pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setIsAddModalOpen(false);
-                    setIsEditModalOpen(false);
-                    resetForm();
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  className="bg-teal-700 hover:bg-teal-800 text-white"
-                >
-                  {currentSchedule ? 'Update Schedule' : 'Create Schedule'}
-                </Button>
-              </DialogFooter>
-            </form>
-          </div>
+            <DialogFooter className="pt-4">
+              <Button variant="outline" type="button" onClick={resetForm}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-teal-700 hover:bg-teal-800 text-white">
+                {currentSchedule ? 'Update' : 'Create'}
+              </Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
 
       {/* Empty state */}
-      {localSchedules.length === 0 && (
+      {!loading && schedules.length === 0 && (
         <div className="text-center py-20 text-gray-500">
           <Calendar className="h-16 w-16 mx-auto mb-6 opacity-40" />
           <p className="text-xl font-medium">No schedules created yet</p>
-          <p className="mt-3">Click "Add Schedule" to create your first pickup schedule.</p>
+          <p className="mt-3">Click "Add Schedule" to start.</p>
         </div>
       )}
     </div>

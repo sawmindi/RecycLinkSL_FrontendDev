@@ -6,6 +6,8 @@ import {PickupScheduleManagementPage} from "../../pages/features/admin/pickupSch
 import { CategoriesPage } from "../../pages/features/admin/categories"
 import CollectorAssignmentPage from "../../pages/features/admin/collectorAssignment"
 import PriceManagementPage from "../../pages/features/admin/priceManagement"
+import { PickupRequestsList } from "../../pages/features/admin/PickupRequestsList"
+import { UserManagement } from "../../pages/features/admin/userManagement"
 
 export const AdminRoutes = () => {
     return (
@@ -17,6 +19,8 @@ export const AdminRoutes = () => {
             <Route path="categories" element={<CategoriesPage/>}/>
             <Route path="collector-assignment" element={<CollectorAssignmentPage/>} />
             <Route path="price-management" element={<PriceManagementPage/>} />
+            <Route path="pickup-requests" element={<PickupRequestsList />} />
+            <Route path="user-management" element={<UserManagement />} />
             {/* <Route path="user-management" element={<UserManagementPage/>} /> */}
                 {/* <Route path="route-optimisation" element={< RouteOptimisation Page/>} /> */}
              {/*<Route path="schedule-management" element={<ScheduleManagementPage />} />
