@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, Edit, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
@@ -10,73 +10,80 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Label } from '../../../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 
-const initialCategoryAssignments = [
-  {
-    id: '1',
-    collector: 'Kamal Silva',
-    category: 'Iron/Steel',
-    area: 'Colombo 7',
-    assignedDate: '2025-01-15',
-    status: 'active',
-  },
-  {
-    id: '2',
-    collector: 'Nimal Perera',
-    category: 'Plastic Bottles',
-    area: 'Kandy',
-    assignedDate: '2025-01-20',
-    status: 'active',
-  },
-  {
-    id: '3',
-    collector: 'Kamal Silva',
-    category: 'Copper',
-    area: 'Colombo 7',
-    assignedDate: '2025-01-18',
-    status: 'active',
-  },
-];
+interface Collector {
+  id: number;
+  full_name: string;
+  area: string;
+}
 
-const initialPickupAssignments = [
-  {
-    id: 'p1',
-    citizen: 'Saman Perera',
-    area: 'Colombo 7',
-    items: 'Iron (5kg), Paper (2kg)',
-    scheduledDate: '2025-02-15',
-    assignedTo: 'Kamal Silva',
-    status: 'assigned',
-  },
-  {
-    id: 'p2',
-    citizen: 'Priya Fernando',
-    area: 'Kandy',
-    items: 'Plastic Bottles (3kg)',
-    scheduledDate: '2025-02-16',
-    assignedTo: null,
-    status: 'pending',
-  },
-];
+interface CategoryAssignment {
+  id: number;
+  collector_name: string;
+  category_name: string;
+  area: string;
+  assigned_date: string;
+  status: string;
+}
 
+interface PickupRequest {
+  id: number;
+  citizen_name: string;
+  citizen_area: string;
+  item_name: string;
+  rough_weight: number;
+  status: string;
+  created_at: string;
+  assigned_collector?: string;
+}
 
 export default function CollectorAssignment() {
   const [activeTab, setActiveTab] = useState('categories');
-
-  const [categoryAssignments, setCategoryAssignments] = useState(initialCategoryAssignments);
-  const [pickupAssignments, setPickupAssignments] = useState(initialPickupAssignments);
-
-
+  const [collectors, setCollectors] = useState<Collector[]>([]);
+  const [categoryAssignments, setCategoryAssignments] = useState<CategoryAssignment[]>([]);
+  const [pickupRequests, setPickupRequests] = useState<PickupRequest[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentAssignment, setCurrentAssignment] = useState<any>(null);
 
   const [formData, setFormData] = useState({
-    collector: '',
-    category: '',
+    collector_id: '',
+    category_id: '',
     area: '',
   });
 
+  useEffect(() => {
+    fetchCollectors();
+    fetchCategoryAssignments();
+    fetchPickupRequests();
+  }, []);
+
+  const fetchCollectors = async () => {
+    try {
+      const res = await fetch('http://localhost:4000/api/collectors');
+      const data = await res.json();
+      setCollectors(data);
+    } catch (err) {
+      toast.error('Failed to load collectors');
+    }
+  };
+
+  const fetchCategoryAssignments = async () => {
+    // TODO: create backend endpoint /api/collector-assignments if not exists
+    // For now, mock or leave empty until you add it
+    setCategoryAssignments([]); // replace with real fetch later
+  };
+
+  const fetchPickupRequests = async () => {
+    try {
+      const res = await fetch('http://localhost:4000/api/pickup-requests/admin');
+      const data = await res.json();
+      setPickupRequests(data);
+    } catch (err) {
+      toast.error('Failed to load pickup requests');
+    }
+  };
+
   const resetForm = () => {
-    setFormData({ collector: '', category: '', area: '' });
+    setFormData({ collector_id: '', category_id: '', area: '' });
     setCurrentAssignment(null);
   };
 
@@ -84,9 +91,9 @@ export default function CollectorAssignment() {
     if (assignment) {
       setCurrentAssignment(assignment);
       setFormData({
-        collector: assignment.collector || assignment.assignedTo || '',
-        category: assignment.category || '',
-        area: assignment.area || '',
+        collector_id: '',
+        category_id: '',
+        area: assignment.citizen_area || assignment.area || '',
       });
     } else {
       resetForm();
@@ -94,85 +101,75 @@ export default function CollectorAssignment() {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.collector || !formData.category || !formData.area) {
-      toast.error('Please fill all required fields');
+    if (!formData.collector_id || !formData.area) {
+      toast.error('Collector and area required');
       return;
     }
 
-    if (currentAssignment) {
-      // Edit existing
-      if (activeTab === 'categories') {
-        setCategoryAssignments(prev =>
-          prev.map(a => (a.id === currentAssignment.id ? { ...a, ...formData } : a))
+    // For pickup assignment example
+    if (activeTab === 'pickups' && currentAssignment) {
+      try {
+        // TODO: create backend PUT /api/pickup-requests/:id/assign
+        // For now, just update local state
+        setPickupRequests(prev =>
+          prev.map(p =>
+            p.id === currentAssignment.id
+              ? { ...p, assigned_collector: collectors.find(c => c.id === Number(formData.collector_id))?.full_name || 'Unknown' }
+              : p
+          )
         );
-      } else {
-        setPickupAssignments(prev =>
-          prev.map(a => (a.id === currentAssignment.id ? { ...a, assignedTo: formData.collector } : a))
-        );
+        toast.success('Collector assigned to pickup!');
+      } catch (err) {
+        toast.error('Assignment failed');
       }
-      toast.success('Assignment updated successfully!');
-    } else {
-      // Add new (example for categories tab)
-      const newAssign = {
-        id: Date.now().toString(),
-        ...formData,
-        assignedDate: new Date().toLocaleDateString('en-GB'),
-        status: 'active',
-      };
-      if (activeTab === 'categories') {
-        setCategoryAssignments([...categoryAssignments, newAssign]);
-      } else {
-        toast.info('Pickup assignment logic can be customized here');
-      }
-      toast.success('Collector assigned successfully!');
     }
 
     setIsModalOpen(false);
     resetForm();
   };
 
-const handleToggleActive = (id: string) => {
- if (activeTab === 'categories') {
-    let newStatus = ''
+  // const handleToggleActive = (id: string) => {
+//  if (activeTab === 'categories') {
+//     let newStatus = ''
 
-    setCategoryAssignments(prev =>
-      prev.map(a => {
-        if (a.id === id) {
-          newStatus = a.status === 'active' ? 'inactive' : 'active'
-          return { ...a, status: newStatus }
-        }
-        return a
-      })
-    )
+//     setCategoryAssignments(prev =>
+//       prev.map(a => {
+//         if (a.id === id) {
+//           newStatus = a.status === 'active' ? 'inactive' : 'active'
+//           return { ...a, status: newStatus }
+//         }
+//         return a
+//       })
+//     )
 
-    toast.success(`Assignment ${newStatus === 'active' ? 'activated' : 'deactivated'}!`)
+//     toast.success(`Assignment ${newStatus === 'active' ? 'activated' : 'deactivated'}!`)
   
-  } 
-};
+//   } 
+// };
 
 
-  const handleDelete = (id: string) => {
-    if (activeTab === 'categories') {
-      setCategoryAssignments(prev => prev.filter(a => a.id !== id));
-    } else {
-      setPickupAssignments(prev => prev.filter(a => a.id !== id));
-    }
-    toast.success('Assignment deleted successfully');
-  };
+  // const handleDelete = (id: string) => {
+  //   if (activeTab === 'categories') {
+  //     setCategoryAssignments(prev => prev.filter(a => a.id !== id));
+  //   } else {
+  //     setPickupAssignments(prev => prev.filter(a => a.id !== id));
+  //   }
+  //   toast.success('Assignment deleted successfully');
+  // };
 
-  const getStatusBadge = (status: string) => {
-    const colors = {
-      assigned: 'bg-blue-100 text-blue-800 hover:bg-blue-100',
-      pending: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100',
-      active: 'bg-green-100 text-green-800 hover:bg-green-100',
-      inactive: 'bg-red-100 text-red-800 hover:bg-red-100',
-    };
-    return <Badge className={colors[status] || 'bg-gray-100 text-gray-800'}>{status}</Badge>;
-  };
-
+  // const getStatusBadge = (status: string) => {
+  //   const colors = {
+  //     assigned: 'bg-blue-100 text-blue-800 hover:bg-blue-100',
+  //     pending: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100',
+  //     active: 'bg-green-100 text-green-800 hover:bg-green-100',
+  //     inactive: 'bg-red-100 text-red-800 hover:bg-red-100',
+  //   };
+  //   return <Badge className={colors[status] || 'bg-gray-100 text-gray-800'}>{status}</Badge>;
+  // };
+  
   return (
     <div className="space-y-10">
       {/* Header */}
@@ -182,84 +179,24 @@ const handleToggleActive = (id: string) => {
             Collector Assignment
           </h1>
           <p className="text-lg text-gray-600">
-            Manage which collectors handle specific item categories and pickups
+            Assign collectors to categories and pending pickups
           </p>
         </div>
-
-        <Button
-          className="bg-teal-700 hover:bg-teal-800 text-white gap-2"
-          onClick={() => openModal()}
-        >
+        <Button className="bg-teal-700 hover:bg-teal-800 text-white gap-2" onClick={() => openModal()}>
           <Plus className="h-4 w-4" />
-          Assign Collector
+          New Assignment
         </Button>
       </div>
 
-      {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="bg-gray-100">
           <TabsTrigger value="categories">Assign to Categories</TabsTrigger>
           <TabsTrigger value="pickups">Assign to Pickups</TabsTrigger>
         </TabsList>
-        <TabsContent value="categories">
-          <Card className="border-none shadow-lg">
-            <CardContent className="p-0">
-              <div className="p-6 border-b border-gray-200">
-                <h3 className="text-xl font-semibold text-gray-900">
-                  Assign Collectors to Categories
-                </h3>
-                <p className="text-sm text-gray-600 mt-1">
-                  Manage which collectors handle specific item categories in different areas
-                </p>
-              </div>
 
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-gray-50">
-                      <TableHead>Collector</TableHead>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Area</TableHead>
-                      <TableHead>Assigned Date</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {categoryAssignments.map((a) => (
-                      <TableRow key={a.id} className="hover:bg-gray-50">
-                        <TableCell className="font-medium">{a.collector}</TableCell>
-                        <TableCell>{a.category}</TableCell>
-                        <TableCell>{a.area}</TableCell>
-                        <TableCell>{a.assignedDate}</TableCell>
-                        <TableCell>{getStatusBadge(a.status)}</TableCell>
-                        <TableCell className="text-right space-x-1">
-                          <Button variant="ghost" size="icon" onClick={() => openModal(a)}>
-                            <Edit className="h-4 w-4 text-gray-600" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => handleToggleActive(a.id)}
-                          >
-                            {a.status === 'active' ? (
-                              <ToggleLeft className="h-5 w-5 text-orange-600" />
-                            ) : (
-                              <ToggleRight className="h-5 w-5 text-green-600" />
-                            )}
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDelete(a.id)}>
-                            <Trash2 className="h-4 w-4 text-red-600" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
+        <TabsContent value="categories">
+          {/* Your existing categories assignment table - add real fetch later */}
+          <p className="text-center py-10 text-gray-500">Category assignments coming soon</p>
         </TabsContent>
 
         <TabsContent value="pickups">
@@ -267,11 +204,8 @@ const handleToggleActive = (id: string) => {
             <CardContent className="p-0">
               <div className="p-6 border-b border-gray-200">
                 <h3 className="text-xl font-semibold text-gray-900">
-                  Assign Pickups to Collectors
+                  Assign Pending Pickups to Collectors
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
-                  Assign pending pickup requests to available collectors
-                </p>
               </div>
 
               <div className="overflow-x-auto">
@@ -280,29 +214,33 @@ const handleToggleActive = (id: string) => {
                     <TableRow className="bg-gray-50">
                       <TableHead>Citizen</TableHead>
                       <TableHead>Area</TableHead>
-                      <TableHead>Items</TableHead>
-                      <TableHead>Scheduled Date</TableHead>
-                      <TableHead>Assigned To</TableHead>
+                      <TableHead>Item</TableHead>
+                      <TableHead>Weight (kg)</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Assigned Collector</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {pickupAssignments.map((a) => (
-                      <TableRow key={a.id} className="hover:bg-gray-50">
-                        <TableCell className="font-medium">{a.citizen}</TableCell>
-                        <TableCell>{a.area}</TableCell>
-                        <TableCell>{a.items}</TableCell>
-                        <TableCell>{a.scheduledDate}</TableCell>
-                        <TableCell>{a.assignedTo || 'Unassigned'}</TableCell>
-                        <TableCell>{getStatusBadge(a.status)}</TableCell>
+                    {pickupRequests.map((req) => (
+                      <TableRow key={req.id} className="hover:bg-gray-50">
+                        <TableCell>{req.citizen_name}</TableCell>
+                        <TableCell>{req.citizen_area}</TableCell>
+                        <TableCell>{req.item_name}</TableCell>
+                        <TableCell>{req.rough_weight}</TableCell>
+                        <TableCell>
+                          <Badge variant={req.status === 'pending' ? 'secondary' : 'default'}>
+                            {req.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{req.assigned_collector || 'Unassigned'}</TableCell>
                         <TableCell className="text-right">
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => openModal(a)}
+                            onClick={() => openModal(req)}
                           >
-                            {a.assignedTo ? 'Reassign' : 'Assign'}
+                            {req.assigned_collector ? 'Reassign' : 'Assign'}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -310,121 +248,44 @@ const handleToggleActive = (id: string) => {
                   </TableBody>
                 </Table>
               </div>
-
-              {/* Pagination */}
-              <div className="flex justify-center items-center gap-4 p-6 border-t border-gray-200 text-gray-600">
-                <Button variant="outline" size="sm" disabled>Previous</Button>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="bg-teal-700 text-white border-teal-700 hover:bg-teal-800">
-                    1
-                  </Button>
-                  <Button variant="outline" size="sm">2</Button>
-                  <Button variant="outline" size="sm">3</Button>
-                </div>
-                <Button variant="outline" size="sm">Next</Button>
-              </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
 
+      {/* Assign Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader className="flex flex-row items-center justify-between">
-            <DialogTitle className="text-xl font-semibold">
-              {currentAssignment ? 'Reassign Collector' : 'Assign Collector'}
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => {
-                setIsModalOpen(false);
-                resetForm();
-              }}
-            >
-            </Button>
+          <DialogHeader>
+            <DialogTitle>Assign Collector</DialogTitle>
           </DialogHeader>
 
           <form onSubmit={handleSubmit} className="space-y-6 py-4">
-            {/* Collector */}
             <div className="space-y-2">
               <Label>Collector</Label>
               <Select
-                value={formData.collector}
-                onValueChange={(v) => setFormData(prev => ({ ...prev, collector: v }))}
+                value={formData.collector_id}
+                onValueChange={(v) => setFormData(prev => ({ ...prev, collector_id: v }))}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select collector" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Kamal Silva">Kamal Silva</SelectItem>
-                  <SelectItem value="Nimal Perera">Nimal Perera</SelectItem>
-                  <SelectItem value="Ravi Fernando">Ravi Fernando</SelectItem>
+                  {collectors.map(c => (
+                    <SelectItem key={c.id} value={c.id.toString()}>
+                      {c.full_name} ({c.area})
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
 
-           
-            {currentAssignment && activeTab === 'pickups' && (
-              <div className="p-3 bg-gray-50 rounded border space-y-1 text-sm">
-                <p><strong>Citizen:</strong> {currentAssignment.citizen}</p>
-                <p><strong>Area:</strong> {currentAssignment.area}</p>
-                <p><strong>Items:</strong> {currentAssignment.items}</p>
-                <p><strong>Scheduled:</strong> {currentAssignment.scheduledDate}</p>
-              </div>
-            )}
-
-            {activeTab === 'categories' && (
-              <>
-                <div className="space-y-2">
-                  <Label>Category</Label>
-                  <Select
-                    value={formData.category}
-                    onValueChange={(v) => setFormData(prev => ({ ...prev, category: v }))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Iron/Steel">Iron/Steel</SelectItem>
-                      <SelectItem value="Plastic Bottles">Plastic Bottles</SelectItem>
-                      <SelectItem value="Copper">Copper</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Area</Label>
-                  <Select
-                    value={formData.area}
-                    onValueChange={(v) => setFormData(prev => ({ ...prev, area: v }))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select area" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Colombo 7">Colombo 7</SelectItem>
-                      <SelectItem value="Kandy">Kandy</SelectItem>
-                      <SelectItem value="Galle">Galle</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </>
-            )}
-
-            <DialogFooter className="pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  setIsModalOpen(false);
-                  resetForm();
-                }}
-              >
+            <DialogFooter>
+              <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>
                 Cancel
               </Button>
               <Button type="submit" className="bg-teal-700 hover:bg-teal-800 text-white">
-                {currentAssignment ? 'Reassign' : 'Assign'}
+                Assign
               </Button>
             </DialogFooter>
           </form>
