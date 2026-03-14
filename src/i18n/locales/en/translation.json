@@ -28,7 +28,7 @@
 
   "landing":{
     "howItWorks":"How It Works",
-    "admin":"Admin",
+    "login":"Login",
     "smartWasteCollectionForSriLanka":"Smart Waste Collection for Sri Lanka",
     "connectCitizensAndWasteCollectorsThroughIntelligentSchedulingAI-poweredPricePredictionsAndSeamlessCoordinationReduceNoisePollutionSaveFuelAndEarnMoneyFromYourRecyclableItems":"Connect citizens and waste collectors through intelligent scheduling, AI-powered price predictions, and seamless coordination. Reduce noise pollution, save fuel, and earn money from your recyclable items.",
     "getStartedAsCitizen":"Get Started As Citizen ",
@@ -42,7 +42,7 @@
     "forCitizen":"For Citizens",
     "addYourItems":"Add Your Items",
     "listRecyclableItems":"List recyclable items",
-    "getAIPriceSuggestions":"Get AI Price Suggestions",
+    "getPriceSuggestions":"Get Price Suggestions",
     "receiveInstantPriceEstimatesAndEarningPotential":"Receive instant price estimates and earning potential",
     "schedulePickup":"Schedule Pickup",
     "chooseFromAvailablePickupSlotsInYourArea":"Choose from available pickup slots in your area",
