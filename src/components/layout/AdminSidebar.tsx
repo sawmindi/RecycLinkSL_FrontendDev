@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Truck, Calendar, History, Bell, User, LogOut, Boxes, Users, HandCoins, Ambulance,
+import { Home, Truck, Calendar, History, Bell, User, LogOut, Ambulance, HandCoins, Users, Boxes,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
@@ -14,12 +14,12 @@ export function AdminSidebar() {
 
   const navItems = [
     { path: '/admin/overview', label: t('sidebar.overview'), icon: Home },
+    { path: '/admin/pickup-requests', label: t('sidebar.pickupRequests'), icon: Boxes },
     { path: '/admin/pickup-schedule', label: t('sidebar.pickupSchedule'), icon: Truck },
     { path: '/admin/categories', label: t('sidebar.categories'), icon: Calendar },
     { path: '/admin/collector-assignment', label: t('sidebar.collectorAssignment'), icon: Ambulance },
     { path: '/admin/price-management', label: t('sidebar.priceManagement'), icon: HandCoins },
     { path: '/admin/user-management', label: t('sidebar.userManagement'), icon: Users },
-    { path: '/admin/pickup-requests', label: t('sidebar.pickupRequests'), icon: Boxes },
     { path: '/admin/reports', label: t('sidebar.reports'), icon: History },
     { path: '/admin/notifications', label: t('sidebar.notifications'), icon: Bell },
   ];

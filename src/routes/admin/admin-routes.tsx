@@ -4,10 +4,10 @@ import { OverviewPage } from "../../pages/features/admin/overviewPage"
 import { MyProfilePage } from "../../pages/features/admin/myProfilePage"
 import {PickupScheduleManagementPage} from "../../pages/features/admin/pickupSchedule"
 import { CategoriesPage } from "../../pages/features/admin/categories"
-import CollectorAssignmentPage from "../../pages/features/admin/collectorAssignment"
+import {CollectorAssignmentPage} from "../../pages/features/admin/collectorAssignment"
 import PriceManagementPage from "../../pages/features/admin/priceManagement"
-import { PickupRequestsList } from "../../pages/features/admin/PickupRequestsList"
-import { UserManagement } from "../../pages/features/admin/userManagement"
+import { CollectionListsPage} from "../../pages/features/admin/collections"
+import { UserManagementPage } from "../../pages/features/admin/userManagement"
 
 export const AdminRoutes = () => {
     return (
@@ -19,8 +19,8 @@ export const AdminRoutes = () => {
             <Route path="categories" element={<CategoriesPage/>}/>
             <Route path="collector-assignment" element={<CollectorAssignmentPage/>} />
             <Route path="price-management" element={<PriceManagementPage/>} />
-            <Route path="pickup-requests" element={<PickupRequestsList />} />
-            <Route path="user-management" element={<UserManagement />} />
+            <Route path="pickup-requests" element={<CollectionListsPage />} />
+            <Route path="user-management" element={<UserManagementPage />} />
             {/* <Route path="user-management" element={<UserManagementPage/>} /> */}
                 {/* <Route path="route-optimisation" element={< RouteOptimisation Page/>} /> */}
              {/*<Route path="schedule-management" element={<ScheduleManagementPage />} />
