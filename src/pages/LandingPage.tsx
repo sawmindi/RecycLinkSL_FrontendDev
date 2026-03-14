@@ -126,13 +126,13 @@ export function LandingPage() {
               <Users className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
               {t('landing.getStartedAsCitizen')}
             </Button>
-            <Button 
+            {/* <Button 
             onClick={() => navigate('/login')}
               className="group bg-white hover:bg-slate-50 text-slate-800 border-2 border-slate-300 hover:border-[#325251] px-10 py-7 text-base rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
             >
               <Truck className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
               {t('landing.joinAsCollector')}
-            </Button>
+            </Button> */}
           </div>
         </div>
 
