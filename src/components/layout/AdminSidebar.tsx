@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Truck, Calendar, History, Bell, User, LogOut, Ambulance, HandCoins, Users, Boxes,
+import { Home, Truck, Calendar, History, Bell, User, LogOut, Ambulance, HandCoins, Users, Boxes, X, Globe,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Separator } from '../ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
-export function AdminSidebar() {
+interface AdminSidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'si' ? 'en' : 'si';
+    i18n.changeLanguage(newLang);
+  };
+
+  useEffect(() => {
+    onClose?.();
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
 
   const navItems = [
     { path: '/admin/overview', label: t('sidebar.overview'), icon: Home },
@@ -21,19 +41,76 @@ export function AdminSidebar() {
     { path: '/admin/price-management', label: t('sidebar.priceManagement'), icon: HandCoins },
     { path: '/admin/user-management', label: t('sidebar.userManagement'), icon: Users },
     { path: '/admin/reports', label: t('sidebar.reports'), icon: History },
-    { path: '/admin/notifications', label: t('sidebar.notifications'), icon: Bell },
+    // { path: '/admin/notifications', label: t('sidebar.notifications'), icon: Bell },
   ];
 
   const isActive = (path: string) =>
     location.pathname === path ||
     (path === '/admin' && location.pathname === '/admin/overview');
 
-  return (
-    <aside className="hidden md:flex md:w-64 flex-col bg-[#043937] text-white border-r border-teal-800/40">
-      
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    onClose?.();
+  };
+
+  const sidebarContent = (
+    <aside className="flex flex-col h-full w-64 bg-[#043937] text-white">
+
+      <div className="flex items-center justify-between px-4 py-3 border-b border-teal-800/40 md:hidden">
+       
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-white hover:text-teal-200 hover:bg-teal-900/40 rounded-full"
+          onClick={onClose}
+          aria-label="Close menu"
+        >
+          <X className="h-5 w-5" />
+        </Button>
+
+        <div className="flex items-center gap-1">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white hover:text-teal-200 hover:bg-teal-900/40 rounded-full"
+                  onClick={toggleLanguage}
+                >
+                  <Globe className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                {i18n.language === 'si' ? 'English' : 'සිංහල'}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          {/* <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white hover:text-teal-200 hover:bg-teal-900/40 rounded-full relative"
+                >
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full text-[10px] font-bold flex items-center justify-center text-white">
+                    2
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                {t('notifications')}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider> */}
+        </div>
+      </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-6">
+      <nav className="flex-1 px-3 py-4 overflow-y-auto">
         <div className="space-y-1">
           {navItems.map((item) => (
             <Button
@@ -44,9 +121,9 @@ export function AdminSidebar() {
                 text-white hover:bg-teal-800/60 hover:text-white
                 ${isActive(item.path) ? 'bg-teal-800/50' : ''}
               `}
-              onClick={() => navigate(item.path)}
+              onClick={() => handleNavigate(item.path)}
             >
-              <item.icon className="h-5 w-5" />
+              <item.icon className="h-5 w-5 shrink-0" />
               {item.label}
             </Button>
           ))}
@@ -56,7 +133,7 @@ export function AdminSidebar() {
       {/* User Profile & Logout */}
       <div className="p-5 border-t border-teal-800/50">
         <div className="flex items-center gap-3 mb-4">
-          <Avatar className="h-10 w-10 border-2 border-teal-700/50">
+          <Avatar className="h-10 w-10 border-2 border-teal-700/50 shrink-0">
             <AvatarImage src="/path-to-admin-avatar.jpg" alt="Kamal Silva" />
             <AvatarFallback className="bg-teal-700 text-white">KS</AvatarFallback>
           </Avatar>
@@ -70,7 +147,7 @@ export function AdminSidebar() {
           variant="ghost"
           size="sm"
           className="w-full justify-start gap-2.5 text-teal-200 hover:text-white hover:bg-teal-800/50 text-sm mb-2 px-3"
-          onClick={() => navigate('/admin/profile')}
+          onClick={() => handleNavigate('/admin/profile')}
         >
           <User className="h-4 w-4" />
           {t('sidebar.myProfile')}
@@ -82,12 +159,41 @@ export function AdminSidebar() {
           variant="ghost"
           size="sm"
           className="w-full justify-start gap-2.5 text-red-300 hover:text-red-200 hover:bg-red-950/30 text-sm px-3"
-          onClick={() => navigate('/login')}
+          onClick={() => handleNavigate('/login')}
         >
           <LogOut className="h-4 w-4" />
           {t('sidebar.logOut')}
         </Button>
       </div>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop */}
+      <div className="hidden md:flex md:w-64 shrink-0 min-h-0">
+        {sidebarContent}
+      </div>
+
+      {/* Mobile */}
+      <div
+        className={`
+          fixed inset-0 z-50 bg-black/50 transition-opacity duration-300 md:hidden
+          ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
+        `}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      <div
+        className={`
+          fixed inset-y-0 right-0 z-50 w-64 shadow-2xl
+          transform transition-transform duration-300 ease-in-out md:hidden
+          ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+        `}
+      >
+        {sidebarContent}
+      </div>
+    </>
   );
 }

@@ -20,13 +20,14 @@
     "categories": "වර්ග",
     "collectorAssignment": "එකතු කරන්නන්ගේ පවරාදීම",
     "priceManagement": "මිල කළමනාකරණය",
+    "userManagement": "පරිශීලක කළමනාකරණය",
     "pickupRequests": "එකතු කිරීම",
     "reports": "වාර්තා"
   },
 
   "landing":{
     "howItWorks":"ක්‍රියා කරන ආකාරය",
-    "admin":"පරිපාලක",
+    "login":"පිවිසීම",
     "smartWasteCollectionForSriLanka":"ශ්‍රී ලංකාව සඳහා ස්මාර්ට් අපද්‍රව්‍ය එකතු කිරීම",
     "connectCitizensAndWasteCollectorsThroughIntelligentSchedulingAI-poweredPricePredictionsAndSeamlessCoordinationReduceNoisePollutionSaveFuelAndEarnMoneyFromYourRecyclableItems":"බුද්ධිමත් උපලේඛනගත කිරීම, AI බලයෙන් ක්‍රියාත්මක වන මිල අනාවැකි සහ බාධාවකින් තොරව සම්බන්ධීකරණය හරහා පුරවැසියන් සහ අපද්‍රව්‍ය එකතු කරන්නන් සම්බන්ධ කිරීම. ශබ්ද දූෂණය අඩු කිරීම, ඉන්ධන ඉතිරි කිරීම, සහ ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි භාණ්ඩවලින් මුදල් උපයන්න." ,
     "getStartedAsCitizen":"පුරවැසියෙකු ලෙස ආරම්භ කරන්න",

@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { CitizenSidebar } from './CitizenSidebar';
 import { HeaderPage } from './Header';
 import FooterPage from './Footer';
 
 export function CitizenLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Top Header */}
-      <HeaderPage />
+      <HeaderPage onMenuClick={() => setSidebarOpen(true)}/>
 
       {/* Main content area with sidebar */}
       <div className="flex flex-1">
-        <CitizenSidebar />
+        <CitizenSidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
 
         {/* Content */}
         <div className="flex-1 flex flex-col">
