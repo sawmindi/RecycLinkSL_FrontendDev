@@ -4,16 +4,44 @@ import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Label } from '../../components/ui/label';
+import { AuthService } from '../../services/AuthService';
+import { toast } from 'react-toastify';
+import { Role } from '../../models/Role';
 
 export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // console.log('Login:', { username, password });
-    navigate('/login')
+  const handleLogin = async () => {
+    try {
+      const res = await AuthService.userLogin({ phoneNumber, password });
+      if (res.success) {
+        const me = await AuthService.getMe();
+        if (me.success && me.data?.role) {
+          switch (me.data.role) {
+            case Role.CITIZEN:
+              navigate('/citizen/overview');
+              break;
+            case Role.COLLECTOR:
+              navigate('/collector/overview');
+              break;
+            case Role.ADMIN:
+              navigate('/admin/overview');
+              break;
+            default:
+              toast.error('Unknown user role. Please contact support.');
+          }
+        } else {
+          toast.error('Unable to detect user role. Please try again.');
+        }
+      } else {
+        toast.error(res.message || 'Login failed. Please check your credentials.');
+      }
+    } catch (e) {
+      toast.error('An unexpected error occurred while logging in.');
+    }
   };
 
   return (
@@ -44,16 +72,16 @@ export function LoginPage() {
 
           {/* Login Form */}
           <div className="space-y-6">
-            {/* Username Field */}
+            {/* Phone Number Field */}
             <div>
               <Label className="block text-sm font-medium text-gray-700 mb-2">
-                Username
+                Phone Number
               </Label>
               <Input
-                type="text"
-                placeholder="eg: johnSmith"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="tel"
+                placeholder="eg: +94771234567"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 className="w-full px-4 py-6 rounded-xl border border-gray-300 focus:border-[#325251] focus:ring-2 focus:ring-[#325251]/20 transition-all"
               />
             </div>

@@ -101,7 +101,7 @@ export function LandingPage() {
               className="text-xs md:text-sm text-gray-500 hover:text-[#325251]"
               onClick={() => navigate('/login')}
             >
-              {t('landing.admin')}
+              {t('landing.login')}
             </Button>
           </div>
         </div>

@@ -34,13 +34,14 @@ const routesToday = [
 ];
 
 export function OverviewPage() {
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const stats = {
     todaysPickups: 8,
     pendingPayments: 8,
     citizensServed: 32,
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -126,8 +127,10 @@ export function OverviewPage() {
                         <Button
                           variant="outline"
                           className="flex-1 border-teal-700 text-teal-700 hover:bg-teal-50"
+                          onClick={() => navigate('/collector/pickups')}
                         >
                           View Details
+                          
                         </Button>
                         <Button className="flex-1 bg-teal-700 hover:bg-teal-800 text-white">
                           Start Route

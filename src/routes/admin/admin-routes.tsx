@@ -4,24 +4,23 @@ import { OverviewPage } from "../../pages/features/admin/overviewPage"
 import { MyProfilePage } from "../../pages/features/admin/myProfilePage"
 import {PickupScheduleManagementPage} from "../../pages/features/admin/pickupSchedule"
 import { CategoriesPage } from "../../pages/features/admin/categories"
-import {CollectorAssignmentPage} from "../../pages/features/admin/collectorAssignment"
+import { CollectorAssignmentPage } from "../../pages/features/admin/collectorAssignment"
 import PriceManagementPage from "../../pages/features/admin/priceManagement"
-import { CollectionListsPage} from "../../pages/features/admin/collections"
+import { CollectionListsPage } from "../../pages/features/admin/collections"
 import { UserManagementPage } from "../../pages/features/admin/userManagement"
 
 export const AdminRoutes = () => {
     return (
         <Routes>
         <Route element={<AdminLayout />}>
-             <Route path="overview" element={<OverviewPage/>} />
-             <Route path="profile" element={<MyProfilePage />} />
+            <Route path="overview" element={<OverviewPage/>} />
+            <Route path="profile" element={<MyProfilePage />} />
+            <Route path="pickup-requests" element={<CollectionListsPage />} />
             <Route path="pickup-schedule" element={<PickupScheduleManagementPage />} />
             <Route path="categories" element={<CategoriesPage/>}/>
             <Route path="collector-assignment" element={<CollectorAssignmentPage/>} />
             <Route path="price-management" element={<PriceManagementPage/>} />
-            <Route path="pickup-requests" element={<CollectionListsPage />} />
-            <Route path="user-management" element={<UserManagementPage />} />
-            {/* <Route path="user-management" element={<UserManagementPage/>} /> */}
+            <Route path="user-management" element={<UserManagementPage/>} /> 
                 {/* <Route path="route-optimisation" element={< RouteOptimisation Page/>} /> */}
              {/*<Route path="schedule-management" element={<ScheduleManagementPage />} />
             <Route path="collection-history"    element={<CollectionHistoryPage />} />
