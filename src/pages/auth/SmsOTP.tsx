@@ -1,14 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthService } from '../../services/AuthService';
+import { toast } from 'react-toastify';
 
-interface PhoneOTPVerificationProps {
-  onBack?: () => void;
+interface PhoneOTPVerificationLocationState {
+  userId?: string;
   phoneNumber?: string;
 }
 
-export default function SmsOtpPage({ onBack, phoneNumber }: PhoneOTPVerificationProps) {
-  const [otp, setOtp] = useState<string[]>(['', '', '', '']);
+export default function SmsOtpPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { userId, phoneNumber } = (location.state || {}) as PhoneOTPVerificationLocationState;
+
+  const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(59);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -28,7 +36,7 @@ export default function SmsOtpPage({ onBack, phoneNumber }: PhoneOTPVerification
     newOtp[index] = value;
     setOtp(newOtp);
 
-    if (value && index < 3) {
+    if (value && index < otp.length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
   };
@@ -41,10 +49,13 @@ export default function SmsOtpPage({ onBack, phoneNumber }: PhoneOTPVerification
 
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData('text').slice(0, 4);
+    const pastedData = e.clipboardData.getData('text').slice(0, otp.length);
     
     if (/^\d+$/.test(pastedData)) {
-      const newOtp = pastedData.split('').concat(['', '', '', '']).slice(0, 4);
+      const newOtp = pastedData
+        .split('')
+        .concat(new Array(otp.length).fill(''))
+        .slice(0, otp.length);
       setOtp(newOtp);
       
       const nextIndex = Math.min(pastedData.length, 3);
@@ -54,8 +65,27 @@ export default function SmsOtpPage({ onBack, phoneNumber }: PhoneOTPVerification
 
   const handleSubmit = () => {
     const otpCode = otp.join('');
-    if (otpCode.length === 4) {
-      console.log('Submitted Phone OTP:', otpCode);
+    if (otpCode.length === otp.length) {
+      if (!userId) {
+        toast.error('Missing user information for verification.');
+        return;
+      }
+
+      AuthService.verifyCitizenSignupOtp({
+        userId,
+        verificationCode: otpCode,
+      })
+        .then((res) => {
+          if (res.success) {
+            toast.success('Phone number verified successfully. Please log in.');
+            navigate('/login');
+          } else {
+            toast.error(res.message || 'Verification failed. Please try again.');
+          }
+        })
+        .catch(() => {
+          toast.error('An unexpected error occurred while verifying the code.');
+        });
     }
   };
 
@@ -73,28 +103,38 @@ export default function SmsOtpPage({ onBack, phoneNumber }: PhoneOTPVerification
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
-        <div className="text-center">
-            <div className="flex flex-col items-center mb-2">
-                <img
-                    src="/logo.png"
-                    alt="RecycleLinkSL Logo"
-                    className="h-10 w-auto mb-4 object-contain"
-                />
-                {/* Header */}
-                <h1 className="text-xl md:text-2xl font-serif font-semibold mb-3">
-                    Please enter 4-digit code we sent to your phone number
-                </h1>
-                {phoneNumber && (
-                    <p className="text-gray-600 mb-12 text-sm">
-                    Code sent to: {phoneNumber}
-                    </p>
-                )}
+        {/* Back Button */}
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/signup')}
+          className="flex items-center gap-2 text-gray-600 mb-12 hover:text-gray-800 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-base">Back</span>
+        </Button>
 
-            </div>
-            
-          
+        {/* Main Card */}
+        <div className="bg-white rounded-3xl shadow-sm p-8 md:p-12">
+          {/* Header */}
+          <div className="flex flex-col items-center mb-10">
+            <img
+              src="/logo.png"
+              alt="RecycleLinkSL Logo"
+              className="h-16 w-auto mb-4 object-contain cursor-pointer"
+              onClick={() => navigate('/')}
+            />
+            <h1 className="text-xl md:text-2xl font-serif font-semibold mb-3 text-center">
+              Please enter the 6-digit code we sent to your phone number
+            </h1>
+            {phoneNumber && (
+              <p className="text-gray-600 mb-4 text-sm">
+                Code sent to: {phoneNumber}
+              </p>
+            )}
+          </div>
+
           {/* OTP Input Boxes */}
-          <div className="flex justify-center gap-4 mb-20">
+          <div className="flex justify-center gap-4 mb-10">
             {otp.map((digit, index) => (
               <Input
                 key={index}
@@ -106,7 +146,7 @@ export default function SmsOtpPage({ onBack, phoneNumber }: PhoneOTPVerification
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={handlePaste}
-                className="w-14 h-14 md:w-16 md:h-16 text-center text-2xl font-semibold rounded-xl border-2 border-gray-300 focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20 transition-all"
+                className="w-12 h-12 md:w-14 md:h-14 text-center text-xl font-semibold rounded-xl border-2 border-gray-300 focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20 transition-all"
               />
             ))}
           </div>
@@ -118,7 +158,7 @@ export default function SmsOtpPage({ onBack, phoneNumber }: PhoneOTPVerification
               disabled={otp.some((digit) => !digit)}
               className="w-full bg-[#325251] hover:bg-[#3d4f4c] disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-6 rounded-xl text-base font-medium transition-colors"
             >
-              Submit
+              Verify Code
             </Button>
           </div>
 
@@ -137,17 +177,6 @@ export default function SmsOtpPage({ onBack, phoneNumber }: PhoneOTPVerification
               </button>
             )}
           </div>
-
-          {onBack && (
-            <div className="mt-8">
-              <button
-                onClick={onBack}
-                className="text-sm text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                ← Back to verification method
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>

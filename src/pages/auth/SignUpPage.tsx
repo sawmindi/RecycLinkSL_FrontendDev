@@ -4,6 +4,8 @@ import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Label } from '../../components/ui/label';
+import { AuthService, CitizenSignupRequest } from '../../services/AuthService';
+import { toast } from 'react-toastify';
 
 export function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,9 +25,39 @@ export function SignUpPage() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSignup = () => {
-    //console.log('Sign up:', formData);
-    navigate('/login')
+  const handleSignup = async () => {
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match.');
+      return;
+    }
+
+    const usernameFallback =
+      (formData.email && formData.email.split('@')[0]) || formData.mobile;
+
+    const payload: CitizenSignupRequest = {
+      full_name: formData.fullName,
+      username: usernameFallback,
+      email: formData.email,
+      phoneNumber: formData.mobile,
+      area: formData.area,
+      password: formData.password,
+    };
+
+    try {
+      const res = await AuthService.citizenSignUp(payload);
+      if (res.success && res.data) {
+        navigate('/sms-otp', {
+          state: {
+            userId: res.data._id,
+            phoneNumber: payload.phoneNumber,
+          },
+        });
+      } else {
+        toast.error(res.message || 'Sign up failed. Please try again.');
+      }
+    } catch (e) {
+      toast.error('An unexpected error occurred while signing up.');
+    }
   };
 
   return (
