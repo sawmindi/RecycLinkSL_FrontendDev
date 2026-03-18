@@ -10,6 +10,11 @@ export class Util {
     return environment.api_url + "/api/auth/" + path;
   }
 
+  /** Base API path for admin/resources (e.g. pickup-schedules, categories, users). */
+  public static apiUrl(path: string): string {
+    return environment.api_url + "/api/" + path;
+  }
+
   public static initAxios(): void {
     axios.interceptors.request.use(req => {
       req.headers.authorization = "Bearer " + localStorage.getItem("token");

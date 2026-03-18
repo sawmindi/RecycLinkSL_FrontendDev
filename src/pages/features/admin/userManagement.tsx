@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Edit, Trash2, UserPlus, UserCheck, UserX, Lock, Unlock } from 'lucide-react';
+import { RefreshCw, Edit, Trash2, UserPlus, UserCheck, UserX } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
@@ -10,22 +10,12 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
-
-interface User {
-  id: number;
-  full_name: string;
-  email: string | null;
-  mobile_number: string;
-  address: string;
-  role: string;
-  is_active: boolean;
-  joined_date: string;
-}
+import { getUsers, createUser, updateUser, deleteUser, type AdminUser } from '../../../services/AdminService';
 
 export function UserManagementPage() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editUser, setEditUser] = useState<User | null>(null);
+  const [editUser, setEditUser] = useState<AdminUser | null>(null);
   const [addModalOpen, setAddModalOpen] = useState(false);
 
   // Form for Add New User
@@ -55,9 +45,7 @@ export function UserManagementPage() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:4000/api/users/admin');
-      if (!res.ok) throw new Error('Failed to load users');
-      const data = await res.json();
+      const data = await getUsers();
       setUsers(data);
     } catch (err) {
       console.error(err);
@@ -67,13 +55,13 @@ export function UserManagementPage() {
     }
   };
 
-  const handleEditOpen = (user: User) => {
+  const handleEditOpen = (user: AdminUser) => {
     setEditUser(user);
     setEditForm({
       full_name: user.full_name,
       mobile_number: user.mobile_number,
       email: user.email || '',
-      address: user.address,
+      address: user.address ?? '',
       role: user.role,
       is_active: user.is_active,
     });
@@ -89,24 +77,14 @@ export function UserManagementPage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:4000/api/users/${editUser.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          full_name: editForm.full_name,
-          mobile_number: editForm.mobile_number,
-          email: editForm.email || null,
-          area: editForm.address,
-          role: editForm.role,
-          is_active: editForm.is_active,
-        }),
+      await updateUser(editUser._id, {
+        full_name: editForm.full_name,
+        mobile_number: editForm.mobile_number,
+        email: editForm.email || null,
+        area: editForm.address,
+        role: editForm.role,
+        is_active: editForm.is_active,
       });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || 'Update failed');
-      }
-
       toast.success(
         editForm.is_active
           ? 'User updated – account is now active'
@@ -114,8 +92,8 @@ export function UserManagementPage() {
       );
       setEditUser(null);
       fetchUsers();
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to update user');
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Failed to update user');
     }
   };
 
@@ -133,26 +111,16 @@ export function UserManagementPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          full_name: addForm.full_name,
-          mobile_number: addForm.mobile_number,
-          email: addForm.email || null,
-          area: addForm.address,
-          password: addForm.password,
-          role: addForm.role,
-        }),
+      const data = await createUser({
+        full_name: addForm.full_name,
+        mobile_number: addForm.mobile_number,
+        email: addForm.email || null,
+        area: addForm.address,
+        password: addForm.password,
+        role: addForm.role,
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to create user');
-      }
-
-      toast.success(`User created successfully! Username: ${data.user.username}`);
+      const username = data?.user?.username ?? '—';
+      toast.success(`User created successfully! Username: ${username}`);
       setAddModalOpen(false);
       setAddForm({
         full_name: '',
@@ -163,42 +131,31 @@ export function UserManagementPage() {
         role: 'citizen',
       });
       fetchUsers();
-    } catch (err: any) {
-      toast.error(err.message || 'Signup failed');
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Signup failed');
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('This user is deactivated. Permanently delete this account and all associated data? This cannot be undone.')) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/users/${id}`, { method: 'DELETE' });
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || 'Delete failed');
-      }
+      await deleteUser(id);
       toast.success('User account permanently deleted');
       fetchUsers();
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to delete user');
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Failed to delete user');
     }
   };
 
-  const handleToggleActive = async (user: User) => {
+  const handleToggleActive = async (user: AdminUser) => {
     const newStatus = !user.is_active;
     const action = newStatus ? 'activate' : 'deactivate';
 
     if (!confirm(`Are you sure you want to ${action} ${user.full_name}'s account?`)) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/users/${user.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ is_active: newStatus }),
-      });
-
-      if (!res.ok) throw new Error('Status update failed');
-
+      await updateUser(user._id, { is_active: newStatus });
       toast.success(`Account ${newStatus ? 'activated' : 'deactivated'} successfully`);
       fetchUsers();
     } catch (err) {
@@ -373,7 +330,7 @@ export function UserManagementPage() {
                 </TableHeader>
                 <TableBody>
                   {users.map((user) => (
-                    <TableRow key={user.id} className="hover:bg-gray-50">
+                    <TableRow key={user._id} className="hover:bg-gray-50">
                       <TableCell className="font-medium">{user.full_name}</TableCell>
                       <TableCell>{user.address}</TableCell>
                       <TableCell>{user.mobile_number}</TableCell>
@@ -446,7 +403,7 @@ export function UserManagementPage() {
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                                   <AlertDialogAction
-                                    onClick={() => handleDelete(user.id)}
+                                    onClick={() => handleDelete(user._id)}
                                     className="bg-red-600 hover:bg-red-700 text-white"
                                   >
                                     Delete Permanently

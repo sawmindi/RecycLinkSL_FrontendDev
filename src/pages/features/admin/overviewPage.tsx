@@ -1,39 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { Truck, Calendar, Users, UserCheck, Layers, MapPin } from 'lucide-react';
+import { Truck, Calendar, Users, UserCheck, Layers } from 'lucide-react';
 import { Card, CardContent } from '../../../components/ui/card';
+import {
+  getAdminDashboardStats,
+  getAreaPickups,
+  getItemTypeDistribution,
+  type AdminDashboardStats,
+  type AreaPickupItem,
+  type ItemTypeDistributionItem,
+} from '../../../services/AdminService';
+import { AuthService } from '../../../services/AuthService';
 
-
-const adminStats = {
-  todaysPickups: 40,
-  pendingSchedules: 8,
-  registeredCitizens: 248,
-  activeCollectors: 48,
-  activeCategories: 10,
+const DEFAULT_STATS: AdminDashboardStats = {
+  todaysPickups: 0,
+  pendingSchedules: 0,
+  registeredCitizens: 0,
+  activeCollectors: 0,
+  activeCategories: 0,
 };
 
-const areaPickupsData = [
-  { area: 'Colombo', pickups: 38 },
-  { area: 'Kalutara', pickups: 25 },
-  { area: 'Hikkaduwa', pickups: 20 },
-  { area: 'Kandy', pickups: 15 },
-  { area: 'Galle', pickups: 12 },
-  { area: 'Nuwara Eliya', pickups: 8 },
-];
-
-const itemTypeDistribution = [
-  { name: 'Coconut Shells', value: 38.9, color: '#0284c7' },
-  { name: 'Paper', value: 27.8, color: '#f97316' },
-  { name: 'Plastic', value: 16.7, color: '#dc2626' },
-  { name: 'Iron', value: 11.1, color: '#059669' },
-  { name: 'Cardboard', value: 5.5, color: '#8b5cf6' },
-];
-
-// const COLORS = ['#0284c7', '#f97316', '#dc2626', '#059669', '#8b5cf6'];
+const DEFAULT_CHART_COLORS = ['#0284c7', '#f97316', '#dc2626', '#059669', '#8b5cf6'];
 
 export function OverviewPage() {
   const { t } = useTranslation();
+  const [adminStats, setAdminStats] = useState<AdminDashboardStats>(DEFAULT_STATS);
+  const [areaPickupsData, setAreaPickupsData] = useState<AreaPickupItem[]>([]);
+  const [itemTypeDistribution, setItemTypeDistribution] = useState<ItemTypeDistributionItem[]>([]);
+  const [userName, setUserName] = useState<string>('');
+
+  useEffect(() => {
+    AuthService.getMe().then((res) => {
+      if (res.success && res.data?.full_name) setUserName(res.data.full_name);
+    });
+    getAdminDashboardStats().then((stats) => {
+      if (stats && Object.keys(stats).length) setAdminStats((prev) => ({ ...prev, ...stats }));
+    }).catch(() => {});
+    getAreaPickups().then((data) => {
+      if (data?.length) setAreaPickupsData(data);
+    }).catch(() => {});
+    getItemTypeDistribution().then((data) => {
+      if (data?.length) setItemTypeDistribution(data.map((d, i) => ({ ...d, color: d.color ?? DEFAULT_CHART_COLORS[i % DEFAULT_CHART_COLORS.length] })));
+    }).catch(() => {});
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -46,7 +56,7 @@ export function OverviewPage() {
             {/* Welcome */}
             <div>
               <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-1">
-                Welcome, Sahan Perera
+                Welcome, {userName || 'Admin'}
               </h1>
             </div>
 
@@ -56,7 +66,7 @@ export function OverviewPage() {
                 <CardContent className="p-6 text-center space-y-3">
                   <Truck className="h-10 w-10 mx-auto opacity-90" />
                   <p className="text-lg opacity-90">Today's Pickups</p>
-                  <p className="text-4xl font-bold">{adminStats.todaysPickups}</p>
+                  <p className="text-4xl font-bold">{adminStats.todaysPickups ?? 0}</p>
                 </CardContent>
               </Card>
 
@@ -64,7 +74,7 @@ export function OverviewPage() {
                 <CardContent className="p-6 text-center space-y-3">
                   <Calendar className="h-10 w-10 mx-auto opacity-90" />
                   <p className="text-lg opacity-90">Pending Schedules</p>
-                  <p className="text-4xl font-bold">{adminStats.pendingSchedules}</p>
+                  <p className="text-4xl font-bold">{adminStats.pendingSchedules ?? 0}</p>
                 </CardContent>
               </Card>
 
@@ -72,7 +82,7 @@ export function OverviewPage() {
                 <CardContent className="p-6 text-center space-y-3">
                   <Users className="h-10 w-10 mx-auto opacity-90" />
                   <p className="text-lg opacity-90">Registered Citizens</p>
-                  <p className="text-4xl font-bold">{adminStats.registeredCitizens}</p>
+                  <p className="text-4xl font-bold">{adminStats.registeredCitizens ?? 0}</p>
                 </CardContent>
               </Card>
 
@@ -80,7 +90,7 @@ export function OverviewPage() {
                 <CardContent className="p-6 text-center space-y-3">
                   <UserCheck className="h-10 w-10 mx-auto opacity-90" />
                   <p className="text-lg opacity-90">Active Collectors</p>
-                  <p className="text-4xl font-bold">{adminStats.activeCollectors}</p>
+                  <p className="text-4xl font-bold">{adminStats.activeCollectors ?? 0}</p>
                 </CardContent>
               </Card>
 
@@ -88,7 +98,7 @@ export function OverviewPage() {
                 <CardContent className="p-6 text-center space-y-3">
                   <Layers className="h-10 w-10 mx-auto opacity-90" />
                   <p className="text-lg opacity-90">Active Categories</p>
-                  <p className="text-4xl font-bold">{adminStats.activeCategories}</p>
+                  <p className="text-4xl font-bold">{adminStats.activeCategories ?? 0}</p>
                 </CardContent>
               </Card>
             </div>
@@ -103,7 +113,7 @@ export function OverviewPage() {
                   </h3>
                   <div className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={areaPickupsData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                      <BarChart data={areaPickupsData.length ? areaPickupsData : [{ area: '-', pickups: 0 }]} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                         <XAxis dataKey="area" angle={-45} textAnchor="end" height={70} />
                         <YAxis />
                         <Tooltip />
@@ -127,7 +137,7 @@ export function OverviewPage() {
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
-                          data={itemTypeDistribution}
+                          data={itemTypeDistribution.length ? itemTypeDistribution : [{ name: 'No data', value: 100, color: '#e5e7eb' }]}
                           dataKey="value"
                           nameKey="name"
                           cx="50%"
@@ -136,8 +146,8 @@ export function OverviewPage() {
                           label={({ name, percent }) => `${name} ${(percent * 100).toFixed(1)}%`}
                           labelLine={true}
                         >
-                          {itemTypeDistribution.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          {(itemTypeDistribution.length ? itemTypeDistribution : [{ name: 'No data', value: 100, color: '#e5e7eb' }]).map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color ?? DEFAULT_CHART_COLORS[index % DEFAULT_CHART_COLORS.length]} />
                           ))}
                         </Pie>
                         <Tooltip />

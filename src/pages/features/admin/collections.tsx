@@ -8,25 +8,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../../components/ui/dialog';
 import { Label } from '../../../components/ui/label';
-
-interface PickupRequest {
-  id: number;
-  citizen_name: string;
-  citizen_area: string;
-  item_name: string;
-  rough_weight: number;
-  priority: string;
-  estimated_earnings: number;
-  status: string;
-  assigned_collector?: string;
-  created_at: string;
-}
-
-interface Collector {
-  id: number;
-  full_name: string;
-  area: string;
-}
+import {
+  getPickupRequests,
+  getCollectors,
+  updatePickupRequestStatus,
+  assignCollectorToPickupRequest,
+  type PickupRequest,
+  type Collector,
+} from '../../../services/AdminService';
 
 export function CollectionListsPage() {
   const [requests, setRequests] = useState<PickupRequest[]>([]);
@@ -45,16 +34,12 @@ export function CollectionListsPage() {
   const fetchRequests = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:4000/api/pickup-requests/admin');
-      if (!res.ok) throw new Error('Failed to load requests');
-      const data = await res.json();
-
-      const formatted = data.map((req: any) => ({
+      const data = await getPickupRequests();
+      const formatted = data.map((req) => ({
         ...req,
         rough_weight: Number(req.rough_weight || 0),
         estimated_earnings: Number(req.estimated_earnings || 0),
       }));
-
       setRequests(formatted);
     } catch (err) {
       console.error(err);
@@ -66,27 +51,18 @@ export function CollectionListsPage() {
 
   const fetchCollectors = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/collectors');
-      if (!res.ok) throw new Error('Failed to load collectors');
-      const data = await res.json();
+      const data = await getCollectors();
       setCollectors(data);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleStatusChange = async (requestId: number, newStatus: string) => {
+  const handleStatusChange = async (requestId: string, newStatus: string) => {
     if (!confirm(`Change status to "${newStatus}"?`)) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/pickup-requests/${requestId}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (!res.ok) throw new Error('Update failed');
-
+      await updatePickupRequestStatus(requestId, newStatus);
       toast.success(`Status updated to ${newStatus}`);
       fetchRequests();
     } catch (err) {
@@ -104,25 +80,12 @@ export function CollectionListsPage() {
     if (!reassignRequest || !selectedCollectorId) return;
 
     try {
-      const res = await fetch(
-        `http://localhost:4000/api/pickup-requests/${reassignRequest.id}/assign-collector`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ collector_id: Number(selectedCollectorId) }),
-        }
-      );
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Reassign failed');
-      }
-
+      await assignCollectorToPickupRequest(reassignRequest._id, selectedCollectorId);
       toast.success('Collector reassigned successfully');
       setReassignModalOpen(false);
       fetchRequests();
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to reassign');
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Failed to reassign');
     }
   };
 
@@ -206,12 +169,12 @@ export function CollectionListsPage() {
                 </TableHeader>
                 <TableBody>
                   {filteredRequests.map((req) => (
-                    <TableRow key={req.id} className="hover:bg-gray-50">
+                    <TableRow key={req._id} className="hover:bg-gray-50">
                       <TableCell className="font-medium">{req.citizen_name}</TableCell>
                       <TableCell>{req.citizen_area}</TableCell>
                       <TableCell>{req.item_name}</TableCell>
-                      <TableCell>{req.rough_weight.toFixed(2)}</TableCell>
-                      <TableCell>{req.estimated_earnings.toFixed(2)}</TableCell>
+                      <TableCell>{Number(req.rough_weight).toFixed(2)}</TableCell>
+                      <TableCell>{Number(req.estimated_earnings).toFixed(2)}</TableCell>
                       <TableCell className="capitalize">{req.priority}</TableCell>
                       <TableCell>
                         {req.assigned_collector ? (
@@ -229,7 +192,7 @@ export function CollectionListsPage() {
                             variant="outline"
                             size="sm"
                             className="text-red-600 hover:text-red-700"
-                            onClick={() => handleStatusChange(req.id, 'cancelled')}
+                            onClick={() => handleStatusChange(req._id, 'cancelled')}
                           >
                             <XCircle className="h-4 w-4 mr-1" /> Cancel
                           </Button>
@@ -248,7 +211,7 @@ export function CollectionListsPage() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleStatusChange(req.id, 'completed')}
+                              onClick={() => handleStatusChange(req._id, 'completed')}
                             >
                               <CheckCircle className="h-4 w-4 mr-1" /> Complete
                             </Button>
@@ -288,7 +251,7 @@ export function CollectionListsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   {collectors.map(c => (
-                    <SelectItem key={c.id} value={c.id.toString()}>
+                    <SelectItem key={c._id} value={c._id}>
                       {c.full_name} ({c.area})
                     </SelectItem>
                   ))}

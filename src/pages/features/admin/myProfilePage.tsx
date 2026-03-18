@@ -1,36 +1,74 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 import { Button } from '../../../components/ui/button';
 import { Pencil } from 'lucide-react';
+import { AuthService } from '../../../services/AuthService';
+import { toast } from 'react-toastify';
+import { Util } from '../../../Util';
 
 export function MyProfilePage() {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    fullName: 'Sahan Perera',
-    userName: 'sahanperera123',
-    password: '********', 
-    mobile: '+94777000000',
-    email: 'sahanperera@gmail.com',
-    areaDistrict: '123 Galle Road, Kadawatha',
+    fullName: '',
+    userName: '',
+    password: '',
+    mobile: '',
+    email: '',
+    areaDistrict: '',
   });
 
-  const [profileImage, setProfileImage] = useState('https://github.com/shadcn.png');
+  const [profileImage, setProfileImage] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    AuthService.getMe().then((res) => {
+      if (res.success && res.data) {
+        const u = res.data;
+        setFormData({
+          fullName: u.full_name ?? '',
+          userName: u.username ?? '',
+          password: '********',
+          mobile: u.mobile_number ?? '',
+          email: u.email ?? '',
+          areaDistrict: u.area ?? '',
+        });
+        if (u._id && (u as { profilePhotoId?: string }).profilePhotoId) {
+          setProfileImage(Util.fileURL((u as { profilePhotoId: string }).profilePhotoId));
+        }
+      }
+    });
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const key = name === 'mobileNumber' ? 'mobile' : name as keyof typeof formData;
+    setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = () => {
-    console.log('Saving profile:', formData);
-    console.log('Profile image:', profileImage);
-    setIsEditing(false);
+  const handleSave = async () => {
+    const meRes = await AuthService.getMe();
+    if (!meRes.success || !meRes.data?._id) {
+      toast.error('Could not load profile');
+      return;
+    }
+    const res = await AuthService.updateUser(meRes.data._id, {
+      full_name: formData.fullName,
+      username: formData.userName,
+      mobile_number: formData.mobile,
+      email: formData.email || undefined,
+      area: formData.areaDistrict,
+    });
+    if (res.success) {
+      toast.success('Profile updated');
+      setIsEditing(false);
+    } else {
+      toast.error(res.message || 'Failed to update profile');
+    }
   };
 
   const handleCancel = () => {

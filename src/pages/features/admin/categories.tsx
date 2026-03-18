@@ -12,14 +12,13 @@ import { Input } from '../../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Textarea } from '../../../components/ui/textarea';
 import { Switch } from '../../../components/ui/switch';
-
-interface Category {
-  id: string | number;
-  name: string;
-  unit: 'kg' | 'g' | string;
-  description?: string;
-  isActive: boolean;
-}
+import {
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  type Category,
+} from '../../../services/AdminService';
 
 export function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -41,13 +40,8 @@ export function CategoriesPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/categories/admin');
-      if (!res.ok) throw new Error('Failed');
-      const data = await res.json();
-      setCategories(data.map((c: any) => ({
-        ...c,
-        isActive: c.is_active,          
-      })));
+      const data = await getCategories();
+      setCategories(data);
     } catch (err) {
       toast.error('Failed to load categories');
     } finally {
@@ -80,7 +74,7 @@ export function CategoriesPage() {
       name: category.name,
       unit: category.unit,
       description: category.description || '',
-      isActive: category.isActive,
+      isActive: category.isActive ?? true,
     });
     setIsEditModalOpen(true);
   };
@@ -100,40 +94,25 @@ export function CategoriesPage() {
       is_active: formData.isActive,
     };
 
-    const url = currentCategory 
-      ? `http://localhost:4000/api/categories/${currentCategory.id}`
-      : 'http://localhost:4000/api/categories';
-    
-    const method = currentCategory ? 'PUT' : 'POST';
-
     try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Operation failed');
+      if (currentCategory) {
+        await updateCategory(currentCategory._id, payload);
+      } else {
+        await createCategory(payload);
       }
-
       toast.success(currentCategory ? 'Category updated!' : 'Category added!');
       resetForm();
       setIsAddModalOpen(false);
       setIsEditModalOpen(false);
-      fetchCategories(); 
-    } catch (err: any) {
-      toast.error(err.message || 'Something went wrong');
+      fetchCategories();
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Something went wrong');
     }
   };
 
-  const handleDelete = async (id: string | number) => {
+  const handleDelete = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/categories/${id}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) throw new Error('Delete failed');
+      await deleteCategory(id);
       toast.success('Category deleted');
       fetchCategories();
     } catch (err) {
@@ -143,7 +122,7 @@ export function CategoriesPage() {
 
   // const handleToggleActive = async (category: Category) => {
   //   try {
-  //     await fetch(`http://localhost:4000/api/categories/${category.id}`, {
+  //     await fetch(`http://localhost:4000/api/categories/${category._id}`, {
   //       method: 'PUT',
   //       headers: { 'Content-Type': 'application/json' },
   //       body: JSON.stringify({ is_active: !category.isActive }),
@@ -187,7 +166,7 @@ export function CategoriesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category) => (
             <Card
-              key={category.id}
+              key={category._id}
               className="overflow-hidden border-none shadow-md hover:shadow-lg transition-all bg-[#f0f9f8]"
             >
               <CardContent className="p-6 space-y-5">
@@ -249,7 +228,7 @@ export function CategoriesPage() {
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => handleDelete(category.id)}
+                          onClick={() => handleDelete(category._id)}
                           className="bg-red-600 hover:bg-red-700 text-white"
                         >
                           Delete
@@ -295,7 +274,7 @@ export function CategoriesPage() {
                 <Label htmlFor="unit">Unit *</Label>
                 <Select 
                   value={formData.unit} 
-                  onValueChange={(v) => handleSelectChange('unit', v)}
+                  onValueChange={(v) => handleSelectChange(v)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select unit" />
