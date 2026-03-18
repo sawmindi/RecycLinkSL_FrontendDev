@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, Truck, Calendar, History, Bell, User, LogOut, Ambulance, HandCoins, Users, Boxes, X, Globe,
 } from 'lucide-react';
@@ -6,6 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Separator } from '../ui/separator';
+import { AuthService } from '../../services/AuthService';
+import { Util } from '../../Util';
+
+function getInitials(fullName?: string): string {
+  if (!fullName?.trim()) return '?';
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return fullName.slice(0, 2).toUpperCase();
+}
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 interface AdminSidebarProps {
@@ -16,6 +25,20 @@ interface AdminSidebarProps {
 export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const [fullName, setFullName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
+
+  useEffect(() => {
+    AuthService.getMe().then((res) => {
+      if (res.success && res.data) {
+        setFullName(res.data.full_name ?? '');
+        setUsername(res.data.username ?? '');
+        const u = res.data as { profilePhotoId?: string };
+        if (u.profilePhotoId) setAvatarUrl(Util.fileURL(u.profilePhotoId));
+      }
+    });
+  }, []);
   const { t, i18n } = useTranslation();
 
   const toggleLanguage = () => {
@@ -134,12 +157,12 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
       <div className="p-5 border-t border-teal-800/50">
         <div className="flex items-center gap-3 mb-4">
           <Avatar className="h-10 w-10 border-2 border-teal-700/50 shrink-0">
-            <AvatarImage src="/path-to-admin-avatar.jpg" alt="Kamal Silva" />
-            <AvatarFallback className="bg-teal-700 text-white">KS</AvatarFallback>
+            <AvatarImage src={avatarUrl || undefined} alt={fullName || 'Admin'} />
+            <AvatarFallback className="bg-teal-700 text-white">{getInitials(fullName)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <p className="font-medium text-base truncate">Kamal Silva</p>
-            <p className="text-sm text-teal-200 truncate">kamalsilva123</p>
+            <p className="font-medium text-base truncate">{fullName || '—'}</p>
+            <p className="text-sm text-teal-200 truncate">{username || '—'}</p>
           </div>
         </div>
 
@@ -159,7 +182,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
           variant="ghost"
           size="sm"
           className="w-full justify-start gap-2.5 text-red-300 hover:text-red-200 hover:bg-red-950/30 text-sm px-3"
-          onClick={() => handleNavigate('/login')}
+          onClick={() => { AuthService.userLogout(); navigate('/login'); }}
         >
           <LogOut className="h-4 w-4" />
           {t('sidebar.logOut')}
