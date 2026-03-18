@@ -9,23 +9,20 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../../components/ui/dialog';
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
-
-interface Schedule {
-  id: number;
-  area: string;
-  schedule_date: string;
-  schedule_time: string;
-  items: string;
-  collector_name: string;
-  status: string;
-}
+import {
+  getPickupSchedules,
+  createPickupSchedule,
+  updatePickupSchedule,
+  deletePickupSchedule,
+  type PickupSchedule,
+} from '../../../services/AdminService';
 
 export function PickupScheduleManagementPage() {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [schedules, setSchedules] = useState<PickupSchedule[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [currentSchedule, setCurrentSchedule] = useState<Schedule | null>(null);
+  const [currentSchedule, setCurrentSchedule] = useState<PickupSchedule | null>(null);
 
   const [formData, setFormData] = useState({
     area: '',
@@ -40,9 +37,7 @@ export function PickupScheduleManagementPage() {
 
   const fetchSchedules = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/pickup-schedules');
-      if (!res.ok) throw new Error('Failed to load schedules');
-      const data = await res.json();
+      const data = await getPickupSchedules();
       setSchedules(data);
     } catch (err) {
       console.error(err);
@@ -62,7 +57,7 @@ export function PickupScheduleManagementPage() {
     setIsAddModalOpen(true);
   };
 
-  const handleOpenEditModal = (schedule: Schedule) => {
+  const handleOpenEditModal = (schedule: PickupSchedule) => {
     setCurrentSchedule(schedule);
     setFormData({
       area: schedule.area,
@@ -88,42 +83,27 @@ export function PickupScheduleManagementPage() {
       items: formData.items,
     };
 
-    const url = currentSchedule
-      ? `http://localhost:4000/api/pickup-schedules/${currentSchedule.id}`
-      : 'http://localhost:4000/api/pickup-schedules';
-
-    const method = currentSchedule ? 'PUT' : 'POST';
-
     try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || 'Operation failed');
+      if (currentSchedule) {
+        await updatePickupSchedule(currentSchedule._id, payload);
+      } else {
+        await createPickupSchedule(payload);
       }
-
       toast.success(currentSchedule ? 'Schedule updated!' : 'Schedule created!');
       resetForm();
       setIsAddModalOpen(false);
       setIsEditModalOpen(false);
-      fetchSchedules(); // refresh list
-    } catch (err: any) {
-      toast.error(err.message || 'Something went wrong');
+      fetchSchedules();
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Something went wrong');
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this schedule?')) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/pickup-schedules/${id}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) throw new Error('Delete failed');
+      await deletePickupSchedule(id);
       toast.success('Schedule deleted');
       fetchSchedules();
     } catch (err) {
@@ -200,12 +180,12 @@ export function PickupScheduleManagementPage() {
                 </TableHeader>
                 <TableBody>
                   {schedules.map((sch) => (
-                    <TableRow key={sch.id} className="hover:bg-gray-50">
+                    <TableRow key={sch._id} className="hover:bg-gray-50">
                       <TableCell className="font-medium">{sch.area}</TableCell>
                       <TableCell>{new Date(sch.schedule_date).toLocaleDateString()}</TableCell>
                       <TableCell>{sch.schedule_time.slice(0, 5)}</TableCell>
                       <TableCell>{sch.items}</TableCell>
-                      <TableCell>{sch.collector_name || 'Unassigned'}</TableCell>
+                      <TableCell>{sch.collector_name ?? 'Unassigned'}</TableCell>
                       <TableCell>{getStatusBadge(sch.status)}</TableCell>
                       <TableCell className="text-right space-x-2">
                         <Button
@@ -231,7 +211,7 @@ export function PickupScheduleManagementPage() {
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
-                                onClick={() => handleDelete(sch.id)}
+                                onClick={() => handleDelete(sch._id)}
                                 className="bg-red-600 hover:bg-red-700 text-white"
                               >
                                 Delete

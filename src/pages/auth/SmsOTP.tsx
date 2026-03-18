@@ -11,10 +11,17 @@ interface PhoneOTPVerificationLocationState {
   phoneNumber?: string;
 }
 
-export default function SmsOtpPage() {
+interface SmsOtpPageProps {
+  onBack?: () => void;
+  phoneNumber?: string;
+}
+
+export default function SmsOtpPage(props?: SmsOtpPageProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userId, phoneNumber } = (location.state || {}) as PhoneOTPVerificationLocationState;
+  const state = (location.state || {}) as PhoneOTPVerificationLocationState;
+  const userId = state.userId;
+  const phoneNumber = state.phoneNumber ?? props?.phoneNumber ?? '';
 
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(59);
@@ -138,7 +145,7 @@ export default function SmsOtpPage() {
             {otp.map((digit, index) => (
               <Input
                 key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
+                ref={(el) => { inputRefs.current[index] = el; }}
                 type="text"
                 inputMode="numeric"
                 maxLength={1}

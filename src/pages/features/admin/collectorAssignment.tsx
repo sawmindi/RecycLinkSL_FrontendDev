@@ -10,46 +10,24 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Label } from '../../../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Input } from '../../../components/ui/input';
-
-interface Collector {
-  id: number;
-  full_name: string;
-  area: string;
-}
-
-interface Category {
-  id: number;
-  name: string;
-}
-
-interface CategoryAssignment {
-  id: number;
-  collector_name: string;
-  category_name: string;
-  area: string;
-  assigned_date: string;
-  status: string;
-}
-
-interface PickupRequest {
-  id: number;
-  citizen_name: string;
-  citizen_area: string;
-  item_name: string;
-  category_name?: string; 
-  rough_weight: number;
-  priority: string;
-  estimated_earnings: number;
-  status: string;
-  assigned_collector?: string;
-  created_at: string;
-}
+import {
+  getCollectors,
+  getCategories,
+  getCollectorCategoryAssignments,
+  getPickupRequests,
+  createCollectorCategoryAssignment,
+  deleteCollectorCategoryAssignment,
+  assignCollectorToPickupRequest,
+  type Collector,
+  type CollectorCategoryAssignment,
+  type PickupRequest,
+} from '../../../services/AdminService';
 
 export function CollectorAssignmentPage() {
   const [activeTab, setActiveTab] = useState<'categories' | 'pickups'>('categories');
   const [collectors, setCollectors] = useState<Collector[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [categoryAssignments, setCategoryAssignments] = useState<CategoryAssignment[]>([]);
+  const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
+  const [categoryAssignments, setCategoryAssignments] = useState<CollectorCategoryAssignment[]>([]);
   const [pickupRequests, setPickupRequests] = useState<PickupRequest[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'category' | 'pickup' | null>(null);
@@ -71,8 +49,7 @@ export function CollectorAssignmentPage() {
 
   const fetchCollectors = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/collectors');
-      const data = await res.json();
+      const data = await getCollectors();
       setCollectors(data);
     } catch (err) {
       toast.error('Failed to load collectors');
@@ -81,10 +58,8 @@ export function CollectorAssignmentPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/categories/admin');
-      if (!res.ok) throw new Error('Failed');
-      const data = await res.json();
-      setCategories(data);
+      const data = await getCategories();
+      setCategories(data.map((c) => ({ _id: c._id, name: c.name })));
     } catch (err) {
       toast.error('Failed to load categories');
     }
@@ -92,8 +67,7 @@ export function CollectorAssignmentPage() {
 
   const fetchCategoryAssignments = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/collector-category-assignments');
-      const data = await res.json();
+      const data = await getCollectorCategoryAssignments();
       setCategoryAssignments(data);
     } catch (err) {
       toast.error('Failed to load category assignments');
@@ -102,8 +76,7 @@ export function CollectorAssignmentPage() {
 
   const fetchPickupRequests = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/pickup-requests/admin');
-      const data = await res.json();
+      const data = await getPickupRequests();
       setPickupRequests(data);
     } catch (err) {
       toast.error('Failed to load pickup requests');
@@ -126,8 +99,8 @@ export function CollectorAssignmentPage() {
       const matchingAssignments = categoryAssignments.filter(
         a => a.category_name.toLowerCase().includes(pickupCategoryName.toLowerCase())
       );
-      const eligibleIds = [...new Set(matchingAssignments.map(a => a.collector_name))]; 
-      const eligible = collectors.filter(c => eligibleIds.some(name => name.includes(c.full_name)));
+      const eligibleIds = Array.from(new Set(matchingAssignments.map((a) => a.collector_name))); 
+      const eligible = collectors.filter((c) => eligibleIds.some((name) => name.includes(c.full_name)));
       setEligibleCollectors(eligible.length > 0 ? eligible : collectors);
     } else {
       setEligibleCollectors(collectors);
@@ -135,7 +108,7 @@ export function CollectorAssignmentPage() {
 
     setFormData({
       collector_id: '',
-      category_id: item?.category_id?.toString() || '',
+      category_id: '',
       area: item?.citizen_area || item?.area || '',
     });
     setIsModalOpen(true);
@@ -156,40 +129,23 @@ export function CollectorAssignmentPage() {
       }
 
       try {
-        const res = await fetch('http://localhost:4000/api/collector-category-assignments', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            collector_id: Number(formData.collector_id),
-            category_id: Number(formData.category_id),
-            area: formData.area.trim(),
-          }),
+        await createCollectorCategoryAssignment({
+          collector_id: formData.collector_id,
+          category_id: formData.category_id,
+          area: formData.area.trim(),
         });
-
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || 'Failed to assign');
-        }
-
         toast.success('Collector assigned to category');
         fetchCategoryAssignments();
-      } catch (err: any) {
-        toast.error(err.message);
+      } catch (err: unknown) {
+        toast.error((err as Error).message);
       }
     } else if (modalType === 'pickup' && selectedItem) {
       try {
-        const res = await fetch(`http://localhost:4000/api/pickup-requests/${selectedItem.id}/assign-collector`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ collector_id: Number(formData.collector_id) }),
-        });
-
-        if (!res.ok) throw new Error('Failed to assign/reassign');
-
+        await assignCollectorToPickupRequest(selectedItem._id, formData.collector_id);
         toast.success(selectedItem.assigned_collector ? 'Collector reassigned' : 'Collector assigned');
         fetchPickupRequests();
-      } catch (err: any) {
-        toast.error(err.message);
+      } catch (err: unknown) {
+        toast.error((err as Error).message);
       }
     }
 
@@ -197,11 +153,10 @@ export function CollectorAssignmentPage() {
     resetForm();
   };
 
-  const handleDeleteCategoryAssignment = async (id: number) => {
+  const handleDeleteCategoryAssignment = async (id: string) => {
     if (!confirm('Remove this category assignment?')) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/collector-category-assignments/${id}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Delete failed');
+      await deleteCollectorCategoryAssignment(id);
       toast.success('Assignment removed');
       fetchCategoryAssignments();
     } catch (err) {
@@ -228,7 +183,7 @@ export function CollectorAssignmentPage() {
         )}
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'categories' | 'pickups')} className="space-y-6">
         <TabsList className="bg-gray-100">
           <TabsTrigger value="categories">Assign to Categories</TabsTrigger>
           <TabsTrigger value="pickups">Assign / Reassign Pickups</TabsTrigger>
@@ -255,7 +210,7 @@ export function CollectorAssignmentPage() {
                   </TableHeader>
                   <TableBody>
                     {categoryAssignments.map((a) => (
-                      <TableRow key={a.id}>
+                      <TableRow key={a._id}>
                         <TableCell className="font-medium">{a.collector_name}</TableCell>
                         <TableCell>{a.category_name}</TableCell>
                         <TableCell>{a.area}</TableCell>
@@ -266,7 +221,7 @@ export function CollectorAssignmentPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button variant="ghost" size="icon" onClick={() => handleDeleteCategoryAssignment(a.id)}>
+                          <Button variant="ghost" size="icon" onClick={() => handleDeleteCategoryAssignment(a._id)}>
                             <Trash2 className="h-4 w-4 text-red-600" />
                           </Button>
                         </TableCell>
@@ -310,7 +265,7 @@ export function CollectorAssignmentPage() {
                   </TableHeader>
                   <TableBody>
                     {pickupRequests.map((req) => (
-                      <TableRow key={req.id}>
+                      <TableRow key={req._id}>
                         <TableCell className="font-medium">{req.citizen_name}</TableCell>
                         <TableCell>{req.citizen_area}</TableCell>
                         <TableCell>{req.item_name}</TableCell>
@@ -379,13 +334,13 @@ export function CollectorAssignmentPage() {
                 <SelectContent>
                   {eligibleCollectors.length > 0 ? (
                     eligibleCollectors.map(c => (
-                      <SelectItem key={c.id} value={c.id.toString()}>
+                      <SelectItem key={c._id} value={c._id}>
                         {c.full_name} ({c.area})
                       </SelectItem>
                     ))
                   ) : (
-                    collectors.map(c => (
-                      <SelectItem key={c.id} value={c.id.toString()}>
+                    collectors.map((c) => (
+                      <SelectItem key={c._id} value={c._id}>
                         {c.full_name} ({c.area})
                       </SelectItem>
                     ))
@@ -411,8 +366,8 @@ export function CollectorAssignmentPage() {
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories.map(cat => (
-                        <SelectItem key={cat.id} value={cat.id.toString()}>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat._id} value={cat._id}>
                           {cat.name}
                         </SelectItem>
                       ))}

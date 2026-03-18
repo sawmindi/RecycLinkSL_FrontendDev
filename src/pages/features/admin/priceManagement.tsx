@@ -10,13 +10,20 @@ import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { toast } from 'react-toastify';
-
+import {
+  getCategoriesForSelect,
+  getItems,
+  createItem,
+  updateItem,
+  deleteItem,
+  type PriceItem,
+} from '../../../services/AdminService';
 
 export default function PriceManagementPage() {
-  const [priceItems, setPriceItems] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [priceItems, setPriceItems] = useState<PriceItem[]>([]);
+  const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
+  const [currentItem, setCurrentItem] = useState<PriceItem | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -32,8 +39,7 @@ export default function PriceManagementPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/categories/admin');
-      const data = await res.json();
+      const data = await getCategoriesForSelect();
       setCategories(data);
     } catch (err) {
       toast.error('Failed to load categories');
@@ -41,52 +47,29 @@ export default function PriceManagementPage() {
   };
 
   const fetchItems = async () => {
-  setLoading(true);
-  try {
-    // console.log('Fetching items from backend...');
-    const res = await fetch('http://localhost:4000/api/items');
-    // console.log('Status:', res.status);
-
-    if (!res.ok) {
-      const errText = await res.text();
-      throw new Error(`Backend error ${res.status}: ${errText}`);
+    setLoading(true);
+    try {
+      const data = await getItems();
+      setPriceItems(data);
+    } catch (err) {
+      toast.error('Failed to load prices: ' + ((err as Error).message || 'Check backend'));
+    } finally {
+      setLoading(false);
     }
-
-    const data = await res.json();
-    // console.log('Real data received:', data);
-
-    // Convert prices
-    const enriched = data.map((item: any) => ({
-      ...item,
-      current_price: Number(item.current_price),
-      previous_price: item.previous_price ? Number(item.previous_price) : null,
-      change: item.previous_price 
-        ? ((Number(item.current_price) - Number(item.previous_price)) / Number(item.previous_price)) * 100 
-        : 0,
-    }));
-
-    setPriceItems(enriched);
-  } catch (err: any) {
-    console.error('Fetch error:', err);
-    toast.error('Failed to load prices: ' + (err.message || 'Check backend'));
-  } finally {
-    setLoading(false);
-    console.log('Fetch finished');
-  }
-};
+  };
 
   const resetForm = () => {
     setFormData({ category_id: '', itemName: '', currentPrice: '' });
     setCurrentItem(null);
   };
 
-  const openModal = (item?: any) => {
+  const openModal = (item?: PriceItem | null) => {
     if (item) {
       setCurrentItem(item);
       setFormData({
-        category_id: item.category_id || '',
-        itemName: item.item_name || item.name,
-        currentPrice: item.current_price.toString(),
+        category_id: item.category_id ?? item._id ?? '',
+        itemName: item.item_name ?? '',
+        currentPrice: String(item.current_price ?? ''),
       });
     } else {
       resetForm();
@@ -94,7 +77,7 @@ export default function PriceManagementPage() {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.category_id || !formData.itemName || !formData.currentPrice) {
@@ -103,25 +86,17 @@ export default function PriceManagementPage() {
     }
 
     const payload = {
-      category_id: Number(formData.category_id),
+      category_id: formData.category_id,
       name: formData.itemName,
       current_price: Number(formData.currentPrice),
     };
 
-    const url = currentItem
-    ? `http://localhost:4000/api/items/${currentItem.id}`
-    : 'http://localhost:4000/api/items';
-
-    const method = currentItem ? 'PUT' : 'POST';
-
     try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error('Failed');
+      if (currentItem) {
+        await updateItem(currentItem._id, payload);
+      } else {
+        await createItem(payload);
+      }
       toast.success(currentItem ? 'Price updated!' : 'Item price added!');
       setIsModalOpen(false);
       resetForm();
@@ -131,13 +106,9 @@ export default function PriceManagementPage() {
     }
   };
 
-  const handleToggleActive = async (id, currentStatus) => {
+  const handleToggleActive = async (id: string, currentStatus: string) => {
     try {
-      await fetch(`http://localhost:4000/api/items/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: currentStatus === 'active' ? 'inactive' : 'active' }),
-      });
+      await updateItem(id, { status: currentStatus === 'active' ? 'inactive' : 'active' });
       toast.success(`Item ${currentStatus === 'active' ? 'deactivated' : 'activated'}`);
       fetchItems();
     } catch (err) {
@@ -146,10 +117,10 @@ export default function PriceManagementPage() {
   };
 
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Delete this price entry?')) return;
     try {
-      await fetch(`http://localhost:4000/api/items/${id}`, { method: 'DELETE' });
+      await deleteItem(id);
       toast.success('Deleted');
       fetchItems();
     } catch (err) {
@@ -217,9 +188,9 @@ export default function PriceManagementPage() {
               </TableHeader>
 
               <TableBody>
-                {priceItems.map((item:any) => (
+                {priceItems.map((item) => (
                   <TableRow
-                    key={item.id}
+                    key={item._id}
                     className={`hover:bg-gray-50 ${item.status === 'inactive' ? 'opacity-60 bg-gray-50' : ''}`}
                   >
                     <TableCell className="font-medium">{item.item_name}</TableCell>
@@ -233,7 +204,7 @@ export default function PriceManagementPage() {
                         {item.previous_price ? item.previous_price.toFixed(2) : '—'}
                       </TableCell>
                     <TableCell className="font-medium">
-                      {getChangeDisplay(item.change)}
+                      {getChangeDisplay(item.change ?? 0)}
                     </TableCell>
                     <TableCell>
                         {new Date(item.last_updated).toLocaleDateString('en-GB')}
@@ -263,7 +234,7 @@ export default function PriceManagementPage() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8"
-                        onClick={() => handleToggleActive(item.id, item.status)}
+                        onClick={() => handleToggleActive(item._id, item.status)}
                       >
                         {item.status === 'active' ? (
                           <ToggleLeft className="h-5 w-5 text-orange-600" />
@@ -289,7 +260,7 @@ export default function PriceManagementPage() {
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => handleDelete(item.id)}
+                              onClick={() => handleDelete(item._id)}
                               className="bg-red-600 hover:bg-red-700 text-white"
                             >
                               Delete
@@ -359,14 +330,14 @@ export default function PriceManagementPage() {
               <Label>Category</Label>
               <Select
                 value={formData.category_id}
-                onValueChange={(v) => setFormData(prev => ({ ...prev, category_id: v }))}
+                onValueChange={(v) => setFormData((prev) => ({ ...prev, category_id: v }))}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map(cat => (
-                    <SelectItem key={cat.id} value={cat.id.toString()}>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat._id} value={cat._id}>
                       {cat.name}
                     </SelectItem>
                   ))}
@@ -388,8 +359,8 @@ export default function PriceManagementPage() {
             {/* Context info for edit */}
             {currentItem && (
               <div className="p-3 bg-gray-50 rounded border text-sm space-y-1">
-                <p><strong>Current Price:</strong> LKR {currentItem.currentPrice}/kg</p>
-                <p><strong>Last Updated:</strong> {currentItem.lastUpdated}</p>
+                <p><strong>Current Price:</strong> LKR {currentItem.current_price}/kg</p>
+                <p><strong>Last Updated:</strong> {currentItem.last_updated}</p>
               </div>
             )}
 
