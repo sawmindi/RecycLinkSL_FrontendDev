@@ -1,56 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Calendar, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
-
-const myItems = [
-  {
-    id: '1',
-    type: 'Paper',
-    status: 'Scheduled',
-    weight: '3.1 kg',
-    estimatedValue: 'LKR 310.00',
-    dateAdded: 'Oct 27, 2025',
-    description: 'Newspapers and magazines',
-    scheduledFor: 'pickup on Oct 28, 2025 by Nimal',
-  },
-  {
-    id: '2',
-    type: 'Iron',
-    status: 'Collected',
-    weight: '3.1 kg',
-    estimatedValue: 'LKR 310.00',
-    dateAdded: 'Sep 1, 2025',
-    description: 'Old iron pipes and metal scraps',
-    collectedOn: 'Collected on Sep 2, 2025 by Nimal',
-  },
-  {
-    id: '3',
-    type: 'Iron',
-    status: 'Collected',
-    weight: '3.1 kg',
-    estimatedValue: 'LKR 310.00',
-    dateAdded: 'Sep 1, 2025',
-    description: 'Old iron pipes and metal scraps',
-    collectedOn: 'Collected on Sep 1, 2025 by Nimal',
-  },
-  {
-    id: '4',
-    type: 'Iron',
-    status: 'Collected',
-    weight: '3.1 kg',
-    estimatedValue: 'LKR 310.00',
-    dateAdded: 'Sep 1, 2025',
-    description: 'Old iron pipes and metal scraps',
-    collectedOn: 'Collected on Sep 1, 2025 by Nimal',
-  },
-];
+import { getCitizenPickupRequests, type CitizenPickupRequest } from '../../../services/CitizenService';
 
 export function MyItemsPage() {
   const { t } = useTranslation();
+  const [items, setItems] = useState<CitizenPickupRequest[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getCitizenPickupRequests()
+      .then(setItems)
+      .catch(() => setItems([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const myItems = items.map((r) => ({
+    id: r._id,
+    type: r.item_name || r.category_name || 'Item',
+    status: r.status === 'completed' ? 'Collected' : r.status === 'assigned' || r.status === 'scheduled' ? 'Scheduled' : 'Pending',
+    weight: `${Number(r.rough_weight) || 0} kg`,
+    estimatedValue: `LKR ${(Number(r.estimated_earnings) || 0).toFixed(2)}`,
+    dateAdded: r.created_at ? new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—',
+    description: '',
+    scheduledFor: r.schedule_date && r.assigned_collector
+      ? `pickup on ${new Date(r.schedule_date).toLocaleDateString('en-GB')} by ${r.assigned_collector}`
+      : 'Pending schedule',
+    collectedOn: r.status === 'completed' && r.schedule_date
+      ? `Collected on ${new Date(r.schedule_date).toLocaleDateString('en-GB')} by ${r.assigned_collector || 'collector'}`
+      : '',
+  }));
 
   return (
     <div className="space-y-8">
@@ -116,6 +99,9 @@ export function MyItemsPage() {
       </div>
 
       {/* Items List */}
+      {loading ? (
+        <p className="text-center text-gray-500 py-8">Loading your items...</p>
+      ) : (
       <div className="space-y-5">
         {myItems.map((item) => (
           <Card key={item.id} className="border-none shadow-md hover:shadow-lg transition-shadow">
@@ -177,6 +163,7 @@ export function MyItemsPage() {
           </Card>
         ))}
       </div>
+      )}
 
       {/* Pagination */}
       <div className="flex items-center justify-between pt-8 border-t border-gray-200">

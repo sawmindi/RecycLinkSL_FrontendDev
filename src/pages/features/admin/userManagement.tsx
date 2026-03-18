@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Edit, Trash2, UserPlus, UserCheck, UserX } from 'lucide-react';
+import { Edit, Trash2, UserPlus, UserCheck, UserX, Phone, Mail, MapPin, Calendar } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
@@ -80,7 +80,7 @@ export function UserManagementPage() {
       await updateUser(editUser._id, {
         full_name: editForm.full_name,
         mobile_number: editForm.mobile_number,
-        email: editForm.email || null,
+        email: editForm.email,
         area: editForm.address,
         role: editForm.role,
         is_active: editForm.is_active,
@@ -99,7 +99,7 @@ export function UserManagementPage() {
 
   const handleAddSubmit = async () => {
     // Validate required fields
-    if (!addForm.full_name || !addForm.mobile_number || !addForm.address || !addForm.password || !addForm.role) {
+    if (!addForm.full_name || !addForm.mobile_number || !addForm.email || !addForm.address || !addForm.password || !addForm.role) {
       toast.error('Please fill all required fields (*)');
       return;
     }
@@ -110,11 +110,16 @@ export function UserManagementPage() {
       return;
     }
 
+    if (addForm.password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      return;
+    }
+
     try {
       const data = await createUser({
         full_name: addForm.full_name,
         mobile_number: addForm.mobile_number,
-        email: addForm.email || null,
+        email: addForm.email,
         area: addForm.address,
         password: addForm.password,
         role: addForm.role,
@@ -178,33 +183,100 @@ export function UserManagementPage() {
       : <Badge className="bg-red-100 text-red-800 flex items-center gap-1"><UserX className="h-3 w-3" /> Inactive</Badge>;
   };
 
+  const UserActionButtons = ({ user }: { user: AdminUser }) => (
+    <div className="flex items-center gap-1">
+      <Button variant="ghost" size="icon" onClick={() => handleEditOpen(user)}>
+        <Edit className="h-4 w-4 text-gray-600" />
+      </Button>
+
+      {user.is_active ? (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <UserX className="h-4 w-4 text-orange-600" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className="w-[calc(100%-2rem)] sm:max-w-md rounded-xl">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Deactivate Account?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Deactivating <strong>{user.full_name}</strong> will immediately log them out and block access.
+                You can reactivate later or delete permanently after deactivation.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="flex-col-reverse sm:flex-row gap-2">
+              <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => handleToggleActive(user)}
+                className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white"
+              >
+                Deactivate
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ) : (
+        <>
+          <Button variant="ghost" size="icon" onClick={() => handleToggleActive(user)}>
+            <UserCheck className="h-4 w-4 text-green-600" />
+          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Trash2 className="h-4 w-4 text-red-600" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="w-[calc(100%-2rem)] sm:max-w-md rounded-xl">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Permanently Delete Account?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  User <strong>{user.full_name}</strong> is deactivated. This will permanently delete the account
+                  and all associated data. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter className="flex-col-reverse sm:flex-row gap-2">
+                <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleDelete(user._id)}
+                  className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Delete Permanently
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </>
+      )}
+    </div>
+  );
+
   return (
-    <div className="space-y-10">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif text-gray-900 mb-1">
             User Management
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-sm md:text-base text-gray-600">
             Manage Citizens, Collectors, Admins and other roles
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 shrink-0">
           <Dialog open={addModalOpen} onOpenChange={setAddModalOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-teal-700 hover:bg-teal-800 text-white gap-2">
+              <Button className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white gap-2">
                 <UserPlus className="h-4 w-4" />
                 Add New User
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="w-[calc(100%-2rem)] sm:max-w-lg rounded-xl">
               <DialogHeader>
                 <DialogTitle>Add New User</DialogTitle>
               </DialogHeader>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 py-4">
                 <div className="space-y-2">
                   <Label>Full Name <span className="text-red-600">*</span></Label>
                   <Input
@@ -235,7 +307,8 @@ export function UserManagementPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Email (optional)</Label>
+                  <Label>Email <span className="text-red-600">*</span>
+                  </Label>
                   <Input
                     type="email"
                     value={addForm.email}
@@ -263,6 +336,9 @@ export function UserManagementPage() {
                     onChange={(e) => setAddForm({ ...addForm, password: e.target.value })}
                     placeholder="Enter password"
                   />
+                  <p className="text-xs text-gray-500">
+                    Password must be at least 6 characters.
+                  </p>
                 </div>
 
                 <div className="space-y-2">
@@ -283,28 +359,81 @@ export function UserManagementPage() {
                 </div>
               </div>
 
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setAddModalOpen(false)}>
+              <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
+                <Button
+                 variant="outline" 
+                 onClick={() => setAddModalOpen(false)}
+                 className="w-full sm:w-auto"
+                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleAddSubmit}
-                  className="bg-teal-700 hover:bg-teal-800 text-white"
+                  className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white"
                 >
                   Create User
                 </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
-
-          <Button variant="outline" size="icon" onClick={fetchUsers}>
-            <RefreshCw className="h-5 w-5" />
-          </Button>
         </div>
       </div>
 
-      {/* Table */}
-      <Card className="border-none shadow-lg">
+      {loading ? (
+        <div className="py-20 text-center text-gray-500">Loading users...</div>
+      ) : users.length === 0 ? (
+        <div className="text-center py-20 text-gray-500">
+          <p className="text-lg font-medium">No users found</p>
+          <p className="mt-2 text-sm">Click "Add New User" to create one.</p>
+        </div>
+      ) : (
+        <>
+        {/* Mobile */}         
+           <div className="flex flex-col gap-4 md:hidden">
+            {users.map((user) => (
+              <Card key={user._id} className={`border shadow-sm ${!user.is_active ? 'opacity-70' : ''}`}>
+                <CardContent className="p-4 space-y-3">
+
+                  {/* Top: name + status */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-900 truncate">{user.full_name}</p>
+                      <div className="mt-1">{getRoleBadge(user.role)}</div>
+                    </div>
+                    {getStatusBadge(user.is_active)}
+                  </div>
+
+                  {/* Details */}
+                  <div className="space-y-1.5 text-sm text-gray-600">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Phone className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span>{user.mobile_number}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Mail className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{user.email || '—'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <MapPin className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{user.address}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span>{user.joined_date}</span>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex justify-end pt-1">
+                    <UserActionButtons user={user} />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+      {/* Desktop */}
+      <Card className="hidden md:block border-none shadow-lg">
         <CardContent className="p-0">
           {loading ? (
             <div className="p-10 text-center text-gray-500">Loading users...</div>
@@ -338,81 +467,8 @@ export function UserManagementPage() {
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
                       <TableCell>{user.joined_date}</TableCell>
                       <TableCell>{getStatusBadge(user.is_active)}</TableCell>
-                      <TableCell className="text-right space-x-3">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleEditOpen(user)}
-                        >
-                          <Edit className="h-4 w-4 text-gray-600" />
-                        </Button>
-
-                        {user.is_active ? (
-                          // Active → show Deactivate
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-8 w-8">
-                                <UserX className="h-4 w-4 text-orange-600" />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Deactivate Account?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Deactivating <strong>{user.full_name}</strong> will immediately log them out and block access.
-                                  You can reactivate later or delete permanently after deactivation.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => handleToggleActive(user)}
-                                  className="bg-orange-600 hover:bg-orange-700 text-white"
-                                >
-                                  Deactivate
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        ) : (
-                          // Inactive → show Activate + Delete
-                          <>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleToggleActive(user)}
-                            >
-                              <UserCheck className="h-4 w-4 text-green-600" />
-                            </Button>
-
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8">
-                                  <Trash2 className="h-4 w-4 text-red-600" />
-                                </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Permanently Delete Account?</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    User <strong>{user.full_name}</strong> is deactivated.
-                                    This will permanently delete the account and all associated data.
-                                    This action cannot be undone.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={() => handleDelete(user._id)}
-                                    className="bg-red-600 hover:bg-red-700 text-white"
-                                  >
-                                    Delete Permanently
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </>
-                        )}
+                      <TableCell className="text-right">
+                        <UserActionButtons user={user} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -422,15 +478,17 @@ export function UserManagementPage() {
           )}
         </CardContent>
       </Card>
+    </>
+  )}
 
       {/* Edit User Modal */}
       <Dialog open={!!editUser} onOpenChange={() => setEditUser(null)}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="w-[calc(100%-2rem)] sm:max-w-lg rounded-xl">
           <DialogHeader>
             <DialogTitle>Edit User – {editUser?.full_name}</DialogTitle>
           </DialogHeader>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 py-4">
             <div className="space-y-2">
               <Label>Full Name <span className="text-red-600">*</span></Label>
               <Input
@@ -459,7 +517,7 @@ export function UserManagementPage() {
             </div>
 
             <div className="space-y-2">
-              <Label>Email (optional)</Label>
+              <Label>Email<span className="text-red-600">*</span></Label>
               <Input
                 type="email"
                 value={editForm.email}
@@ -508,20 +566,20 @@ export function UserManagementPage() {
                 </SelectContent>
               </Select>
               {!editForm.is_active && (
-                <p className="text-xs text-orange-700 mt-1">
+                <p className="text-xs text-orange-700">
                   Warning: Deactivating will immediately log the user out and block access.
                 </p>
               )}
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
             <Button variant="outline" onClick={() => setEditUser(null)}>
               Cancel
             </Button>
             <Button
               onClick={handleEditSubmit}
-              className="bg-teal-700 hover:bg-teal-800 text-white"
+              className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white"
             >
               Save Changes
             </Button>

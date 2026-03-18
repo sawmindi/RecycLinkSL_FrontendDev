@@ -1,56 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Calendar, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
-
-const earningsData = [
-  {
-    id: '1',
-    itemType: 'Paper',
-    status: 'Scheduled',
-    weight: '3.1 kg',
-    estimatedValue: 'LKR 310.00',
-    dateAdded: 'Oct 27, 2025',
-    description: 'Newspapers and magazines',
-    pickupInfo: 'Scheduled for pickup on Oct 28, 2024 by Nimal',
-  },
-  {
-    id: '2',
-    itemType: 'Iron',
-    status: 'Collected',
-    weight: '3.1 kg',
-    estimatedValue: 'LKR 310.00',
-    dateAdded: 'Sep 1, 2025',
-    description: 'Old iron pipes and metal scraps',
-    pickupInfo: 'Collected on Sep 1, 2025 by Nimal',
-  },
-  {
-    id: '3',
-    itemType: 'Iron',
-    status: 'Collected',
-    weight: '3.1 kg',
-    estimatedValue: 'LKR 310.00',
-    dateAdded: 'Sep 1, 2025',
-    description: 'Old iron pipes and metal scraps',
-    pickupInfo: 'Collected on Sep 1, 2025 by Nimal',
-  },
-  {
-    id: '4',
-    itemType: 'Iron',
-    status: 'Collected',
-    weight: '3.1 kg',
-    estimatedValue: 'LKR 310.00',
-    dateAdded: 'Sep 1, 2025',
-    description: 'Old iron pipes and metal scraps',
-    pickupInfo: 'Collected on Sep 1, 2025 by Nimal',
-  },
-];
+import { getCitizenPickupRequests, type CitizenPickupRequest } from '../../../services/CitizenService';
 
 export function EarningsPage() {
   const { t } = useTranslation();
+  const [requests, setRequests] = useState<CitizenPickupRequest[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getCitizenPickupRequests()
+      .then(setRequests)
+      .catch(() => setRequests([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const earningsData = requests.map((r) => ({
+    id: r._id,
+    itemType: r.item_name || r.category_name || 'Item',
+    status: r.status === 'completed' ? 'Collected' : r.status === 'assigned' || r.status === 'scheduled' ? 'Scheduled' : 'Pending',
+    weight: `${Number(r.rough_weight) || 0} kg`,
+    estimatedValue: `LKR ${(Number(r.estimated_earnings) || 0).toFixed(2)}`,
+    dateAdded: r.created_at ? new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—',
+    description: '',
+    pickupInfo: r.status === 'completed' && r.assigned_collector
+      ? `Collected on ${r.schedule_date ? new Date(r.schedule_date).toLocaleDateString('en-GB') : '—'} by ${r.assigned_collector}`
+      : r.assigned_collector && r.schedule_date
+        ? `Scheduled for pickup on ${new Date(r.schedule_date).toLocaleDateString('en-GB')} by ${r.assigned_collector}`
+        : 'Pending',
+  }));
 
   return (
     <div className="space-y-10">
@@ -112,6 +94,9 @@ export function EarningsPage() {
       </div>
 
       {/* Earnings Cards Grid */}
+      {loading ? (
+        <p className="text-center text-gray-500 py-8">Loading earnings...</p>
+      ) : (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {earningsData.map((earning) => (
           <Card
@@ -167,6 +152,7 @@ export function EarningsPage() {
           </Card>
         ))}
       </div>
+      )}
 
       {/* Pagination */}
       <div className="flex justify-center items-center gap-4 pt-8 text-gray-600">

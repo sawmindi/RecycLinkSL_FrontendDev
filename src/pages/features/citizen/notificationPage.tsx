@@ -1,64 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, CheckCircle, Package, Calendar, Info } from 'lucide-react';
+import { Bell, CheckCircle, Package, Calendar, Info, LucideIcon } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Badge } from '../../../components/ui/badge';
 import { Card, CardContent } from '../../../components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { getCitizenNotifications } from '../../../services/CitizenService';
 
-const notificationsData = [
-  {
-    id: '1',
-    type: 'item-added',
-    title: 'New item added to your list',
-    message: 'You added 3.1 kg of Paper. Estimated earning: LKR 310.00',
-    timestamp: 'Today at 2:45 PM',
-    isRead: false,
-    icon: Package,
-  },
-  {
-    id: '2',
-    type: 'pickup-scheduled',
-    title: 'Pickup scheduled',
-    message: 'Your items are scheduled for pickup on Oct 28, 2024 by Nimal between 9:00 AM - 11:00 AM',
-    timestamp: 'Yesterday at 11:30 AM',
-    isRead: true,
-    icon: Calendar,
-  },
-  {
-    id: '3',
-    type: 'item-collected',
-    title: 'Items collected',
-    message: 'Your 3.1 kg of Iron was successfully collected. Earnings: LKR 310.00 added to your wallet.',
-    timestamp: 'Sep 1, 2025',
-    isRead: true,
-    icon: CheckCircle,
-  },
-  {
-    id: '4',
-    type: 'system-update',
-    title: 'New feature available',
-    message: 'You can now track your pickup status in real-time from the My Items page.',
-    timestamp: 'Aug 28, 2025',
-    isRead: false,
-    icon: Info,
-  },
-  {
-    id: '5',
-    type: 'price-update',
-    title: 'Market price updated',
-    message: 'Plastic prices increased by 15%. Your pending items may now have higher estimated value.',
-    timestamp: 'Aug 25, 2025',
-    isRead: true,
-    icon: Bell,
-  },
+const iconMap: Record<string, LucideIcon> = {
+  'item-added': Package,
+  'pickup-scheduled': Calendar,
+  'item-collected': CheckCircle,
+  'system-update': Info,
+  'price-update': Bell,
+};
+
+const defaultNotifications = [
+  { id: '1', type: 'item-added', title: 'New item added to your list', message: 'You added 3.1 kg of Paper. Estimated earning: LKR 310.00', timestamp: 'Today at 2:45 PM', isRead: false, icon: Package },
+  { id: '2', type: 'pickup-scheduled', title: 'Pickup scheduled', message: 'Your items are scheduled for pickup on Oct 28, 2024 by Nimal between 9:00 AM - 11:00 AM', timestamp: 'Yesterday at 11:30 AM', isRead: true, icon: Calendar },
+  { id: '3', type: 'item-collected', title: 'Items collected', message: 'Your 3.1 kg of Iron was successfully collected. Earnings: LKR 310.00 added to your wallet.', timestamp: 'Sep 1, 2025', isRead: true, icon: CheckCircle },
+  { id: '4', type: 'system-update', title: 'New feature available', message: 'You can now track your pickup status in real-time from the My Items page.', timestamp: 'Aug 28, 2025', isRead: false, icon: Info },
+  { id: '5', type: 'price-update', title: 'Market price updated', message: 'Plastic prices increased by 15%. Your pending items may now have higher estimated value.', timestamp: 'Aug 25, 2025', isRead: true, icon: Bell },
 ];
+
+type NotificationItem = typeof defaultNotifications[0];
 
 export function NotificationsPage() {
   const { t } = useTranslation();
   const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
+  const [notificationsData, setNotificationsData] = useState<NotificationItem[]>(defaultNotifications);
+
+  useEffect(() => {
+    getCitizenNotifications()
+      .then((list) => {
+        if (list.length > 0) {
+          setNotificationsData(list.map((n) => ({
+            id: n._id,
+            type: n.type,
+            title: n.title,
+            message: n.message,
+            timestamp: n.timestamp,
+            isRead: n.isRead,
+            icon: iconMap[n.type] ?? Bell,
+          })));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filteredNotifications = notificationsData.filter((notif) =>
     filter === 'unread' ? !notif.isRead : true

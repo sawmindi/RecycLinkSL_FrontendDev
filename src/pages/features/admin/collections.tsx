@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, CheckCircle, XCircle } from 'lucide-react';
-import { toast } from 'react-toastify';
+import { CheckCircle, XCircle, MapPin, Package, User2, Calendar, Weight } from 'lucide-react';import { toast } from 'react-toastify';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
@@ -107,22 +106,56 @@ export function CollectionListsPage() {
     );
   };
 
+  const ActionButtons = ({ req }: { req: PickupRequest }) => (
+    <div className="flex flex-wrap gap-2">
+      {req.status === 'pending' && (
+        <Button
+          variant="outline"
+          size="sm"
+          className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300"
+          onClick={() => handleStatusChange(req._id, 'cancelled')}
+        >
+          <XCircle className="h-4 w-4 mr-1" /> Cancel
+        </Button>
+      )}
+      {req.status === 'assigned' && (
+        <>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleReassign(req)}
+          >
+            Reassign
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-green-700 hover:text-green-800 border-green-200 hover:border-green-300"
+            onClick={() => handleStatusChange(req._id, 'completed')}
+          >
+            <CheckCircle className="h-4 w-4 mr-1" /> Complete
+          </Button>
+        </>
+      )}
+    </div>
+  );
+
   return (
-    <div className="space-y-10">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif text-gray-900 mb-1">
             Collections List
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-sm md:text-base text-gray-500">
             View and manage all pickup requests submitted by citizens
           </p>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 shrink-0">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-44">
+            <SelectTrigger className="w-40 md:w-44">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
@@ -133,24 +166,69 @@ export function CollectionListsPage() {
               <SelectItem value="cancelled">Cancelled</SelectItem>
             </SelectContent>
           </Select>
-
-          <Button variant="outline" size="icon" onClick={fetchRequests}>
-            <RefreshCw className="h-4 w-4" />
-          </Button>
         </div>
       </div>
 
       {/* Table Card */}
-      <Card className="border-none shadow-lg">
+      {loading ? (
+        <div className="py-20 text-center text-gray-500">Loading collections...</div>
+      ) : filteredRequests.length === 0 ? (
+        <div className="text-center py-20 text-gray-500">
+          <p className="text-lg font-medium">No collections yet</p>
+          <p className="mt-2 text-sm">When citizens submit pickup requests, they will appear here.</p>
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-col gap-4 md:hidden">
+            {filteredRequests.map((req) => (
+              <Card key={req._id} className="border-none shadow-sm">
+                <CardContent className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <User2 className="h-4 w-4 text-teal-700 shrink-0" />
+                      <span className="font-semibold text-gray-900 truncate">{req.citizen_name}</span>
+                    </div>
+                    {getStatusBadge(req.status)}
+                  </div>
+                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <MapPin className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{req.citizen_area}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Package className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{req.item_name}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Weight className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span>{Number(req.rough_weight).toFixed(2)} kg</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-gray-400 shrink-0">LKR</span>
+                      <span>{Number(req.estimated_earnings).toFixed(2)}</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-400 text-xs uppercase tracking-wide">Priority</span>
+                      <p className="capitalize font-medium text-gray-800">{req.priority}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Calendar className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate text-xs">{req.created_at}</span>
+                    </div>
+                  </div><div className="text-sm">
+                    <span className="text-gray-400 text-xs uppercase tracking-wide">Collector — </span>
+                    {req.assigned_collector
+                      ? <span className="font-medium text-blue-700">{req.assigned_collector}</span>
+                      : <span className="text-gray-400 italic">Unassigned</span>
+                    }
+                  </div>
+                  <ActionButtons req={req} />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+      <Card className="hidden md:block border-none shadow-lg">
         <CardContent className="p-0">
-          {loading ? (
-            <div className="p-10 text-center text-gray-500">Loading collections...</div>
-          ) : filteredRequests.length === 0 ? (
-            <div className="text-center py-20 text-gray-500">
-              <p className="text-xl font-medium">No collections yet</p>
-              <p className="mt-3">When citizens submit pickup requests, they will appear here.</p>
-            </div>
-          ) : (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
@@ -186,57 +264,29 @@ export function CollectionListsPage() {
                       <TableCell>{getStatusBadge(req.status)}</TableCell>
                       <TableCell>{req.created_at}</TableCell>
 
-                      <TableCell className="text-right space-x-2">
-                        {req.status === 'pending' && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600 hover:text-red-700"
-                            onClick={() => handleStatusChange(req._id, 'cancelled')}
-                          >
-                            <XCircle className="h-4 w-4 mr-1" /> Cancel
-                          </Button>
-                        )}
-
-                        {req.status === 'assigned' && (
-                          <>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleReassign(req)}
-                            >
-                              Reassign
-                            </Button>
-
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleStatusChange(req._id, 'completed')}
-                            >
-                              <CheckCircle className="h-4 w-4 mr-1" /> Complete
-                            </Button>
-                          </>
-                        )}
+                      <TableCell className="text-right">
+                        <ActionButtons req={req} />
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </div>
-          )}
         </CardContent>
       </Card>
+    </>
+  )}
 
       {/* Reassign Modal */}
       <Dialog open={reassignModalOpen} onOpenChange={setReassignModalOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="w-[calc(100%-2rem)] sm:max-w-md rounded-xl">
           <DialogHeader>
             <DialogTitle>Reassign Collector</DialogTitle>
           </DialogHeader>
 
           <div className="py-4 space-y-6">
             {reassignRequest && (
-              <div className="p-3 bg-gray-50 rounded border space-y-1 text-sm">
+              <div className="p-3 bg-gray-50 rounded-lg border space-y-1 text-sm">
                 <p><strong>Citizen:</strong> {reassignRequest.citizen_name}</p>
                 <p><strong>Item:</strong> {reassignRequest.item_name}</p>
                 <p><strong>Current Collector:</strong> {reassignRequest.assigned_collector || 'None'}</p>
@@ -260,14 +310,14 @@ export function CollectionListsPage() {
             </div>
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setReassignModalOpen(false)}>
+          <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => setReassignModalOpen(false)}>
               Cancel
             </Button>
             <Button
               disabled={!selectedCollectorId}
               onClick={handleReassignSubmit}
-              className="bg-teal-700 hover:bg-teal-800 text-white"
+              className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white"
             >
               Reassign
             </Button>

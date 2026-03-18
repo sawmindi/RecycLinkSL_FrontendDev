@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { MapPin, Package, Plus, Tag, Trash2, User2, Weight } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
@@ -165,16 +165,16 @@ export function CollectorAssignmentPage() {
   };
 
   return (
-    <div className="space-y-10">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">Collector Assignment</h1>
-          <p className="text-lg text-gray-600">Assign collectors to categories and pickup requests</p>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif text-gray-900 mb-1">Collector Assignment</h1>
+          <p className="text-sm md:text-base text-gray-600">Assign collectors to categories and pickup requests</p>
         </div>
 
         {activeTab === 'categories' && (
           <Button 
-            className="bg-teal-700 hover:bg-teal-800 text-white gap-2"
+            className="bg-teal-700 hover:bg-teal-800 text-white gap-2 shrink-0"
             onClick={() => openModal('category')}
           >
             <Plus className="h-4 w-4" />
@@ -184,14 +184,61 @@ export function CollectorAssignmentPage() {
       </div>
 
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'categories' | 'pickups')} className="space-y-6">
-        <TabsList className="bg-gray-100">
-          <TabsTrigger value="categories">Assign to Categories</TabsTrigger>
-          <TabsTrigger value="pickups">Assign / Reassign Pickups</TabsTrigger>
+        <TabsList className="bg-gray-100 w-full sm:w-auto">
+          <TabsTrigger value="categories" className="flex-1 sm:flex-none">Assign to Categories</TabsTrigger>
+          <TabsTrigger value="pickups" className="flex-1 sm:flex-none">Assign / Reassign Pickups</TabsTrigger>
         </TabsList>
 
         {/* Categories Tab */}
         <TabsContent value="categories">
-          <Card className="border-none shadow-lg">
+          {/* Mobile cards */}
+          <div className="flex flex-col gap-4 md:hidden">
+            {categoryAssignments.length === 0 ? (
+              <p className="text-center py-12 text-gray-500">No category assignments yet</p>
+            ) : categoryAssignments.map((a) => (
+              <Card key={a._id} className="border shadow-sm">
+                <CardContent className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <User2 className="h-4 w-4 text-teal-700 shrink-0" />
+                      <span className="font-semibold text-gray-900 truncate">{a.collector_name}</span>
+                    </div>
+                    <Badge className={a.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                      {a.status}
+                    </Badge>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Tag className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{a.category_name}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <MapPin className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{a.area}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 col-span-2">
+                      <Calendar className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span>{a.assigned_date}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end pt-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDeleteCategoryAssignment(a._id)}
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Desktop table */}
+          <Card className="hidden md:block border-none shadow-lg">
             <CardContent className="p-0">
               <div className="p-6 border-b border-gray-200">
                 <h3 className="text-xl font-semibold">Assign Collector to Categories</h3>
@@ -243,7 +290,70 @@ export function CollectorAssignmentPage() {
 
         {/* Pickups Tab */}
         <TabsContent value="pickups">
-          <Card className="border-none shadow-lg">
+          {/* Mobile */}
+          <div className="flex flex-col gap-4 md:hidden">
+            {pickupRequests.length === 0 ? (
+              <p className="text-center py-12 text-gray-500">No pickup requests found</p>
+            ) : pickupRequests.map((req) => (
+              <Card key={req._id} className="border shadow-sm">
+                <CardContent className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <User2 className="h-4 w-4 text-teal-700 shrink-0" />
+                      <span className="font-semibold text-gray-900 truncate">{req.citizen_name}</span>
+                    </div>
+                    <Badge variant={req.status === 'pending' ? 'secondary' : 'default'}>
+                      {req.status}
+                    </Badge>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <MapPin className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{req.citizen_area}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Package className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span className="truncate">{req.item_name}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Weight className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                      <span>{req.rough_weight?.toFixed(2) ?? '—'} kg</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-gray-400 text-xs">LKR</span>
+                      <span>{req.estimated_earnings?.toFixed(2) ?? '—'}</span>
+                    </div>
+                    <div>
+                      <span className="text-xs text-gray-400 uppercase tracking-wide">Priority</span>
+                      <p className="capitalize font-medium text-gray-800">{req.priority}</p>
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-xs text-gray-400 uppercase tracking-wide">Collector</span>
+                      <p className="truncate">
+                        {req.assigned_collector
+                          ? <span className="font-medium text-blue-700">{req.assigned_collector}</span>
+                          : <span className="text-gray-400 italic">Unassigned</span>
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end pt-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => openModal('pickup', req)}
+                    >
+                      {req.assigned_collector ? 'Reassign' : 'Assign'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          {/* Desktop */}
+          <Card className="hidden md:block border-none shadow-lg">
             <CardContent className="p-0">
               <div className="p-6 border-b border-gray-200">
                 <h3 className="text-xl font-semibold">Pickup Requests (Pending & Assigned)</h3>
@@ -312,7 +422,7 @@ export function CollectorAssignmentPage() {
 
       {/* Modal for both category & pickup assign/reassign */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="w-[calc(100%-2rem)] sm:max-w-md rounded-xl">
           <DialogHeader>
             <DialogTitle>
               {modalType === 'category' 
@@ -321,7 +431,7 @@ export function CollectorAssignmentPage() {
             </DialogTitle>
           </DialogHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-6 py-4">
+          <form onSubmit={handleSubmit} className="space-y-5 py-4">
             <div className="space-y-2">
               <Label>Collector <span className="text-red-600">*</span></Label>
               <Select
@@ -348,7 +458,7 @@ export function CollectorAssignmentPage() {
                 </SelectContent>
               </Select>
               {eligibleCollectors.length === 0 && modalType === 'pickup' && (
-                <p className="text-xs text-orange-700 mt-1">
+                <p className="text-xs text-orange-700">
                   Note: No specific collector found for this category. Showing all collectors.
                 </p>
               )}
@@ -387,7 +497,7 @@ export function CollectorAssignmentPage() {
             )}
 
             {modalType === 'pickup' && selectedItem && (
-              <div className="p-4 bg-gray-50 rounded border space-y-2 text-sm">
+              <div className="p-3 bg-gray-50 rounded-lg border space-y-1.5 text-sm">
                 <p><strong>Citizen:</strong> {selectedItem.citizen_name}</p>
                 <p><strong>Area:</strong> {selectedItem.citizen_area}</p>
                 <p><strong>Item:</strong> {selectedItem.item_name}</p>
@@ -395,11 +505,19 @@ export function CollectorAssignmentPage() {
               </div>
             )}
 
-            <DialogFooter>
-              <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>
+            <DialogFooter className="flex-col-reverse sm:flex-row gap-2 pt-2">
+              <Button 
+                variant="outline" 
+                type="button" 
+                onClick={() => setIsModalOpen(false)}
+                className="w-full sm:w-auto"
+                >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-teal-700 hover:bg-teal-800 text-white">
+              <Button 
+                type="submit"
+                 className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white"
+                 >
                 {selectedItem?.assigned_collector ? 'Reassign' : 'Assign'}
               </Button>
             </DialogFooter>

@@ -1,56 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Calendar, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
-
-
-const historyData = [
-  {
-    collectionDate: 'Jan 10, 2026',
-    collector: 'Nimal',
-    total: 'LKR 570',
-    items: [
-      { type: 'Iron', weight: '3kg', value: 'LKR 300' },
-      { type: 'Plastic', weight: '2kg', value: 'LKR 180' },
-      { type: 'Glass', weight: '1kg', value: 'LKR 90' },
-    ],
-  },
-  {
-    collectionDate: 'Jan 10, 2026',
-    collector: 'Nimal',
-    total: 'LKR 570',
-    items: [
-      { type: 'Iron', weight: '3kg', value: 'LKR 300' },
-      { type: 'Plastic', weight: '2kg', value: 'LKR 180' },
-      { type: 'Glass', weight: '1kg', value: 'LKR 90' },
-    ],
-  },
-  {
-    collectionDate: 'Jan 10, 2026',
-    collector: 'Nimal',
-    total: 'LKR 570',
-    items: [
-      { type: 'Iron', weight: '3kg', value: 'LKR 300' },
-      { type: 'Plastic', weight: '2kg', value: 'LKR 180' },
-      { type: 'Glass', weight: '1kg', value: 'LKR 90' },
-    ],
-  },
-  {
-    collectionDate: 'Jan 10, 2026',
-    collector: 'Nimal',
-    total: 'LKR 570',
-    items: [
-      { type: 'Iron', weight: '3kg', value: 'LKR 300' },
-      { type: 'Plastic', weight: '2kg', value: 'LKR 180' },
-      { type: 'Glass', weight: '1kg', value: 'LKR 90' },
-    ],
-  },
-];
+import { getCitizenHistory, getCitizenPickupRequests, type CitizenHistoryEntry, type CitizenPickupRequest } from '../../../services/CitizenService';
 
 export function HistoryPage() {
   const { t } = useTranslation();
+  const [historyData, setHistoryData] = useState<CitizenHistoryEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getCitizenHistory()
+      .then(setHistoryData)
+      .catch(() => {
+        getCitizenPickupRequests()
+          .then((list) => {
+            const completed = list.filter((r) => r.status === 'completed');
+            const byDate = completed.reduce<{ date: string; collector: string; total: number; items: { type: string; weight: string; value: string }[] }[]>((acc, r) => {
+              const date = r.schedule_date ? new Date(r.schedule_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+              const existing = acc.find((e) => e.date === date && e.collector === (r.assigned_collector ?? ''));
+              const item = { type: r.item_name || r.category_name || 'Item', weight: `${r.rough_weight} kg`, value: `LKR ${(r.estimated_earnings || 0).toFixed(2)}` };
+              if (existing) {
+                existing.items.push(item);
+                existing.total += Number(r.estimated_earnings) || 0;
+              } else {
+                acc.push({ date, collector: r.assigned_collector ?? '—', total: Number(r.estimated_earnings) || 0, items: [item] });
+              }
+              return acc;
+            }, []);
+            setHistoryData(byDate.map((e, i) => ({ _id: String(i), collection_date: e.date, collector_name: e.collector, total: e.total, items: e.items })));
+          })
+          .catch(() => setHistoryData([]));
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="space-y-10">
@@ -111,22 +96,23 @@ export function HistoryPage() {
       </div>
 
       {/* History Entries */}
+      {loading ? (
+        <p className="text-center text-gray-500 py-8">Loading history...</p>
+      ) : (
       <div className="space-y-8">
         {historyData.map((entry, index) => (
           <Card
-            key={index}
+            key={entry._id ?? index}
             className="overflow-hidden border-none shadow-md bg-[#f0f9f8] hover:shadow-lg transition-shadow"
           >
             <CardContent className="p-6 space-y-5">
-              {/* Collection Date + Collector */}
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-semibold text-teal-900 flex items-center gap-3">
                   <Calendar className="h-5 w-5 text-teal-700" />
-                  {entry.collectionDate} • Collected by {entry.collector}
+                  {entry.collection_date} • Collected by {entry.collector_name ?? '—'}
                 </h3>
               </div>
 
-              {/* Items Table */}
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -137,7 +123,7 @@ export function HistoryPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {entry.items.map((item, i) => (
+                    {(entry.items ?? []).map((item, i) => (
                       <tr key={i} className="border-b border-gray-100 last:border-none">
                         <td className="py-3">{item.type}</td>
                         <td className="py-3">{item.weight}</td>
@@ -148,17 +134,17 @@ export function HistoryPage() {
                 </table>
               </div>
 
-              {/* Total */}
               <div className="pt-3 border-t border-gray-200 flex justify-between items-center">
                 <span className="text-gray-700 font-medium">Total:</span>
                 <span className="text-xl font-bold text-teal-900">
-                  {entry.total}
+                  {typeof entry.total === 'number' ? `LKR ${entry.total.toFixed(2)}` : entry.total}
                 </span>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
+      )}
 
       {/* Pagination */}
       <div className="flex justify-center items-center gap-4 pt-10 text-gray-600">
