@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Util } from "../Util";
 import { AppResponse } from "../models/Response";
+import { isApiFailure, networkError, toFailureResponse, toSuccessResponse } from "../util/apiResponse";
 
-/** Unwrap list from response: support raw array or { data: T[] }. */
 function unwrapList<T>(res: unknown): T[] {
   if (Array.isArray(res)) return res;
   if (res && typeof res === "object" && "data" in res && Array.isArray((res as { data: T[] }).data)) {
@@ -11,22 +11,12 @@ function unwrapList<T>(res: unknown): T[] {
   return [];
 }
 
-/** Unwrap single entity: support raw object or { data: T }. */
 function unwrapData<T>(res: unknown): T | null {
   if (res == null) return null;
   if (res && typeof res === "object" && "data" in res) return (res as { data: T }).data as T;
   return res as T;
 }
 
-/** Throw if response indicates API failure. */
-function throwIfFailed(res: unknown, defaultMessage: string): void {
-  const r = res as unknown as AppResponse<unknown>;
-  if (res && typeof res === "object" && "success" in res && r?.success === false) {
-    throw new Error(r?.message || defaultMessage);
-  }
-}
-
-/** Normalize MongoDB-style _id from API (supports both _id and id). */
 function toId(item: unknown): string {
   if (item == null || typeof item !== "object") return "";
   const o = item as Record<string, unknown>;
@@ -37,23 +27,25 @@ function toId(item: unknown): string {
   return "";
 }
 
-// ---- Citizen dashboard stats ----
+//  Citizen dashboard stats 
 export interface CitizenDashboardStats {
   totalEarnings?: number;
   pendingPickups?: number;
   totalWeightKg?: number;
 }
 
-export async function getCitizenDashboardStats(): Promise<CitizenDashboardStats> {
+export async function getCitizenDashboardStats(): Promise<AppResponse<CitizenDashboardStats>> {
   try {
-    const res = await axios.get<unknown>(Util.apiUrl("citizen/dashboard/stats"));
-    return (unwrapData<CitizenDashboardStats>(res) ?? {}) as CitizenDashboardStats;
+    const raw = await axios.get<unknown>(Util.apiUrl("citizen/dashboard/stats"));
+    if (isApiFailure(raw)) return toFailureResponse(raw, "Failed to load stats", {});
+    const inner = unwrapData<CitizenDashboardStats>(raw) ?? (raw as CitizenDashboardStats);
+    return toSuccessResponse(raw, (inner ?? {}) as CitizenDashboardStats);
   } catch {
-    return {};
+    return networkError("Network error", {});
   }
 }
 
-// ---- Citizen pickup requests (my requests) ----
+// Citizen pickup requests
 export interface CitizenPickupRequest {
   _id: string;
   item_name: string;
@@ -68,12 +60,12 @@ export interface CitizenPickupRequest {
   created_at: string;
 }
 
-export async function getCitizenPickupRequests(): Promise<CitizenPickupRequest[]> {
-  const res = await axios.get<unknown>(Util.apiUrl("pickup-requests/citizen"));
-  const list = unwrapList<CitizenPickupRequest & { id?: unknown }>(res);
-  return list.map((r) => ({ ...r, _id: toId(r) })) as CitizenPickupRequest[];
+export async function getCitizenPickupRequests(): Promise<AppResponse<CitizenPickupRequest[]>> {
+  const raw = await axios.get<unknown>(Util.apiUrl("pickup-requests/citizen"));
+  if (isApiFailure(raw)) return toFailureResponse(raw, "Failed to load requests", []);
+  const list = unwrapList<CitizenPickupRequest & { id?: unknown }>(raw);
+  return toSuccessResponse(raw, list.map((r) => ({ ...r, _id: toId(r) })) as CitizenPickupRequest[]);
 }
-
 export interface CreatePickupRequestPayload {
   item_id: string;
   rough_weight: number;
@@ -81,46 +73,75 @@ export interface CreatePickupRequestPayload {
   estimated_earnings: number;
 }
 
-export async function createPickupRequest(payload: CreatePickupRequestPayload): Promise<CitizenPickupRequest | null> {
-  const res = await axios.post<unknown>(Util.apiUrl("pickup-requests"), payload);
-  throwIfFailed(res, "Create pickup request failed");
-  const raw = unwrapData<CitizenPickupRequest & { id?: unknown }>(res);
-  return raw ? ({ ...raw, _id: toId(raw) } as CitizenPickupRequest) : null;
+export async function createPickupRequest(
+  payload: CreatePickupRequestPayload
+): Promise<AppResponse<CitizenPickupRequest | null>> {
+  const raw = await axios.post<unknown>(Util.apiUrl("pickup-requests"), payload);
+  if (isApiFailure(raw)) return toFailureResponse(raw, "Create pickup request failed", null);
+  const rowRaw = unwrapData<CitizenPickupRequest & { id?: unknown }>(raw);
+  const row = rowRaw ? ({ ...rowRaw, _id: toId(rowRaw) } as CitizenPickupRequest) : null;
+  return toSuccessResponse(raw, row);
 }
 
-// ---- Available schedules (slots) for citizen ----
+// Available schedules (slots) for citizen 
 export interface CitizenScheduleSlot {
   _id: string;
   area: string;
   schedule_date: string;
   schedule_time: string;
+  items?: string | string[];
+  item_name?: string;
+  full_name?: string;
   collector_name?: string;
+  collector_id?: string;
   spots_left?: number;
   spotsLeft?: number;
   status?: string;
 }
+export interface CitizenAreaCollector {
+  _id: string;
+  full_name: string;
+  area?: string;
+  mobile_number?: string;
+}
 
-export async function getCitizenAvailableSchedules(area?: string): Promise<CitizenScheduleSlot[]> {
+export async function getCollectorsForCitizenArea(area: string): Promise<AppResponse<CitizenAreaCollector[]>> {
+  const a = area?.trim();
+  if (!a) return { success: true, message: "", data: [], token: "" };
+  try {
+    const raw = await axios.get<unknown>(
+      Util.apiUrl(`citizen/collectors?area=${encodeURIComponent(a)}`)
+    );
+    if (isApiFailure(raw)) return toFailureResponse(raw, "Failed to load collectors", []);
+    const list = unwrapList<CitizenAreaCollector & { id?: unknown }>(raw);
+    return toSuccessResponse(raw, list.map((c) => ({ ...c, _id: toId(c) })) as CitizenAreaCollector[]);
+  } catch {
+    return networkError("Network error", []);
+  }
+}
+
+export async function getCitizenAvailableSchedules(area?: string): Promise<AppResponse<CitizenScheduleSlot[]>> {
   const url = area
     ? Util.apiUrl(`pickup-schedules/citizen?area=${encodeURIComponent(area)}`)
     : Util.apiUrl("pickup-schedules/citizen");
-  const res = await axios.get<unknown>(url);
-  const list = unwrapList<CitizenScheduleSlot & { id?: unknown }>(res);
-  return list.map((s) => ({ ...s, _id: toId(s) })) as CitizenScheduleSlot[];
+  const raw = await axios.get<unknown>(url);
+  if (isApiFailure(raw)) return toFailureResponse(raw, "Failed to load schedules", []);
+  const list = unwrapList<CitizenScheduleSlot & { id?: unknown }>(raw);
+  return toSuccessResponse(raw, list.map((s) => ({ ...s, _id: toId(s) })) as CitizenScheduleSlot[]);
 }
 
-/** Assign a schedule slot to a pickup request (e.g. when citizen selects a slot). */
 export async function assignScheduleToPickupRequest(
   requestId: string,
   scheduleId: string
-): Promise<void> {
-  const res = await axios.put<unknown>(Util.apiUrl(`pickup-requests/${requestId}/schedule`), {
+): Promise<AppResponse<null>> {
+  const raw = await axios.put<unknown>(Util.apiUrl(`pickup-requests/${requestId}/schedule`), {
     schedule_id: scheduleId,
   });
-  throwIfFailed(res, "Schedule assignment failed");
+  if (isApiFailure(raw)) return toFailureResponse(raw, "Schedule assignment failed", null);
+  return toSuccessResponse(raw, null);
 }
 
-// ---- Active items (for Add Item dropdown) ----
+// Active items
 export interface CitizenItem {
   _id: string;
   item_name: string;
@@ -129,17 +150,21 @@ export interface CitizenItem {
   category_id?: string;
 }
 
-export async function getActiveItems(): Promise<CitizenItem[]> {
-  const res = await axios.get<unknown>(Util.apiUrl("items/active"));
-  const list = unwrapList<CitizenItem & { id?: unknown }>(res);
-  return list.map((i) => ({
-    ...i,
-    _id: toId(i),
-    current_price: Number((i as CitizenItem).current_price),
-  })) as CitizenItem[];
+export async function getActiveItems(): Promise<AppResponse<CitizenItem[]>> {
+  const raw = await axios.get<unknown>(Util.apiUrl("items/active"));
+  if (isApiFailure(raw)) return toFailureResponse(raw, "Failed to load items", []);
+  const list = unwrapList<CitizenItem & { id?: unknown }>(raw);
+  return toSuccessResponse(
+    raw,
+    list.map((i) => ({
+      ...i,
+      _id: toId(i),
+      current_price: Number((i as CitizenItem).current_price),
+    })) as CitizenItem[]
+  );
 }
 
-// ---- Collection history (completed pickups with earnings) ----
+// Collection history
 export interface CitizenHistoryEntry {
   _id: string;
   collection_date: string;
@@ -148,17 +173,18 @@ export interface CitizenHistoryEntry {
   items: { type: string; weight: string; value: string }[];
 }
 
-export async function getCitizenHistory(): Promise<CitizenHistoryEntry[]> {
+export async function getCitizenHistory(): Promise<AppResponse<CitizenHistoryEntry[]>> {
   try {
-    const res = await axios.get<unknown>(Util.apiUrl("citizen/history"));
-    const list = unwrapList<CitizenHistoryEntry & { id?: unknown }>(res);
-    return list.map((h) => ({ ...h, _id: toId(h) })) as CitizenHistoryEntry[];
+    const raw = await axios.get<unknown>(Util.apiUrl("citizen/history"));
+    if (isApiFailure(raw)) return toFailureResponse(raw, "Failed to load history", []);
+    const list = unwrapList<CitizenHistoryEntry & { id?: unknown }>(raw);
+    return toSuccessResponse(raw, list.map((h) => ({ ...h, _id: toId(h) })) as CitizenHistoryEntry[]);
   } catch {
-    return [];
+    return networkError("Network error", []);
   }
 }
 
-// ---- Notifications (optional) ----
+// Notifications 
 export interface CitizenNotification {
   _id: string;
   type: string;
@@ -168,12 +194,13 @@ export interface CitizenNotification {
   isRead: boolean;
 }
 
-export async function getCitizenNotifications(): Promise<CitizenNotification[]> {
+export async function getCitizenNotifications(): Promise<AppResponse<CitizenNotification[]>> {
   try {
-    const res = await axios.get<unknown>(Util.apiUrl("citizen/notifications"));
-    const list = unwrapList<CitizenNotification & { id?: unknown }>(res);
-    return list.map((n) => ({ ...n, _id: toId(n) })) as CitizenNotification[];
+    const raw = await axios.get<unknown>(Util.apiUrl("citizen/notifications"));
+    if (isApiFailure(raw)) return toFailureResponse(raw, "Failed to load notifications", []);
+    const list = unwrapList<CitizenNotification & { id?: unknown }>(raw);
+    return toSuccessResponse(raw, list.map((n) => ({ ...n, _id: toId(n) })) as CitizenNotification[]);
   } catch {
-    return [];
+    return networkError("Network error", []);
   }
 }

@@ -12,8 +12,8 @@ export function LandingPage() {
   const { i18n, t } = useTranslation();
   
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'si' ? 'en' : 'si';
-    i18n.changeLanguage(newLang);
+    const newLang = i18n.language.startsWith('si') ? 'en' : 'si';
+    void i18n.changeLanguage(newLang);
   };
 
     const navigate = useNavigate();
@@ -90,7 +90,7 @@ export function LandingPage() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                {i18n.language === 'si' ? 'English' : 'සිංහල'}
+                {i18n.language.startsWith('si') ? 'English' : 'සිංහල'}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

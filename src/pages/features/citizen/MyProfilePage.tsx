@@ -54,7 +54,7 @@ export default function MyProfile() {
   const handleSave = async () => {
     const meRes = await AuthService.getMe();
     if (!meRes.success || !meRes.data?._id) {
-      toast.error('Could not load profile');
+      toast.error(t('profile.toastLoadFail'));
       return;
     }
     const res = await AuthService.updateUser(meRes.data._id, {
@@ -65,10 +65,10 @@ export default function MyProfile() {
       area: formData.areaDistrict,
     });
     if (res.success) {
-      toast.success('Profile updated');
+      toast.success(t('profile.toastUpdated'));
       setIsEditing(false);
     } else {
-      toast.error(res.message || 'Failed to update profile');
+      toast.error(res.message || t('profile.toastUpdateFail'));
     }
   };
 
@@ -94,7 +94,7 @@ export default function MyProfile() {
   };
 
   const getInitials = (name: string) => {
-    if (!name.trim()) return '—';
+    if (!name.trim()) return t('citizen.lists.emDash');
     const parts = name.trim().split(/\s+/);
     if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     return name.slice(0, 2).toUpperCase();
@@ -103,7 +103,7 @@ export default function MyProfile() {
   if (loading) {
     return (
       <div className="bg-gray-50 p-8">
-        <p className="text-gray-500">Loading profile...</p>
+        <p className="text-gray-500">{t('profile.loading')}</p>
       </div>
     );
   }
@@ -117,7 +117,7 @@ export default function MyProfile() {
         <div className="flex items-center gap-6 mb-8">
           <div className="relative">
             <Avatar className="h-24 w-24 border-4 border-teal-100 shadow-md">
-              <AvatarImage src={profileImage || undefined} alt={formData.fullName || 'Profile'} />
+              <AvatarImage src={profileImage || undefined} alt={formData.fullName || t('profile.avatarAlt')} />
               <AvatarFallback className="bg-teal-700 text-white text-3xl font-semibold">
                 {getInitials(formData.fullName)}
               </AvatarFallback>
@@ -127,7 +127,7 @@ export default function MyProfile() {
                 <button
                   onClick={handleAvatarClick}
                   className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors border border-gray-200"
-                  aria-label="Edit profile picture"
+                  aria-label={t('profile.ariaEditPicture')}
                 >
                   <Pencil className="w-4 h-4 text-gray-600" />
                 </button>
@@ -152,7 +152,7 @@ export default function MyProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
-                Full Name
+                {t('profile.fullName')}
               </Label>
               <Input
                 id="fullName"
@@ -166,7 +166,7 @@ export default function MyProfile() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Password
+                {t('profile.password')}
               </Label>
               <Input
                 id="password"
@@ -183,7 +183,7 @@ export default function MyProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="mobileNumber" className="text-sm font-medium text-gray-700">
-                Mobile Number
+                {t('profile.mobileNumber')}
               </Label>
               <Input
                 id="mobileNumber"
@@ -197,7 +197,7 @@ export default function MyProfile() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                Email
+                {t('profile.email')}
               </Label>
               <Input
                 id="email"
@@ -212,7 +212,7 @@ export default function MyProfile() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="areaDistrict" className="text-sm font-medium text-gray-700">
-              Area/District
+              {t('profile.areaDistrict')}
             </Label>
             <Input
               id="areaDistrict"
@@ -231,7 +231,7 @@ export default function MyProfile() {
                 onClick={() => setIsEditing(true)}
                 className="bg-[#1a5f5c] hover:bg-[#164d4a] text-white px-8"
               >
-                Edit Profile
+                {t('profile.editProfile')}
               </Button>
             ) : (
               <>
@@ -239,14 +239,14 @@ export default function MyProfile() {
                   onClick={handleSave}
                   className="bg-[#1a5f5c] hover:bg-[#164d4a] text-white px-8"
                 >
-                  Save
+                  {t('profile.save')}
                 </Button>
                 <Button
                   onClick={handleCancel}
                   variant="outline"
                   className="px-8 border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
-                  Cancel
+                  {t('profile.cancel')}
                 </Button>
               </>
             )}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { swalError, swalSuccess } from '../../../lib/swal';
 import { Trash2 } from 'lucide-react';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Label } from '../../../components/ui/label';
@@ -48,10 +48,12 @@ export function AddItemPage() {
 
   useEffect(() => {
     getActiveItems()
-      .then(setItems)
-      .catch(() => {
-        toast.error('Could not load items. Backend may be down.');
-        setItems([]);
+      .then((res) => {
+        if (res.success) setItems(res.data);
+        else {
+          void swalError('Could not load items', res.message);
+          setItems([]);
+        }
       })
       .finally(() => setLoadingItems(false));
   }, []);
@@ -79,16 +81,16 @@ export function AddItemPage() {
 
     const roughWeight = Number(weight) / (unit === 'g' ? 1000 : 1);
 
-    try {
-      await createPickupRequest({
-        item_id: selectedItem._id,
-        rough_weight: roughWeight,
-        priority: 'medium',
-        estimated_earnings: estimatedEarning,
-      });
-      toast.success('Item saved to your pickup requests!');
-    } catch (err) {
-      toast.error((err as Error).message || 'Failed to save item to backend. Saved locally only.');
+    const res = await createPickupRequest({
+      item_id: selectedItem._id,
+      rough_weight: roughWeight,
+      priority: 'medium',
+      estimated_earnings: estimatedEarning,
+    });
+    if (res.success) {
+      await swalSuccess('Saved', 'Item saved to your pickup requests!');
+    } else {
+      await swalError('Save failed', res.message || 'Failed to save item to backend. Saved locally only.');
     }
 
     const newItem: AddedItem = {

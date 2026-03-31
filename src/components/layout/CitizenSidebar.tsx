@@ -44,8 +44,8 @@ export function CitizenSidebar({ isOpen = false, onClose }: CitizenSidebarProps)
   }, []);
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'si' ? 'en' : 'si';
-    i18n.changeLanguage(newLang);
+    const newLang = i18n.language.startsWith('si') ? 'en' : 'si';
+    void i18n.changeLanguage(newLang);
   };
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export function CitizenSidebar({ isOpen = false, onClose }: CitizenSidebarProps)
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                {i18n.language === 'si' ? 'English' : 'සිංහල'}
+                {i18n.language.startsWith('si') ? 'English' : 'සිංහල'}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

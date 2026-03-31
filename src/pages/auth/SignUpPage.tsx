@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Label } from '../../components/ui/label';
 import { AuthService, CitizenSignupRequest } from '../../services/AuthService';
+import { MainCitySelect } from '../../components/forms/MainCitySelect';
+import { MAIN_CITY_VALUE_SET } from '../../data/mainCities';
 import { toast } from 'react-toastify';
+import { AuthLanguageToggle } from '../../components/auth/AuthLanguageToggle';
 
 export function SignUpPage() {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
@@ -27,7 +32,12 @@ export function SignUpPage() {
 
   const handleSignup = async () => {
     if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match.');
+      toast.error(t('auth.toastPasswordMismatch'));
+      return;
+    }
+
+    if (!formData.area || !MAIN_CITY_VALUE_SET.has(formData.area)) {
+      toast.error(t('auth.toastSelectArea'));
       return;
     }
 
@@ -53,106 +63,92 @@ export function SignUpPage() {
           },
         });
       } else {
-        toast.error(res.message || 'Sign up failed. Please try again.');
+        toast.error(res.message || t('auth.toastSignupFailed'));
       }
     } catch (e) {
-      toast.error('An unexpected error occurred while signing up.');
+      toast.error(t('auth.toastSignupUnexpected'));
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
-        {/* Back Button */}
-        <Button
-        variant="ghost"
-        onClick={() => navigate('/')} 
-        className="flex items-center gap-2 text-gray-600 mb-12 hover:text-gray-800 transition-colors">
-          <ArrowLeft className="w-5 h-5" />
-          <span className="text-base">Back</span>
-        </Button>
+        <div className="flex items-center justify-between gap-4 mb-12">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors -ml-2"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-base">{t('auth.back')}</span>
+          </Button>
+          <AuthLanguageToggle />
+        </div>
 
-        {/* Main Card */}
         <div className="bg-white rounded-3xl shadow-sm p-8 md:p-12">
-          {/* Header */}
           <div className="flex flex-col items-center mb-10">
             <img
-              src="/logo.png" alt="RecycleLinkSL Logo"
-              onClick={() => navigate('/')} 
-              className="h-16 w-auto mb-4 object-contain cursor-pointer" 
+              src="/logo.png"
+              alt={t('auth.logoAlt')}
+              onClick={() => navigate('/')}
+              className="h-16 w-auto mb-4 object-contain cursor-pointer"
             />
-            <p className="text-gray-600 text-sm">
-              Join our platform to sell your recyclable items and earn money
-            </p>
+            <p className="text-gray-600 text-sm text-center">{t('auth.joinPlatform')}</p>
           </div>
 
-          {/* Sign Up Form */}
           <div className="space-y-6">
-            {/* Full Name Field */}
             <div>
-              <Label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
-              </Label>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">{t('auth.fullName')}</Label>
               <Input
                 type="text"
-                placeholder="eg: John Smith"
+                placeholder={t('auth.fullNamePlaceholder')}
                 value={formData.fullName}
                 onChange={(e) => handleInputChange('fullName', e.target.value)}
                 className="w-full px-4 py-6 rounded-xl border border-gray-300 focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20 transition-all"
               />
             </div>
 
-            {/* Email Field */}
             <div>
-              <Label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </Label>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">{t('auth.email')}</Label>
               <Input
                 type="email"
-                placeholder="eg: johnSmith@gmail.com"
+                placeholder={t('auth.emailPlaceholder')}
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 className="w-full px-4 py-6 rounded-xl border border-gray-300 focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20 transition-all"
               />
             </div>
 
-            {/* Mobile Number Field */}
             <div>
-              <Label className="block text-sm font-medium text-gray-700 mb-2">
-                Mobile Number
-              </Label>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">{t('auth.mobileNumber')}</Label>
               <Input
                 type="tel"
-                placeholder="eg: +9400000000"
+                placeholder={t('auth.mobilePlaceholder')}
                 value={formData.mobile}
                 onChange={(e) => handleInputChange('mobile', e.target.value)}
                 className="w-full px-4 py-6 rounded-xl border border-gray-300 focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20 transition-all"
               />
             </div>
 
-            {/* Area/District Field */}
             <div>
               <Label className="block text-sm font-medium text-gray-700 mb-2">
-                Area/District
+                {t('auth.areaRequired')} <span className="text-red-600">*</span>
               </Label>
-              <Input
-                type="text"
-                placeholder="eg: Colombo"
+              <MainCitySelect
                 value={formData.area}
-                onChange={(e) => handleInputChange('area', e.target.value)}
-                className="w-full px-4 py-6 rounded-xl border border-gray-300 focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20 transition-all"
+                onValueChange={(area) => handleInputChange('area', area)}
+                placeholder={t('auth.areaPlaceholder')}
+                triggerClassName="min-h-[52px] rounded-xl px-4 py-6 h-auto border border-gray-300 hover:bg-white hover:text-gray-900 focus-visible:ring-2 focus-visible:ring-[#4a5f5c]/20"
               />
+              <p className="mt-2 text-xs text-gray-500">{t('auth.areaHelp')}</p>
             </div>
 
-            {/* Password Field */}
             <div>
-              <Label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </Label>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">{t('auth.password')}</Label>
               <div className="relative">
                 <Input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="eg: ************"
+                  placeholder={t('auth.passwordPlaceholder')}
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
                   className="w-full px-4 py-6 rounded-xl border border-gray-300 focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20 transition-all pr-12"
@@ -171,15 +167,12 @@ export function SignUpPage() {
               </div>
             </div>
 
-            {/* Confirm Password Field */}
             <div>
-              <Label className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm Password
-              </Label>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">{t('auth.confirmPassword')}</Label>
               <div className="relative">
                 <Input
                   type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="eg: ************"
+                  placeholder={t('auth.passwordPlaceholder')}
                   value={formData.confirmPassword}
                   onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                   className="w-full px-4 py-6 rounded-xl border border-gray-300 focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20 transition-all pr-12"
@@ -198,25 +191,19 @@ export function SignUpPage() {
               </div>
             </div>
 
-            {/* Sign Up Button */}
             <Button
               onClick={handleSignup}
               className="w-full bg-[#325251] hover:bg-[#3d4f4c] text-white py-6 rounded-xl text-base font-medium transition-colors mt-8"
             >
-              Sign Up
+              {t('auth.signUpButton')}
             </Button>
           </div>
 
-          {/* Login Link */}
           <div className="text-center mt-8">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
-              <Button
-              variant="link"
-                onClick={() => navigate('/login')}
-                className="text-gray-800 font-medium"
-              >
-                Login
+              {t('auth.alreadyHaveAccount')}{' '}
+              <Button variant="link" onClick={() => navigate('/login')} className="text-gray-800 font-medium p-0 h-auto">
+                {t('auth.loginLink')}
               </Button>
             </p>
           </div>

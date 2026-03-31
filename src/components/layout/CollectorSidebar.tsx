@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, Truck, Calendar, History, Bell, User, LogOut, X, Globe,
 } from 'lucide-react';
@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Separator } from '../ui/separator';
+import { AuthService } from '../../services/AuthService';
+import { Util } from '../../Util';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 interface CollectorSidebarProps {
   isOpen?: boolean;
@@ -13,14 +15,25 @@ interface CollectorSidebarProps {
 }
 
 
+function getInitials(fullName?: string): string {
+  if (!fullName?.trim()) return '?';
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return fullName.slice(0, 2).toUpperCase();
+}
+
+
 export function CollectorSidebar({ isOpen = false, onClose }: CollectorSidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const [fullName, setFullName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
   const { t, i18n } = useTranslation();
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'si' ? 'en' : 'si';
-    i18n.changeLanguage(newLang);
+    const newLang = i18n.language.startsWith('si') ? 'en' : 'si';
+    void i18n.changeLanguage(newLang);
   };
 
   useEffect(() => {
@@ -32,10 +45,21 @@ export function CollectorSidebar({ isOpen = false, onClose }: CollectorSidebarPr
       return () => { document.body.style.overflow = ''; };
     }, [isOpen]);
 
+  useEffect(() => {
+    AuthService.getMe().then((res) => {
+      if (res.success && res.data) {
+        setFullName(res.data.full_name ?? '');
+        setUsername(res.data.username ?? '');
+        const u = res.data as { profilePhotoId?: string };
+        if (u.profilePhotoId) setAvatarUrl(Util.fileURL(u.profilePhotoId));
+      }
+    });
+  }, []);
+
   const navItems = [
     { path: '/collector/overview', label: t('sidebar.overview'), icon: Home },
     { path: '/collector/pickups', label: t('sidebar.pickups'), icon: Truck },
-    { path: '/collector/schedule-management', label: t('sidebar.scheduleManagement'), icon: Calendar },
+    // { path: '/collector/schedule-management', label: t('sidebar.scheduleManagement'), icon: Calendar },
     { path: '/collector/collection-history', label: t('sidebar.collectionHistory'), icon: History },
     { path: '/collector/notifications', label: t('sidebar.notifications'), icon: Bell },
   ];
@@ -78,7 +102,7 @@ export function CollectorSidebar({ isOpen = false, onClose }: CollectorSidebarPr
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                {i18n.language === 'si' ? 'English' : 'සිංහල'}
+                {i18n.language.startsWith('si') ? 'English' : 'සිංහල'}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -130,12 +154,12 @@ export function CollectorSidebar({ isOpen = false, onClose }: CollectorSidebarPr
       <div className="p-5 border-t border-teal-800/50">
         <div className="flex items-center gap-3 mb-4">
           <Avatar className="h-10 w-10 border-2 border-teal-700/50 shrink-0">
-            <AvatarImage src="/path-to-admin-avatar.jpg" alt="Kamal Silva" />
-            <AvatarFallback className="bg-teal-700 text-white">KS</AvatarFallback>
+            <AvatarImage src={avatarUrl || undefined} alt={fullName || 'Collector'} />
+            <AvatarFallback className="bg-teal-700 text-white">{getInitials(fullName)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <p className="font-medium text-base truncate">Kamal Silva</p>
-            <p className="text-sm text-teal-200 truncate">kamalsilva123</p>
+            <p className="font-medium text-base truncate">{fullName || '—'}</p>
+            <p className="text-sm text-teal-200 truncate">{username || '—'}</p>
           </div>
         </div>
 
@@ -155,7 +179,7 @@ export function CollectorSidebar({ isOpen = false, onClose }: CollectorSidebarPr
           variant="ghost"
           size="sm"
           className="w-full justify-start gap-2.5 text-red-300 hover:text-red-200 hover:bg-red-950/30 text-sm px-3"
-          onClick={() => handleNavigate('/login')}
+          onClick={() => { AuthService.userLogout(); navigate('/login'); }}
         >
           <LogOut className="h-4 w-4" />
           {t('sidebar.logOut')}

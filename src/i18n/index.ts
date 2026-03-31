@@ -17,11 +17,26 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
+    supportedLngs: ['en', 'si'],
+    load: 'languageOnly',
+    nonExplicitSupportedLngs: true,
     interpolation: {
       escapeValue: false,
     },
     ns: ['translation'],
     defaultNS: 'translation',
+    detection: {
+      order: ['localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng',
+    },
   });
+
+function setDocumentLang(lng: string) {
+  document.documentElement.lang = lng.startsWith('si') ? 'si' : 'en';
+}
+
+setDocumentLang(i18n.language);
+i18n.on('languageChanged', setDocumentLang);
 
 export default i18n;

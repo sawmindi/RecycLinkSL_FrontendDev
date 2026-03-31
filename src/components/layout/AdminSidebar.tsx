@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Truck, Calendar, History, Bell, User, LogOut, Ambulance, HandCoins, Users, Boxes, X, Globe,
+import { Home, Truck, Calendar, History, Bell, User, LogOut, Ambulance, HandCoins, Users, Boxes, X, Globe, File,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
@@ -42,8 +42,8 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
   const { t, i18n } = useTranslation();
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'si' ? 'en' : 'si';
-    i18n.changeLanguage(newLang);
+    const newLang = i18n.language.startsWith('si') ? 'en' : 'si';
+    void i18n.changeLanguage(newLang);
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
     { path: '/admin/collector-assignment', label: t('sidebar.collectorAssignment'), icon: Ambulance },
     { path: '/admin/price-management', label: t('sidebar.priceManagement'), icon: HandCoins },
     { path: '/admin/user-management', label: t('sidebar.userManagement'), icon: Users },
-    { path: '/admin/reports', label: t('sidebar.reports'), icon: History },
+    // { path: '/admin/reports', label: t('sidebar.reports'), icon: File },
     // { path: '/admin/notifications', label: t('sidebar.notifications'), icon: Bell },
   ];
 
@@ -105,7 +105,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                {i18n.language === 'si' ? 'English' : 'සිංහල'}
+                {i18n.language.startsWith('si') ? 'English' : 'සිංහල'}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

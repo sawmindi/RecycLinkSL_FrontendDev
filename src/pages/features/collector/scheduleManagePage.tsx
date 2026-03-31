@@ -1,50 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Truck, DollarSign, Users, MapPin, Clock } from 'lucide-react';import { Card, CardContent } from '../../../components/ui/card';
+import { Truck, DollarSign, Users, MapPin, Clock } from 'lucide-react';
+import { Card, CardContent } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
 import { Progress } from '../../../components/ui/progress';
+import { getCollectorSchedules, type CollectorScheduleWithBookings } from '../../../services/CollectorService';
 
-
-const routesToday = [
-  {
-    area: 'Colombo 7',
-    date: 'Monday, January 15, 2026',
-    time: '09:00 AM - 11:00 AM',
-    bookings: 5,
-    maxBookings: 8,
-  },
-  {
-    area: 'Colombo 6',
-    date: 'Tuesday, January 16, 2026',
-    time: '09:00 AM - 11:00 AM',
-    bookings: 12,
-    maxBookings: 12,
-  },
-  {
-    area: 'Colombo 7',
-    date: 'Monday, January 15, 2026',
-    time: '09:00 AM - 11:00 AM',
-    bookings: 5,
-    maxBookings: 8,
-  },
-  {
-    area: 'Colombo 7',
-    date: 'Monday, January 15, 2026',
-    time: '09:00 AM - 11:00 AM',
-    bookings: 5,
-    maxBookings: 8,
-  },
-  {
-    area: 'Colombo 7',
-    date: 'Monday, January 15, 2026',
-    time: '09:00 AM - 11:00 AM',
-    bookings: 5,
-    maxBookings: 8,
-  },
-];
 
 export function ScheduleManagementPage() {
   const { t } = useTranslation();
+  const [routesToday, setRoutesToday] = useState<CollectorScheduleWithBookings[]>([]);
+
+  useEffect(() => {
+    getCollectorSchedules().then((res) => {
+      if (res.success) setRoutesToday(res.data);
+    });
+  }, []);
 
   return (
     <div className="space-y-10">
@@ -63,12 +34,22 @@ export function ScheduleManagementPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {routesToday.map((route, index) => {
-            const progress = (route.bookings / route.maxBookings) * 100;
+            const progress =
+              route.maxBookings > 0 ? (route.bookings / route.maxBookings) * 100 : 0;
             const isFull = route.bookings >= route.maxBookings;
+            const dateLabel = route.schedule_date
+              ? new Date(route.schedule_date).toLocaleDateString('en-LK', {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })
+              : '—';
+            const timeLabel = route.schedule_time || '—';
 
             return (
               <Card
-                key={index}
+                key={route._id || index}
                 className="overflow-hidden border-none shadow-md hover:shadow-lg transition-all bg-[#f0f9f8]"
               >
                 <CardContent className="p-6 space-y-5">
@@ -90,7 +71,7 @@ export function ScheduleManagementPage() {
                   <div className="space-y-3 text-gray-700">
                     <div className="flex items-center gap-3">
                       <Clock className="h-5 w-5 text-teal-700" />
-                      <span>{route.date} • {route.time}</span>
+                      <span>{dateLabel} • {timeLabel}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Users className="h-5 w-5 text-teal-700" />
@@ -103,7 +84,6 @@ export function ScheduleManagementPage() {
                     <Progress
                       value={progress}
                       className="h-2.5"
-                      indicatorColor={isFull ? 'bg-red-600' : 'bg-teal-600'}
                     />
                   </div>
 

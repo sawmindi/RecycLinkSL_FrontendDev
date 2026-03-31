@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bell, CheckCircle, Package, Calendar, Info, LucideIcon } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
@@ -17,27 +17,86 @@ const iconMap: Record<string, LucideIcon> = {
   'price-update': Bell,
 };
 
-const defaultNotifications = [
-  { id: '1', type: 'item-added', title: 'New item added to your list', message: 'You added 3.1 kg of Paper. Estimated earning: LKR 310.00', timestamp: 'Today at 2:45 PM', isRead: false, icon: Package },
-  { id: '2', type: 'pickup-scheduled', title: 'Pickup scheduled', message: 'Your items are scheduled for pickup on Oct 28, 2024 by Nimal between 9:00 AM - 11:00 AM', timestamp: 'Yesterday at 11:30 AM', isRead: true, icon: Calendar },
-  { id: '3', type: 'item-collected', title: 'Items collected', message: 'Your 3.1 kg of Iron was successfully collected. Earnings: LKR 310.00 added to your wallet.', timestamp: 'Sep 1, 2025', isRead: true, icon: CheckCircle },
-  { id: '4', type: 'system-update', title: 'New feature available', message: 'You can now track your pickup status in real-time from the My Items page.', timestamp: 'Aug 28, 2025', isRead: false, icon: Info },
-  { id: '5', type: 'price-update', title: 'Market price updated', message: 'Plastic prices increased by 15%. Your pending items may now have higher estimated value.', timestamp: 'Aug 25, 2025', isRead: true, icon: Bell },
-];
-
-type NotificationItem = typeof defaultNotifications[0];
+type NotificationItem = {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  isRead: boolean;
+  icon: LucideIcon;
+};
 
 export function NotificationsPage() {
   const { t } = useTranslation();
   const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
-  const [notificationsData, setNotificationsData] = useState<NotificationItem[]>(defaultNotifications);
+  const [notificationsData, setNotificationsData] = useState<NotificationItem[]>([]);
+  const [hydratedFromApi, setHydratedFromApi] = useState(false);
+
+  const demoNotifications = useMemo<NotificationItem[]>(
+    () => [
+      {
+        id: '1',
+        type: 'item-added',
+        title: t('citizen.notifications.demo.n1Title'),
+        message: t('citizen.notifications.demo.n1Message'),
+        timestamp: t('citizen.notifications.demo.n1Time'),
+        isRead: false,
+        icon: Package,
+      },
+      {
+        id: '2',
+        type: 'pickup-scheduled',
+        title: t('citizen.notifications.demo.n2Title'),
+        message: t('citizen.notifications.demo.n2Message'),
+        timestamp: t('citizen.notifications.demo.n2Time'),
+        isRead: true,
+        icon: Calendar,
+      },
+      {
+        id: '3',
+        type: 'item-collected',
+        title: t('citizen.notifications.demo.n3Title'),
+        message: t('citizen.notifications.demo.n3Message'),
+        timestamp: t('citizen.notifications.demo.n3Time'),
+        isRead: true,
+        icon: CheckCircle,
+      },
+      {
+        id: '4',
+        type: 'system-update',
+        title: t('citizen.notifications.demo.n4Title'),
+        message: t('citizen.notifications.demo.n4Message'),
+        timestamp: t('citizen.notifications.demo.n4Time'),
+        isRead: false,
+        icon: Info,
+      },
+      {
+        id: '5',
+        type: 'price-update',
+        title: t('citizen.notifications.demo.n5Title'),
+        message: t('citizen.notifications.demo.n5Message'),
+        timestamp: t('citizen.notifications.demo.n5Time'),
+        isRead: true,
+        icon: Bell,
+      },
+    ],
+    [t]
+  );
+
+  useLayoutEffect(() => {
+    if (!hydratedFromApi) {
+      setNotificationsData(demoNotifications);
+    }
+  }, [demoNotifications, hydratedFromApi]);
 
   useEffect(() => {
-    getCitizenNotifications()
-      .then((list) => {
-        if (list.length > 0) {
-          setNotificationsData(list.map((n) => ({
+    getCitizenNotifications().then((res) => {
+      if (res.success && res.data.length > 0) {
+        setHydratedFromApi(true);
+        setNotificationsData(
+          res.data.map((n) => ({
             id: n._id,
             type: n.type,
             title: n.title,
@@ -45,10 +104,10 @@ export function NotificationsPage() {
             timestamp: n.timestamp,
             isRead: n.isRead,
             icon: iconMap[n.type] ?? Bell,
-          })));
-        }
-      })
-      .catch(() => {});
+          }))
+        );
+      }
+    });
   }, []);
 
   const filteredNotifications = notificationsData.filter((notif) =>
@@ -58,7 +117,7 @@ export function NotificationsPage() {
   const unreadCount = notificationsData.filter((n) => !n.isRead).length;
 
   const markAllAsRead = () => {
-    toast.success('All notifications marked as read');
+    toast.success(t('citizen.notifications.toastAllRead'));
   };
 
   return (
@@ -67,7 +126,7 @@ export function NotificationsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
-            Notifications
+            {t('citizen.notifications.title')}
           </h1>
         </div>
 
@@ -78,7 +137,7 @@ export function NotificationsPage() {
             onClick={markAllAsRead}
             className="border-teal-600 text-teal-700 hover:bg-teal-50"
           >
-            Mark all as read
+            {t('citizen.notifications.markAllRead')}
           </Button>
         )}
       </div>
@@ -87,17 +146,17 @@ export function NotificationsPage() {
       <div className="flex items-center gap-4">
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-40">
-            <SelectValue placeholder="Filter" />
+            <SelectValue placeholder={t('citizen.notifications.filterPlaceholder')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All notifications</SelectItem>
-            <SelectItem value="unread">Unread only</SelectItem>
+            <SelectItem value="all">{t('citizen.notifications.allNotifications')}</SelectItem>
+            <SelectItem value="unread">{t('citizen.notifications.unreadOnly')}</SelectItem>
           </SelectContent>
         </Select>
 
         {unreadCount > 0 && (
           <Badge variant="secondary" className="bg-teal-100 text-teal-800">
-            {unreadCount} unread
+            {t('citizen.notifications.unreadCount', { count: unreadCount })}
           </Badge>
         )}
       </div>
@@ -107,8 +166,8 @@ export function NotificationsPage() {
         {filteredNotifications.length === 0 ? (
           <div className="text-center py-16 text-gray-500">
             <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p className="text-lg font-medium">No notifications yet</p>
-            <p className="mt-2">When there's an update about your items or earnings, it will appear here.</p>
+            <p className="text-lg font-medium">{t('citizen.notifications.emptyTitle')}</p>
+            <p className="mt-2">{t('citizen.notifications.emptyHint')}</p>
           </div>
         ) : (
           filteredNotifications.map((notif) => (
@@ -147,7 +206,7 @@ export function NotificationsPage() {
                       className="text-teal-700 hover:text-teal-900 p-0 h-auto font-medium"
                       onClick={() => navigate('/citizen/my-items')}
                     >
-                      View in My Items →
+                      {t('citizen.notifications.viewInMyItems')}
                     </Button>
                   )}
                 </div>
@@ -161,7 +220,7 @@ export function NotificationsPage() {
       {filteredNotifications.length > 0 && filteredNotifications.length >= 5 && (
         <div className="flex justify-center pt-8">
           <Button variant="outline" className="px-8">
-            Load more
+            {t('citizen.notifications.loadMore')}
           </Button>
         </div>
       )}

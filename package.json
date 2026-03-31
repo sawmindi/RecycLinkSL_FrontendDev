@@ -59,6 +59,7 @@
     "react-toastify": "^11.0.5",
     "recharts": "^2.15.4",
     "sonner": "^2.0.7",
+    "sweetalert2": "^11.26.24",
     "tailwind-merge": "^3.4.0",
     "tailwind-variants": "^3.2.2",
     "tailwindcss-animate": "^1.0.7",

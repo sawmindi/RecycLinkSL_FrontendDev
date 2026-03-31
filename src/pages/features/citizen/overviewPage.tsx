@@ -12,7 +12,8 @@ import {
 } from '../../../services/CitizenService';
 
 export default function Overview() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-US';
   const [userName, setUserName] = useState<string>('');
   const [userLocation, setUserLocation] = useState<string>('');
   const [stats, setStats] = useState<CitizenDashboardStats>({});
@@ -25,21 +26,23 @@ export default function Overview() {
         setUserLocation(res.data.area ?? '');
       }
     });
-    getCitizenDashboardStats().then((s) => setStats(s)).catch(() => {});
-    getCitizenPickupRequests()
-      .then((list) => {
-        const pending = list.filter((r) => r.status === 'pending' || r.status === 'assigned').slice(0, 5);
-        setUpcomingPickups(pending);
-        setStats((prev) => {
-          const hasApiStats = prev.totalEarnings !== undefined || prev.pendingPickups !== undefined || prev.totalWeightKg !== undefined;
-          if (hasApiStats) return prev;
-          const pendingCount = list.filter((r) => r.status === 'pending' || r.status === 'assigned').length;
-          const totalEarnings = list.reduce((sum, r) => sum + (Number(r.estimated_earnings) || 0), 0);
-          const totalWeightKg = list.reduce((sum, r) => sum + (Number(r.rough_weight) || 0), 0);
-          return { ...prev, totalEarnings, pendingPickups: pendingCount, totalWeightKg };
-        });
-      })
-      .catch(() => {});
+    getCitizenDashboardStats().then((res) => {
+      if (res.success) setStats(res.data);
+    });
+    getCitizenPickupRequests().then((res) => {
+      if (!res.success) return;
+      const list = res.data;
+      const pending = list.filter((r) => r.status === 'pending' || r.status === 'assigned').slice(0, 5);
+      setUpcomingPickups(pending);
+      setStats((prev) => {
+        const hasApiStats = prev.totalEarnings !== undefined || prev.pendingPickups !== undefined || prev.totalWeightKg !== undefined;
+        if (hasApiStats) return prev;
+        const pendingCount = list.filter((r) => r.status === 'pending' || r.status === 'assigned').length;
+        const totalEarnings = list.reduce((sum, r) => sum + (Number(r.estimated_earnings) || 0), 0);
+        const totalWeightKg = list.reduce((sum, r) => sum + (Number(r.rough_weight) || 0), 0);
+        return { ...prev, totalEarnings, pendingPickups: pendingCount, totalWeightKg };
+      });
+    });
   }, []);
 
   const totalEarnings = stats.totalEarnings ?? 0;
@@ -47,10 +50,38 @@ export default function Overview() {
   const totalWeight = stats.totalWeightKg ?? 0;
 
   const quickLinks = [
-    { icon: CirclePlus, labelKey: 'Add Items', label: 'Add Items', desc: 'Book your next collection', color: 'bg-emerald-50 text-emerald-700 border-emerald-100', iconBg: 'bg-emerald-100', href: '/citizen/add-item' },
-    { icon: CalendarPlus, labelKey: 'Schedules', label: 'Schedule Pickup', desc: 'Choose from available pickups', color: 'bg-emerald-50 text-emerald-700 border-emerald-100', iconBg: 'bg-emerald-100', href: '/citizen/schedules' },
-    { icon: History, labelKey: 'history', label: 'View History', desc: 'Past pickups & earnings', color: 'bg-emerald-50 text-emerald-700 border-emerald-100', iconBg: 'bg-emerald-100', href: '/citizen/history' },
-    { icon: Package, labelKey: 'My Items', label: 'My Items', desc: 'View and manage your items', color: 'bg-emerald-50 text-emerald-700 border-emerald-100', iconBg: 'bg-emerald-100', href: '/citizen/add-item' },
+    {
+      icon: CirclePlus,
+      labelKey: 'citizen.addItems',
+      descKey: 'citizen.dashboard.bookCollection',
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+      iconBg: 'bg-emerald-100',
+      href: '/citizen/add-item',
+    },
+    {
+      icon: CalendarPlus,
+      labelKey: 'landing.schedulePickup',
+      descKey: 'citizen.dashboard.choosePickups',
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+      iconBg: 'bg-emerald-100',
+      href: '/citizen/schedules',
+    },
+    {
+      icon: History,
+      labelKey: 'sidebar.history',
+      descKey: 'citizen.dashboard.pastPickupsEarnings',
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+      iconBg: 'bg-emerald-100',
+      href: '/citizen/history',
+    },
+    {
+      icon: Package,
+      labelKey: 'sidebar.myItems',
+      descKey: 'citizen.dashboard.manageItems',
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+      iconBg: 'bg-emerald-100',
+      href: '/citizen/add-item',
+    },
   ];
 
   const typeColors: Record<string, string> = {
@@ -62,8 +93,8 @@ export default function Overview() {
   const formatPickupDate = (d?: string, time?: string) => {
     if (!d) return { date: '—', day: '—', time: time || '—' };
     const dt = new Date(d);
-    const dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const dayStr = dt.toLocaleDateString('en-US', { weekday: 'long' });
+    const dateStr = dt.toLocaleDateString(dateLocale, { month: 'short', day: 'numeric', year: 'numeric' });
+    const dayStr = dt.toLocaleDateString(dateLocale, { weekday: 'long' });
     return { date: dateStr, day: dayStr, time: time || '—' };
   };
   return (
@@ -71,9 +102,9 @@ export default function Overview() {
       {/* Welcome */}
       <div>
         <h1 className="text-4xl font-serif text-gray-900 mb-1">
-          {t('welcome')} {userName || t('name')}
+          {t('welcome')} {userName?.trim() || ''}
         </h1>
-        <p className="text-xl text-gray-600">{userLocation || t('location')}</p>
+        <p className="text-xl text-gray-600">{userLocation?.trim() || '—'}</p>
       </div>
 
       {/* Stats Cards */}
@@ -120,11 +151,11 @@ export default function Overview() {
     {/* Quick Links */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-800">Quick Actions</h2>
-          <span className="text-xs text-gray-400">All services</span>
+          <h2 className="text-lg font-semibold text-gray-800">{t('citizen.dashboard.quickActions')}</h2>
+          <span className="text-xs text-gray-400">{t('citizen.dashboard.allServices')}</span>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {quickLinks.map(({ icon: Icon, label, labelKey, desc, color, iconBg, href }) => (
+          {quickLinks.map(({ icon: Icon, labelKey, descKey, color, iconBg, href }) => (
             <Link
               key={labelKey}
               to={href}
@@ -133,8 +164,8 @@ export default function Overview() {
               <div className={`${iconBg} rounded-xl p-3 transition-transform group-hover:scale-110`}>
                 <Icon className="h-5 w-5" />
               </div>
-              <span className="text-xs font-semibold leading-tight">{t(labelKey) || label}</span>
-              <span className="hidden text-[10px] leading-tight opacity-70 sm:block">{desc}</span>
+              <span className="text-xs font-semibold leading-tight">{t(labelKey)}</span>
+              <span className="hidden text-[10px] leading-tight opacity-70 sm:block">{t(descKey)}</span>
             </Link>
           ))}
         </div>
@@ -146,20 +177,20 @@ export default function Overview() {
             <div className="rounded-lg bg-[#043937]/10 p-2">
               <Truck className="h-4 w-4 text-[#043937]" />
             </div>
-            <h2 className="text-base font-semibold text-gray-800">Upcoming Pickups</h2>
+            <h2 className="text-base font-semibold text-gray-800">{t('citizen.dashboard.upcomingSection')}</h2>
           </div>
           <Link
             to="/citizen/schedules"
             className="flex items-center gap-1 text-xs font-medium text-teal-600 hover:underline"
           >
-            View all <ArrowUpRight className="h-3 w-3" />
+            {t('citizen.dashboard.viewAll')} <ArrowUpRight className="h-3 w-3" />
           </Link>
         </div>
 
         <div className="space-y-3">
           {upcomingPickups.map((pickup) => {
             const { date, day, time } = formatPickupDate(pickup.schedule_date, pickup.schedule_time);
-            const typeName = pickup.item_name || pickup.category_name || 'Item';
+            const typeName = pickup.item_name || pickup.category_name || t('citizen.dashboard.itemFallback');
             return (
               <div
                 key={pickup._id}

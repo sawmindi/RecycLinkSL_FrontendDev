@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Edit, Trash2, UserPlus, UserCheck, UserX, Phone, Mail, MapPin, Calendar } from 'lucide-react';
-import { toast } from 'react-toastify';
+import { RefreshCw, Edit, Trash2, UserPlus, UserCheck, UserX } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { swalConfirm, swalError, swalSuccess } from '../../../lib/swal';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
@@ -10,9 +11,14 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+import { PradeshiyaSabhaSelect } from '../../../components/forms/PradeshiyaSabhaSelect';
+import { MainCitySelect } from '../../../components/forms/MainCitySelect';
+import { PRADESHIYA_SABHA_VALUE_SET } from '../../../data/pradeshiyaSabhas';
+import { MAIN_CITY_VALUE_SET } from '../../../data/mainCities';
 import { getUsers, createUser, updateUser, deleteUser, type AdminUser } from '../../../services/AdminService';
 
 export function UserManagementPage() {
+  const { t } = useTranslation();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [editUser, setEditUser] = useState<AdminUser | null>(null);
@@ -23,17 +29,17 @@ export function UserManagementPage() {
     full_name: '',
     mobile_number: '',
     email: '',
-    address: '',
+    area: '',
     password: '',
-    role: 'citizen',
+    role: 'CITIZEN',
   });
 
-  // Form for Edit User (all editable fields)
+  // Form for Edit User
   const [editForm, setEditForm] = useState({
     full_name: '',
     mobile_number: '',
     email: '',
-    address: '',
+    area: '',
     role: '',
     is_active: true,
   });
@@ -44,15 +50,13 @@ export function UserManagementPage() {
 
   const fetchUsers = async () => {
     setLoading(true);
-    try {
-      const data = await getUsers();
-      setUsers(data);
-    } catch (err) {
-      console.error(err);
-      toast.error('Could not load users');
-    } finally {
-      setLoading(false);
+    const res = await getUsers();
+    if (res.success) {
+      setUsers(res.data);
+    } else {
+      await swalError(t('admin.userManagement.toastLoadUsers'), res.message);
     }
+    setLoading(false);
   };
 
   const handleEditOpen = (user: AdminUser) => {
@@ -61,7 +65,7 @@ export function UserManagementPage() {
       full_name: user.full_name,
       mobile_number: user.mobile_number,
       email: user.email || '',
-      address: user.address ?? '',
+      area: user.area ?? '',
       role: user.role,
       is_active: user.is_active,
     });
@@ -72,223 +76,203 @@ export function UserManagementPage() {
 
     // Validate mobile number (exactly 10 digits)
     if (!/^\d{10}$/.test(editForm.mobile_number)) {
-      toast.error('Mobile number must be exactly 10 digits (no spaces, +94, etc.)');
+      await swalError(t('admin.userManagement.toastMobileInvalid'));
       return;
     }
 
-    try {
-      await updateUser(editUser._id, {
-        full_name: editForm.full_name,
-        mobile_number: editForm.mobile_number,
-        email: editForm.email,
-        area: editForm.address,
-        role: editForm.role,
-        is_active: editForm.is_active,
-      });
-      toast.success(
+    if (editForm.role === 'COLLECTOR' && !editForm.area.trim()) {
+      await swalError(t('admin.userManagement.toastCollectorAreaRequired'));
+      return;
+    }
+
+    if (editForm.role === 'CITIZEN' && !editForm.area.trim()) {
+      await swalError(t('admin.userManagement.toastCitizenAreaRequired'));
+      return;
+    }
+
+    const res = await updateUser(editUser._id, {
+      full_name: editForm.full_name,
+      mobile_number: editForm.mobile_number,
+      email: editForm.email || null,
+      area: editForm.area,
+      role: editForm.role,
+      is_active: editForm.is_active,
+    });
+    if (res.success) {
+      await swalSuccess(
         editForm.is_active
-          ? 'User updated – account is now active'
-          : 'User updated – account is now deactivated'
+          ? t('admin.userManagement.toastUpdatedActive')
+          : t('admin.userManagement.toastUpdatedInactive')
       );
       setEditUser(null);
       fetchUsers();
-    } catch (err: unknown) {
-      toast.error((err as Error).message || 'Failed to update user');
+    } else {
+      await swalError(t('admin.userManagement.toastUpdateFail'), res.message);
     }
   };
 
   const handleAddSubmit = async () => {
     // Validate required fields
-    if (!addForm.full_name || !addForm.mobile_number || !addForm.email || !addForm.address || !addForm.password || !addForm.role) {
-      toast.error('Please fill all required fields (*)');
+    if (!addForm.full_name || !addForm.mobile_number || !addForm.area || !addForm.password || !addForm.role) {
+      await swalError(t('admin.userManagement.toastFillAll'));
       return;
     }
 
-    // Mobile validation: exactly 10 digits
+    if (addForm.role === 'COLLECTOR' && !PRADESHIYA_SABHA_VALUE_SET.has(addForm.area)) {
+      await swalError(t('admin.userManagement.toastCollectorPS'));
+      return;
+    }
+
+    if (addForm.role === 'CITIZEN' && !MAIN_CITY_VALUE_SET.has(addForm.area)) {
+      await swalError(t('admin.userManagement.toastCitizenCity'));
+      return;
+    }
+
     if (!/^\d{10}$/.test(addForm.mobile_number)) {
-      toast.error('Mobile number must be exactly 10 digits (no spaces or +94)');
+      await swalError(t('admin.userManagement.toastMobileInvalidShort'));
       return;
     }
 
-    if (addForm.password.length < 6) {
-      toast.error('Password must be at least 6 characters');
-      return;
-    }
-
-    try {
-      const data = await createUser({
-        full_name: addForm.full_name,
-        mobile_number: addForm.mobile_number,
-        email: addForm.email,
-        area: addForm.address,
-        password: addForm.password,
-        role: addForm.role,
-      });
-      const username = data?.user?.username ?? '—';
-      toast.success(`User created successfully! Username: ${username}`);
+    const res = await createUser({
+      full_name: addForm.full_name,
+      mobile_number: addForm.mobile_number,
+      email: addForm.email || null,
+      area: addForm.area,
+      password: addForm.password,
+      role: addForm.role,
+    });
+    if (res.success) {
+      const username = res.data?.user?.username ?? '—';
+      await swalSuccess(t('admin.userManagement.toastUserCreated', { username }));
       setAddModalOpen(false);
       setAddForm({
         full_name: '',
         mobile_number: '',
         email: '',
-        address: '',
+        area: '',
         password: '',
-        role: 'citizen',
+        role: 'CITIZEN',
       });
       fetchUsers();
-    } catch (err: unknown) {
-      toast.error((err as Error).message || 'Signup failed');
+    } else {
+      await swalError(t('admin.userManagement.toastSignupFail'), res.message);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('This user is deactivated. Permanently delete this account and all associated data? This cannot be undone.')) return;
-
-    try {
-      await deleteUser(id);
-      toast.success('User account permanently deleted');
+    const ok = await swalConfirm({
+      title: t('admin.userManagement.confirmDeleteUser'),
+      confirmButtonText: t('admin.common.delete'),
+      cancelButtonText: t('admin.common.cancel'),
+    });
+    if (!ok) return;
+    const res = await deleteUser(id);
+    if (res.success) {
+      await swalSuccess(t('admin.userManagement.toastUserDeleted'));
       fetchUsers();
-    } catch (err: unknown) {
-      toast.error((err as Error).message || 'Failed to delete user');
+    } else {
+      await swalError(t('admin.userManagement.toastDeleteUserFail'), res.message);
     }
   };
 
   const handleToggleActive = async (user: AdminUser) => {
     const newStatus = !user.is_active;
-    const action = newStatus ? 'activate' : 'deactivate';
 
-    if (!confirm(`Are you sure you want to ${action} ${user.full_name}'s account?`)) return;
+    const ok = await swalConfirm({
+      title: newStatus
+        ? t('admin.userManagement.confirmActivate', { name: user.full_name })
+        : t('admin.userManagement.confirmDeactivate', { name: user.full_name }),
+      confirmButtonText: 'OK',
+      cancelButtonText: t('admin.common.cancel'),
+    });
+    if (!ok) return;
 
-    try {
-      await updateUser(user._id, { is_active: newStatus });
-      toast.success(`Account ${newStatus ? 'activated' : 'deactivated'} successfully`);
+    const res = await updateUser(user._id, { is_active: newStatus });
+    if (res.success) {
+      await swalSuccess(
+        newStatus ? t('admin.userManagement.toastAccountActivated') : t('admin.userManagement.toastAccountDeactivated')
+      );
       fetchUsers();
-    } catch (err) {
-      toast.error('Failed to update account status');
+    } else {
+      await swalError(t('admin.userManagement.toastStatusUpdateFail'), res.message);
     }
   };
 
   const getRoleBadge = (role: string) => {
-    const colors = {
-      admin: 'bg-purple-100 text-purple-800',
-      collector: 'bg-blue-100 text-blue-800',
-      citizen: 'bg-green-100 text-green-800',
+    const colors: Record<string, string> = {
+      ADMIN: 'bg-purple-100 text-purple-800',
+      COLLECTOR: 'bg-blue-100 text-blue-800',
+      CITIZEN: 'bg-green-100 text-green-800',
     };
-    return <Badge className={colors[role as keyof typeof colors] || 'bg-gray-100 text-gray-800'}>{role}</Badge>;
+    const r = role.toUpperCase();
+    const label =
+      r === 'CITIZEN'
+        ? t('admin.userManagement.roleCitizen')
+        : r === 'COLLECTOR'
+          ? t('admin.userManagement.roleCollector')
+          : r === 'ADMIN'
+            ? t('admin.userManagement.roleAdmin')
+            : role;
+    return (
+      <Badge className={colors[r] || 'bg-gray-100 text-gray-800'}>{label}</Badge>
+    );
   };
 
   const getStatusBadge = (active: boolean) => {
-    return active
-      ? <Badge className="bg-green-100 text-green-800 flex items-center gap-1"><UserCheck className="h-3 w-3" /> Active</Badge>
-      : <Badge className="bg-red-100 text-red-800 flex items-center gap-1"><UserX className="h-3 w-3" /> Inactive</Badge>;
+    return active ? (
+      <Badge className="bg-green-100 text-green-800 flex items-center gap-1">
+        <UserCheck className="h-3 w-3" /> {t('admin.common.active')}
+      </Badge>
+    ) : (
+      <Badge className="bg-red-100 text-red-800 flex items-center gap-1">
+        <UserX className="h-3 w-3" /> {t('admin.common.inactive')}
+      </Badge>
+    );
   };
 
-  const UserActionButtons = ({ user }: { user: AdminUser }) => (
-    <div className="flex items-center gap-1">
-      <Button variant="ghost" size="icon" onClick={() => handleEditOpen(user)}>
-        <Edit className="h-4 w-4 text-gray-600" />
-      </Button>
-
-      {user.is_active ? (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <UserX className="h-4 w-4 text-orange-600" />
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent className="w-[calc(100%-2rem)] sm:max-w-md rounded-xl">
-            <AlertDialogHeader>
-              <AlertDialogTitle>Deactivate Account?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Deactivating <strong>{user.full_name}</strong> will immediately log them out and block access.
-                You can reactivate later or delete permanently after deactivation.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter className="flex-col-reverse sm:flex-row gap-2">
-              <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => handleToggleActive(user)}
-                className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white"
-              >
-                Deactivate
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      ) : (
-        <>
-          <Button variant="ghost" size="icon" onClick={() => handleToggleActive(user)}>
-            <UserCheck className="h-4 w-4 text-green-600" />
-          </Button>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Trash2 className="h-4 w-4 text-red-600" />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="w-[calc(100%-2rem)] sm:max-w-md rounded-xl">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Permanently Delete Account?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  User <strong>{user.full_name}</strong> is deactivated. This will permanently delete the account
-                  and all associated data. This action cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter className="flex-col-reverse sm:flex-row gap-2">
-                <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => handleDelete(user._id)}
-                  className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
-                >
-                  Delete Permanently
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </>
-      )}
-    </div>
-  );
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif text-gray-900 mb-1">
-            User Management
+          <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
+            {t('admin.userManagement.title')}
           </h1>
-          <p className="text-sm md:text-base text-gray-600">
-            Manage Citizens, Collectors, Admins and other roles
+          <p className="text-lg text-gray-600">
+            {t('admin.userManagement.subtitle')}
           </p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-3">
           <Dialog open={addModalOpen} onOpenChange={setAddModalOpen}>
             <DialogTrigger asChild>
-              <Button className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white gap-2">
+              <Button className="bg-teal-700 hover:bg-teal-800 text-white gap-2">
                 <UserPlus className="h-4 w-4" />
-                Add New User
+                {t('admin.userManagement.addUser')}
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-[calc(100%-2rem)] sm:max-w-lg rounded-xl">
+            <DialogContent className="sm:max-w-lg">
               <DialogHeader>
-                <DialogTitle>Add New User</DialogTitle>
+                <DialogTitle>{t('admin.userManagement.addModalTitle')}</DialogTitle>
               </DialogHeader>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
                 <div className="space-y-2">
-                  <Label>Full Name <span className="text-red-600">*</span></Label>
+                  <Label>
+                    {t('admin.userManagement.fullName')} <span className="text-red-600">*</span>
+                  </Label>
                   <Input
                     required
                     value={addForm.full_name}
                     onChange={(e) => setAddForm({ ...addForm, full_name: e.target.value })}
-                    placeholder="e.g. Kamal Silva"
+                    placeholder={t('admin.userManagement.placeholderFullName')}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Mobile Number <span className="text-red-600">*</span></Label>
+                  <Label>
+                    {t('admin.userManagement.mobile')} <span className="text-red-600">*</span>
+                  </Label>
                   <Input
                     required
                     type="tel"
@@ -301,174 +285,235 @@ export function UserManagementPage() {
                         setAddForm({ ...addForm, mobile_number: val });
                       }
                     }}
-                    placeholder="e.g. 0771234567"
+                    placeholder={t('admin.userManagement.placeholderMobile')}
                   />
-                  <p className="text-xs text-gray-500">Exactly 10 digits (no spaces, +94, etc.)</p>
+                  <p className="text-xs text-gray-500">{t('admin.userManagement.mobileHint')}</p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Email <span className="text-red-600">*</span>
-                  </Label>
+                  <Label>{t('admin.userManagement.emailOptional')}</Label>
                   <Input
                     type="email"
                     value={addForm.email}
                     onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
-                    placeholder="e.g. kamal@gmail.com"
+                    placeholder={t('admin.userManagement.placeholderEmail')}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Address (Area) <span className="text-red-600">*</span></Label>
-                  <Input
-                    required
-                    value={addForm.address}
-                    onChange={(e) => setAddForm({ ...addForm, address: e.target.value })}
-                    placeholder="e.g. Colombo 7"
-                  />
+                  <Label>
+                    {t('admin.userManagement.role')} <span className="text-red-600">*</span>
+                  </Label>
+                  <Select
+                    value={addForm.role}
+                    onValueChange={(v) =>
+                      setAddForm((prev) => ({
+                        ...prev,
+                        role: v,
+                        area:
+                          (v === 'COLLECTOR' && prev.role !== 'COLLECTOR') ||
+                          (v === 'CITIZEN' && prev.role === 'COLLECTOR')
+                            ? ''
+                            : prev.area,
+                      }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={t('admin.userManagement.selectRole')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="CITIZEN">{t('admin.userManagement.roleCitizen')}</SelectItem>
+                      <SelectItem value="COLLECTOR">{t('admin.userManagement.roleCollector')}</SelectItem>
+                      <SelectItem value="ADMIN">{t('admin.userManagement.roleAdmin')}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label>
+                    {addForm.role === 'COLLECTOR' ? (
+                      <>
+                        {t('admin.userManagement.labelAreaPS')} <span className="text-red-600">*</span>
+                      </>
+                    ) : addForm.role === 'CITIZEN' ? (
+                      <>
+                        {t('admin.userManagement.labelAreaCity')} <span className="text-red-600">*</span>
+                      </>
+                    ) : (
+                      <>
+                        {t('admin.userManagement.labelAreaAdmin')} <span className="text-red-600">*</span>
+                      </>
+                    )}
+                  </Label>
+                  {addForm.role === 'COLLECTOR' ? (
+                    <>
+                      <PradeshiyaSabhaSelect
+                        value={addForm.area}
+                        onValueChange={(area) => setAddForm((prev) => ({ ...prev, area }))}
+                        placeholder={t('admin.userManagement.psPlaceholder')}
+                      />
+                      <p className="text-xs text-gray-500">{t('admin.userManagement.psHelpNew')}</p>
+                    </>
+                  ) : addForm.role === 'CITIZEN' ? (
+                    <>
+                      <MainCitySelect
+                        value={addForm.area}
+                        onValueChange={(area) => setAddForm((prev) => ({ ...prev, area }))}
+                        placeholder={t('admin.userManagement.cityPlaceholder')}
+                      />
+                      <p className="text-xs text-gray-500">{t('admin.userManagement.cityHelpNew')}</p>
+                    </>
+                  ) : (
+                    <Input
+                      required
+                      value={addForm.area}
+                      onChange={(e) => setAddForm({ ...addForm, area: e.target.value })}
+                      placeholder={t('admin.userManagement.addressPlaceholder')}
+                    />
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Password <span className="text-red-600">*</span></Label>
+                  <Label>
+                    {t('admin.userManagement.password')} <span className="text-red-600">*</span>
+                  </Label>
                   <Input
                     required
                     type="password"
                     value={addForm.password}
                     onChange={(e) => setAddForm({ ...addForm, password: e.target.value })}
-                    placeholder="Enter password"
+                    placeholder={t('admin.userManagement.passwordPlaceholder')}
                   />
-                  <p className="text-xs text-gray-500">
-                    Password must be at least 6 characters.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Role <span className="text-red-600">*</span></Label>
-                  <Select
-                    value={addForm.role}
-                    onValueChange={(v) => setAddForm({ ...addForm, role: v })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="citizen">Citizen</SelectItem>
-                      <SelectItem value="collector">Collector</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
               </div>
 
-              <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
-                <Button
-                 variant="outline" 
-                 onClick={() => setAddModalOpen(false)}
-                 className="w-full sm:w-auto"
-                 >
-                  Cancel
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setAddModalOpen(false)}>
+                  {t('admin.common.cancel')}
                 </Button>
                 <Button
                   onClick={handleAddSubmit}
-                  className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white"
+                  className="bg-teal-700 hover:bg-teal-800 text-white"
                 >
-                  Create User
+                  {t('admin.userManagement.createUser')}
                 </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
+
+          <Button variant="outline" size="icon" onClick={fetchUsers}>
+            <RefreshCw className="h-5 w-5" />
+          </Button>
         </div>
       </div>
 
-      {loading ? (
-        <div className="py-20 text-center text-gray-500">Loading users...</div>
-      ) : users.length === 0 ? (
-        <div className="text-center py-20 text-gray-500">
-          <p className="text-lg font-medium">No users found</p>
-          <p className="mt-2 text-sm">Click "Add New User" to create one.</p>
-        </div>
-      ) : (
-        <>
-        {/* Mobile */}         
-           <div className="flex flex-col gap-4 md:hidden">
-            {users.map((user) => (
-              <Card key={user._id} className={`border shadow-sm ${!user.is_active ? 'opacity-70' : ''}`}>
-                <CardContent className="p-4 space-y-3">
-
-                  {/* Top: name + status */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="font-semibold text-gray-900 truncate">{user.full_name}</p>
-                      <div className="mt-1">{getRoleBadge(user.role)}</div>
-                    </div>
-                    {getStatusBadge(user.is_active)}
-                  </div>
-
-                  {/* Details */}
-                  <div className="space-y-1.5 text-sm text-gray-600">
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <Phone className="h-3.5 w-3.5 text-gray-400 shrink-0" />
-                      <span>{user.mobile_number}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <Mail className="h-3.5 w-3.5 text-gray-400 shrink-0" />
-                      <span className="truncate">{user.email || '—'}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <MapPin className="h-3.5 w-3.5 text-gray-400 shrink-0" />
-                      <span className="truncate">{user.address}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="h-3.5 w-3.5 text-gray-400 shrink-0" />
-                      <span>{user.joined_date}</span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex justify-end pt-1">
-                    <UserActionButtons user={user} />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-      {/* Desktop */}
-      <Card className="hidden md:block border-none shadow-lg">
+      {/* Table */}
+      <Card className="border-none shadow-lg">
         <CardContent className="p-0">
           {loading ? (
-            <div className="p-10 text-center text-gray-500">Loading users...</div>
+            <div className="p-10 text-center text-gray-500">{t('admin.userManagement.loading')}</div>
           ) : users.length === 0 ? (
             <div className="text-center py-20 text-gray-500">
-              <p className="text-xl font-medium">No users found</p>
-              <p className="mt-3">Click "Add New User" to create one.</p>
+              <p className="text-xl font-medium">{t('admin.userManagement.emptyTitle')}</p>
+              <p className="mt-3">{t('admin.userManagement.emptyHint')}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-50">
-                    <TableHead>Full Name</TableHead>
-                    <TableHead>Address (Area)</TableHead>
-                    <TableHead>Mobile Number</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Joined Date</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>{t('admin.userManagement.thName')}</TableHead>
+                    <TableHead>{t('admin.userManagement.thArea')}</TableHead>
+                    <TableHead>{t('admin.userManagement.thMobile')}</TableHead>
+                    <TableHead>{t('admin.userManagement.thEmail')}</TableHead>
+                    <TableHead>{t('admin.userManagement.thRole')}</TableHead>
+                    <TableHead>{t('admin.userManagement.thJoined')}</TableHead>
+                    <TableHead>{t('admin.common.status')}</TableHead>
+                    <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {users.map((user) => (
                     <TableRow key={user._id} className="hover:bg-gray-50">
                       <TableCell className="font-medium">{user.full_name}</TableCell>
-                      <TableCell>{user.address}</TableCell>
+                      <TableCell>{user.area}</TableCell>
                       <TableCell>{user.mobile_number}</TableCell>
                       <TableCell>{user.email || '—'}</TableCell>
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
                       <TableCell>{user.joined_date}</TableCell>
                       <TableCell>{getStatusBadge(user.is_active)}</TableCell>
-                      <TableCell className="text-right">
-                        <UserActionButtons user={user} />
+                      <TableCell className="text-right space-x-3">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleEditOpen(user)}
+                        >
+                          <Edit className="h-4 w-4 text-gray-600" />
+                        </Button>
+
+                        {user.is_active ? (
+                          // Active → show Deactivate
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <UserX className="h-4 w-4 text-orange-600" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>{t('admin.userManagement.deactivateTitle')}</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  {t('admin.userManagement.deactivateDesc', { name: user.full_name })}
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>{t('admin.common.cancel')}</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleToggleActive(user)}
+                                  className="bg-orange-600 hover:bg-orange-700 text-white"
+                                >
+                                  {t('admin.userManagement.deactivate')}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        ) : (
+                          // Inactive → show Activate + Delete
+                          <>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleToggleActive(user)}
+                            >
+                              <UserCheck className="h-4 w-4 text-green-600" />
+                            </Button>
+
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                  <Trash2 className="h-4 w-4 text-red-600" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>{t('admin.userManagement.deletePermanentTitle')}</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    {t('admin.userManagement.deletePermanentDesc', { name: user.full_name })}
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>{t('admin.common.cancel')}</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => handleDelete(user._id)}
+                                    className="bg-red-600 hover:bg-red-700 text-white"
+                                  >
+                                    {t('admin.userManagement.deletePermanent')}
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -478,19 +523,21 @@ export function UserManagementPage() {
           )}
         </CardContent>
       </Card>
-    </>
-  )}
 
       {/* Edit User Modal */}
       <Dialog open={!!editUser} onOpenChange={() => setEditUser(null)}>
-        <DialogContent className="w-[calc(100%-2rem)] sm:max-w-lg rounded-xl">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Edit User – {editUser?.full_name}</DialogTitle>
+            <DialogTitle>
+              {editUser ? t('admin.userManagement.editTitle', { name: editUser.full_name }) : ''}
+            </DialogTitle>
           </DialogHeader>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
             <div className="space-y-2">
-              <Label>Full Name <span className="text-red-600">*</span></Label>
+              <Label>
+                {t('admin.userManagement.fullName')} <span className="text-red-600">*</span>
+              </Label>
               <Input
                 required
                 value={editForm.full_name}
@@ -499,7 +546,9 @@ export function UserManagementPage() {
             </div>
 
             <div className="space-y-2">
-              <Label>Mobile Number <span className="text-red-600">*</span></Label>
+              <Label>
+                {t('admin.userManagement.mobile')} <span className="text-red-600">*</span>
+              </Label>
               <Input
                 required
                 type="tel"
@@ -513,11 +562,11 @@ export function UserManagementPage() {
                   }
                 }}
               />
-              <p className="text-xs text-gray-500">Exactly 10 digits (no spaces, +94, etc.)</p>
+              <p className="text-xs text-gray-500">{t('admin.userManagement.mobileHint')}</p>
             </div>
 
             <div className="space-y-2">
-              <Label>Email<span className="text-red-600">*</span></Label>
+              <Label>{t('admin.userManagement.emailOptional')}</Label>
               <Input
                 type="email"
                 value={editForm.email}
@@ -526,62 +575,108 @@ export function UserManagementPage() {
             </div>
 
             <div className="space-y-2">
-              <Label>Address (Area) <span className="text-red-600">*</span></Label>
-              <Input
-                required
-                value={editForm.address}
-                onChange={(e) => setEditForm({ ...editForm, address: e.target.value })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Role <span className="text-red-600">*</span></Label>
+              <Label>
+                {t('admin.userManagement.role')} <span className="text-red-600">*</span>
+              </Label>
               <Select
                 value={editForm.role}
-                onValueChange={(v) => setEditForm({ ...editForm, role: v })}
+                onValueChange={(v) =>
+                  setEditForm((prev) => ({
+                    ...prev,
+                    role: v,
+                    area:
+                      (v === 'COLLECTOR' && prev.role !== 'COLLECTOR') ||
+                      (v === 'CITIZEN' && prev.role === 'COLLECTOR')
+                        ? ''
+                        : prev.area,
+                  }))
+                }
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select role" />
+                  <SelectValue placeholder={t('admin.userManagement.selectRole')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="citizen">Citizen</SelectItem>
-                  <SelectItem value="collector">Collector</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="CITIZEN">{t('admin.userManagement.roleCitizen')}</SelectItem>
+                  <SelectItem value="COLLECTOR">{t('admin.userManagement.roleCollector')}</SelectItem>
+                  <SelectItem value="ADMIN">{t('admin.userManagement.roleAdmin')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
+            <div className="space-y-2 md:col-span-2">
+              <Label>
+                {editForm.role === 'COLLECTOR' ? (
+                  <>
+                    {t('admin.userManagement.labelAreaPS')} <span className="text-red-600">*</span>
+                  </>
+                ) : editForm.role === 'CITIZEN' ? (
+                  <>
+                    {t('admin.userManagement.labelAreaCity')} <span className="text-red-600">*</span>
+                  </>
+                ) : (
+                  <>
+                    {t('admin.userManagement.labelAreaAdmin')} <span className="text-red-600">*</span>
+                  </>
+                )}
+              </Label>
+              {editForm.role === 'COLLECTOR' ? (
+                <>
+                  <PradeshiyaSabhaSelect
+                    value={editForm.area}
+                    onValueChange={(area) => setEditForm((prev) => ({ ...prev, area }))}
+                    placeholder={t('admin.userManagement.psPlaceholder')}
+                  />
+                  <p className="text-xs text-gray-500">{t('admin.userManagement.psHelpEdit')}</p>
+                </>
+              ) : editForm.role === 'CITIZEN' ? (
+                <>
+                  <MainCitySelect
+                    value={editForm.area}
+                    onValueChange={(area) => setEditForm((prev) => ({ ...prev, area }))}
+                    placeholder={t('admin.userManagement.cityPlaceholder')}
+                  />
+                  <p className="text-xs text-gray-500">{t('admin.userManagement.cityHelpEdit')}</p>
+                </>
+              ) : (
+                <Input
+                  required
+                  value={editForm.area}
+                  onChange={(e) => setEditForm({ ...editForm, area: e.target.value })}
+                />
+              )}
+            </div>
+
             <div className="space-y-2">
-              <Label>Account Status <span className="text-red-600">*</span></Label>
+              <Label>
+                {t('admin.userManagement.accountStatus')} <span className="text-red-600">*</span>
+              </Label>
               <Select
                 value={editForm.is_active ? 'active' : 'inactive'}
                 onValueChange={(v) => setEditForm({ ...editForm, is_active: v === 'active' })}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
+                  <SelectValue placeholder={t('admin.userManagement.selectStatus')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
+                  <SelectItem value="active">{t('admin.common.active')}</SelectItem>
+                  <SelectItem value="inactive">{t('admin.common.inactive')}</SelectItem>
                 </SelectContent>
               </Select>
               {!editForm.is_active && (
-                <p className="text-xs text-orange-700">
-                  Warning: Deactivating will immediately log the user out and block access.
-                </p>
+                <p className="text-xs text-orange-700 mt-1">{t('admin.userManagement.warningDeactivate')}</p>
               )}
             </div>
           </div>
 
-          <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
+          <DialogFooter>
             <Button variant="outline" onClick={() => setEditUser(null)}>
-              Cancel
+              {t('admin.common.cancel')}
             </Button>
             <Button
               onClick={handleEditSubmit}
-              className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white"
+              className="bg-teal-700 hover:bg-teal-800 text-white"
             >
-              Save Changes
+              {t('admin.userManagement.saveChanges')}
             </Button>
           </DialogFooter>
         </DialogContent>
