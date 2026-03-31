@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bell, CheckCircle, Truck, Calendar, DollarSign, AlertTriangle } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -6,64 +6,40 @@ import { Button } from '../../../components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Badge } from '../../../components/ui/badge';
 import { Card, CardContent } from '../../../components/ui/card';
+import { getCollectorNotifications, type CollectorNotification } from '../../../services/CollectorService';
 
-const collectorNotifications = [
-  {
-    id: '1',
-    type: 'new-booking',
-    title: 'New Pickup Booking Received',
-    message: 'Priya Jayawardhana from Colombo 7 booked a pickup for 2 kg Iron & 1.5 kg Paper – Total est. LKR 550',
-    timestamp: 'Today at 10:15 AM',
-    isRead: false,
-    icon: Truck,
-  },
-  {
-    id: '2',
-    type: 'pickup-completed',
-    title: 'Pickup Completed Successfully',
-    message: 'You completed collection for Rohan Silva (Colombo 7). Earnings: LKR 550 added to your pending payments.',
-    timestamp: 'Yesterday at 12:40 PM',
-    isRead: true,
-    icon: CheckCircle,
-  },
-  {
-    id: '3',
-    type: 'payment-processed',
-    title: 'Payment Processed',
-    message: 'Your earnings of LKR 1,820 for last week have been transferred to your account.',
-    timestamp: 'Jan 10, 2026',
-    isRead: true,
-    icon: DollarSign,
-  },
-  {
-    id: '4',
-    type: 'route-full',
-    title: 'Pickup Route is Full',
-    message: 'Colombo 6 route for Jan 16 is now full (12/12 bookings). No more slots available.',
-    timestamp: 'Jan 15, 2026',
-    isRead: false,
-    icon: AlertTriangle,
-  },
-  {
-    id: '5',
-    type: 'schedule-reminder',
-    title: 'Pickup Reminder',
-    message: 'You have 8 pickups scheduled today (09:00 AM - 11:00 AM) in Colombo 7. Start route soon.',
-    timestamp: 'Today at 08:00 AM',
-    isRead: false,
-    icon: Calendar,
-  },
-];
+function notificationIcon(type: string) {
+  switch (type) {
+    case 'pickup-completed':
+      return CheckCircle;
+    case 'payment-processed':
+      return DollarSign;
+    case 'route-full':
+      return AlertTriangle;
+    case 'schedule-reminder':
+      return Calendar;
+    case 'new-booking':
+    default:
+      return Truck;
+  }
+}
 
 export function NotificationsPage() {
   const { t } = useTranslation();
-  const [filter, setFilter] = useState('all'); // all / unread
+  const [filter, setFilter] = useState('all');
+  const [notifications, setNotifications] = useState<CollectorNotification[]>([]);
 
-  const filteredNotifications = collectorNotifications.filter((notif) =>
+  useEffect(() => {
+    getCollectorNotifications().then((res) => {
+      if (res.success) setNotifications(res.data);
+    });
+  }, []);
+
+  const filteredNotifications = notifications.filter((notif) =>
     filter === 'unread' ? !notif.isRead : true
   );
 
-  const unreadCount = collectorNotifications.filter((n) => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const markAllAsRead = () => {
     toast.success('All notifications marked as read', {
@@ -122,9 +98,11 @@ export function NotificationsPage() {
             <p className="mt-2">When there's an update about bookings, pickups, or payments, it will appear here.</p>
           </div>
         ) : (
-          filteredNotifications.map((notif) => (
+          filteredNotifications.map((notif) => {
+            const Icon = notificationIcon(notif.type);
+            return (
             <Card
-              key={notif.id}
+              key={notif._id}
               className={`overflow-hidden border-none shadow-sm transition-all ${
                 !notif.isRead ? 'bg-teal-50 border-l-4 border-teal-500' : 'bg-white'
               }`}
@@ -133,7 +111,7 @@ export function NotificationsPage() {
                 <div className={`p-3 rounded-full ${
                   !notif.isRead ? 'bg-teal-100' : 'bg-gray-100'
                 }`}>
-                  <notif.icon className={`h-6 w-6 ${
+                  <Icon className={`h-6 w-6 ${
                     !notif.isRead ? 'text-teal-700' : 'text-gray-600'
                   }`} />
                 </div>
@@ -167,7 +145,8 @@ export function NotificationsPage() {
                 </div>
               </CardContent>
             </Card>
-          ))
+          );
+          })
         )}
       </div>
 

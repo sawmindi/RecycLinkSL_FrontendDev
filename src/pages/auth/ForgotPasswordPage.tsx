@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { ArrowLeft, MessageSquare, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import PhoneVerificationPage from './PhoneVerificationPage';
 import EmailVerificationPage from './EmailVerificationPage';
 import SmsOtpPage from './SmsOTP';
 import EmailOtpPage from './EmailOTP';
+import { AuthLanguageToggle } from '../../components/auth/AuthLanguageToggle';
 
 type Step = 'select-method' | 'enter-phone' | 'enter-email' | 'verify-phone-otp' | 'verify-email-otp';
 
 
 export function ForgotPasswordPage() {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState<Step>('select-method');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
@@ -70,39 +73,29 @@ export function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
-        {/* Back Button */}
-        <div className="absolute top-6 left-6 md:top-8 md:left-10 z-10">
+      <div className="relative w-full max-w-2xl">
+        <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between gap-4">
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-gray-600 mb-12 hover:text-gray-800 transition-colors"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors -ml-2"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="text-base">Back</span>
+            <span className="text-base">{t('auth.back')}</span>
           </Button>
+          <AuthLanguageToggle />
         </div>
 
-        {/* Main Card */}
-        <div className="">
-          {/* Header */}
+        <div className="pt-14">
           <div className="flex flex-col items-center mb-10">
-            <img
-              src="/logo.png"
-              alt="RecycleLinkSL Logo"
-              className="h-10 w-auto mb-4 object-contain"
-            />
+            <img src="/logo.png" alt={t('auth.logoAlt')} className="h-10 w-auto mb-4 object-contain" />
             <div className="text-center">
-              <h1 className="text-3xl font-semibold font-serif">Forgot Your Password?</h1>
-              <p className="text-gray-600 text-sm mt-2">
-                Select a method below to reset your password
-              </p>
+              <h1 className="text-3xl font-semibold font-serif">{t('auth.forgotTitle')}</h1>
+              <p className="text-gray-600 text-sm mt-2">{t('auth.forgotSubtitle')}</p>
             </div>
           </div>
 
-          {/* Recovery Options */}
           <div className="space-y-4 max-w-lg mx-auto">
-            {/* Via SMS Button */}
             <Button
               onClick={() => handleMethodSelect('sms')}
               variant="outline"
@@ -110,11 +103,10 @@ export function ForgotPasswordPage() {
             >
               <div className="flex items-center justify-center gap-3 ">
                 <MessageSquare className="w-5 h-5 text-gray-600" />
-                <span className="text-gray-700">Via SMS: .... ... ...</span>
+                <span className="text-gray-700">{t('auth.viaSms')}</span>
               </div>
             </Button>
 
-            {/* Via Email Button */}
             <Button
               onClick={() => handleMethodSelect('email')}
               variant="outline"
@@ -122,7 +114,7 @@ export function ForgotPasswordPage() {
             >
               <div className="flex items-center justify-center gap-3">
                 <Mail className="w-5 h-5 text-gray-600" />
-                <span className="text-gray-700">Via Email: ......@gmail.com</span>
+                <span className="text-gray-700">{t('auth.viaEmail')}</span>
               </div>
             </Button>
           </div>

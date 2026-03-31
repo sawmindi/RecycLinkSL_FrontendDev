@@ -10,7 +10,6 @@ export class Util {
     return environment.api_url + "/api/auth/" + path;
   }
 
-  /** Base API path for admin/resources (e.g. pickup-schedules, categories, users). */
   public static apiUrl(path: string): string {
     return environment.api_url + "/api/" + path;
   }
@@ -26,7 +25,21 @@ export class Util {
         return response.data;
       },
       function (error) {
-        return { success: false, data: undefined, error: error };
+        const d = error?.response?.data;
+        const msg =
+          (typeof d === "object" && d !== null && typeof (d as { message?: string }).message === "string"
+            ? (d as { message: string }).message
+            : null) ||
+          (typeof d === "string" ? d : null) ||
+          error?.message ||
+          "Request failed";
+        return Promise.resolve({
+          success: false,
+          data: undefined,
+          message: msg,
+          token: "",
+          error,
+        });
       }
     );
   }

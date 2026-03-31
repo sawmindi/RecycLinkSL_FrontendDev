@@ -5,32 +5,71 @@ import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 import { Button } from '../../../components/ui/button';
 import { Pencil } from 'lucide-react';
+import { AuthService } from '../../../services/AuthService';
+import { Util } from '../../../Util';
+import { toast } from 'react-toastify';
 
 export default function MyProfile() {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    fullName: 'Saman Perera',
-    userName: 'samanperera12',
-    password: '********', 
-    mobile: '+94777000000',
-    email: 'samanperera12@gmail.com',
-    areaDistrict: '123 Galle Road, Colombo 7',
+    fullName: '',
+    userName: '',
+    password: '********',
+    mobile: '',
+    email: '',
+    areaDistrict: '',
   });
 
-  const [profileImage, setProfileImage] = useState('https://github.com/shadcn.png');
+  const [profileImage, setProfileImage] = useState<string>('');
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    AuthService.getMe().then((res) => {
+      if (res.success && res.data) {
+        const u = res.data;
+        setFormData({
+          fullName: u.full_name ?? '',
+          userName: u.username ?? '',
+          password: '********',
+          mobile: u.mobile_number ?? '',
+          email: u.email ?? '',
+          areaDistrict: u.area ?? '',
+        });
+        const photoId = (u as { profilePhotoId?: string }).profilePhotoId;
+        if (photoId) setProfileImage(Util.fileURL(photoId));
+      }
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const key = name === 'mobileNumber' ? 'mobile' : name as keyof typeof formData;
+    setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = () => {
-    console.log('Saving profile:', formData);
-    console.log('Profile image:', profileImage);
-    setIsEditing(false);
+  const handleSave = async () => {
+    const meRes = await AuthService.getMe();
+    if (!meRes.success || !meRes.data?._id) {
+      toast.error(t('profile.toastLoadFail'));
+      return;
+    }
+    const res = await AuthService.updateUser(meRes.data._id, {
+      full_name: formData.fullName,
+      username: formData.userName,
+      mobile_number: formData.mobile,
+      email: formData.email || undefined,
+      area: formData.areaDistrict,
+    });
+    if (res.success) {
+      toast.success(t('profile.toastUpdated'));
+      setIsEditing(false);
+    } else {
+      toast.error(res.message || t('profile.toastUpdateFail'));
+    }
   };
 
   const handleCancel = () => {
@@ -53,15 +92,24 @@ export default function MyProfile() {
       reader.readAsDataURL(file);
     }
   };
-  useEffect(() => {
-  fetch('http://localhost:4000/api/test')
-    .then(res => res.json())
-    .then(data => console.log('Backend response:', data))
-    .catch(err => console.error('Backend connection error:', err));
-}, []);
+
+  const getInitials = (name: string) => {
+    if (!name.trim()) return t('citizen.lists.emDash');
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return name.slice(0, 2).toUpperCase();
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-gray-50 p-8">
+        <p className="text-gray-500">{t('profile.loading')}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-gray-50"> 
+    <div className="bg-gray-50">
       <div className="max-w3xl">
         <h2 className="text-3xl font-serif text-gray-800 mb-2">{t('sidebar.myProfile')}</h2>
       </div>
@@ -69,9 +117,9 @@ export default function MyProfile() {
         <div className="flex items-center gap-6 mb-8">
           <div className="relative">
             <Avatar className="h-24 w-24 border-4 border-teal-100 shadow-md">
-              <AvatarImage src={profileImage} alt="Saman Perera" />
+              <AvatarImage src={profileImage || undefined} alt={formData.fullName || t('profile.avatarAlt')} />
               <AvatarFallback className="bg-teal-700 text-white text-3xl font-semibold">
-                SP
+                {getInitials(formData.fullName)}
               </AvatarFallback>
             </Avatar>
             {isEditing && (
@@ -79,7 +127,7 @@ export default function MyProfile() {
                 <button
                   onClick={handleAvatarClick}
                   className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors border border-gray-200"
-                  aria-label="Edit profile picture"
+                  aria-label={t('profile.ariaEditPicture')}
                 >
                   <Pencil className="w-4 h-4 text-gray-600" />
                 </button>
@@ -104,7 +152,7 @@ export default function MyProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
-                Full Name
+                {t('profile.fullName')}
               </Label>
               <Input
                 id="fullName"
@@ -118,7 +166,7 @@ export default function MyProfile() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Password
+                {t('profile.password')}
               </Label>
               <Input
                 id="password"
@@ -135,7 +183,7 @@ export default function MyProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="mobileNumber" className="text-sm font-medium text-gray-700">
-                Mobile Number
+                {t('profile.mobileNumber')}
               </Label>
               <Input
                 id="mobileNumber"
@@ -149,7 +197,7 @@ export default function MyProfile() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                Email
+                {t('profile.email')}
               </Label>
               <Input
                 id="email"
@@ -164,7 +212,7 @@ export default function MyProfile() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="areaDistrict" className="text-sm font-medium text-gray-700">
-              Area/District
+              {t('profile.areaDistrict')}
             </Label>
             <Input
               id="areaDistrict"
@@ -183,7 +231,7 @@ export default function MyProfile() {
                 onClick={() => setIsEditing(true)}
                 className="bg-[#1a5f5c] hover:bg-[#164d4a] text-white px-8"
               >
-                Edit Profile
+                {t('profile.editProfile')}
               </Button>
             ) : (
               <>
@@ -191,14 +239,14 @@ export default function MyProfile() {
                   onClick={handleSave}
                   className="bg-[#1a5f5c] hover:bg-[#164d4a] text-white px-8"
                 >
-                  Save
+                  {t('profile.save')}
                 </Button>
                 <Button
                   onClick={handleCancel}
                   variant="outline"
                   className="px-8 border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
-                  Cancel
+                  {t('profile.cancel')}
                 </Button>
               </>
             )}

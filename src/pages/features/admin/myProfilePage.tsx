@@ -53,7 +53,7 @@ export function MyProfilePage() {
   const handleSave = async () => {
     const meRes = await AuthService.getMe();
     if (!meRes.success || !meRes.data?._id) {
-      toast.error('Could not load profile');
+      toast.error(t('profile.toastLoadFail'));
       return;
     }
     const res = await AuthService.updateUser(meRes.data._id, {
@@ -64,10 +64,10 @@ export function MyProfilePage() {
       area: formData.areaDistrict,
     });
     if (res.success) {
-      toast.success('Profile updated');
+      toast.success(t('profile.toastUpdated'));
       setIsEditing(false);
     } else {
-      toast.error(res.message || 'Failed to update profile');
+      toast.error(res.message || t('profile.toastUpdateFail'));
     }
   };
 
@@ -111,7 +111,7 @@ export function MyProfilePage() {
                 <button
                   onClick={handleAvatarClick}
                   className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors border border-gray-200"
-                  aria-label="Edit profile picture"
+                  aria-label={t('profile.ariaEditPicture')}
                 >
                   <Pencil className="w-4 h-4 text-gray-600" />
                 </button>
@@ -121,7 +121,7 @@ export function MyProfilePage() {
                   accept="image/*"
                   onChange={handleImageUpload}
                   className="hidden"
-                  aria-label="Upload profile picture"
+                  aria-label={t('profile.ariaUploadPicture')}
                 />
               </>
             )}
@@ -136,7 +136,7 @@ export function MyProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
-                Full Name
+                {t('profile.fullName')}
               </Label>
               <Input
                 id="fullName"
@@ -150,7 +150,7 @@ export function MyProfilePage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Password
+                {t('profile.password')}
               </Label>
               <Input
                 id="password"
@@ -167,7 +167,7 @@ export function MyProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="mobileNumber" className="text-sm font-medium text-gray-700">
-                Mobile Number
+                {t('profile.mobileNumber')}
               </Label>
               <Input
                 id="mobileNumber"
@@ -181,7 +181,7 @@ export function MyProfilePage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                Email
+                {t('profile.email')}
               </Label>
               <Input
                 id="email"
@@ -196,7 +196,7 @@ export function MyProfilePage() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="areaDistrict" className="text-sm font-medium text-gray-700">
-              Area/District
+              {t('profile.areaDistrict')}
             </Label>
             <Input
               id="areaDistrict"
@@ -215,7 +215,7 @@ export function MyProfilePage() {
                 onClick={() => setIsEditing(true)}
                 className="bg-[#1a5f5c] hover:bg-[#164d4a] text-white px-8"
               >
-                Edit Profile
+                {t('profile.editProfile')}
               </Button>
             ) : (
               <>
@@ -223,14 +223,14 @@ export function MyProfilePage() {
                   onClick={handleSave}
                   className="bg-[#1a5f5c] hover:bg-[#164d4a] text-white px-8"
                 >
-                  Save
+                  {t('profile.save')}
                 </Button>
                 <Button
                   onClick={handleCancel}
                   variant="outline"
                   className="px-8 border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
-                  Cancel
+                  {t('profile.cancel')}
                 </Button>
               </>
             )}

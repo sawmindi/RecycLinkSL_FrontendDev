@@ -1,26 +1,44 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 import { Button } from '../../../components/ui/button';
 import { Pencil } from 'lucide-react';
+import { AuthService } from '../../../services/AuthService';
+import type { User } from '../../../models/User';
 
 export function MyProfile() {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    fullName: 'Saman Perera',
-    userName: 'samanperera12',
-    password: '********', 
-    mobile: '+94777000000',
-    email: 'samanperera12@gmail.com',
-    areaDistrict: '123 Galle Road, Colombo 7',
+    fullName: '',
+    userName: '',
+    password: '',
+    mobile: '',
+    email: '',
+    areaDistrict: '',
   });
 
   const [profileImage, setProfileImage] = useState('https://github.com/shadcn.png');
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    AuthService.getMe().then((res) => {
+      if (res.success && res.data) {
+        const u = res.data as User;
+        setFormData({
+          fullName: u.full_name ?? '',
+          userName: u.username ?? '',
+          password: '',
+          mobile: u.mobile_number ?? '',
+          email: u.email ?? '',
+          areaDistrict: u.area ?? '',
+        });
+      }
+    });
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,8 +46,17 @@ export function MyProfile() {
   };
 
   const handleSave = () => {
-    console.log('Saving profile:', formData);
-    console.log('Profile image:', profileImage);
+    AuthService.getMe().then((res) => {
+      if (res.success && res.data && res.data._id) {
+        AuthService.updateUser(res.data._id, {
+          full_name: formData.fullName,
+          username: formData.userName,
+          mobile_number: formData.mobile,
+          email: formData.email,
+          area: formData.areaDistrict,
+        }).catch(() => {});
+      }
+    });
     setIsEditing(false);
   };
 
@@ -63,7 +90,7 @@ export function MyProfile() {
         <div className="flex items-center gap-6 mb-8">
           <div className="relative">
             <Avatar className="h-24 w-24 border-4 border-teal-100 shadow-md">
-              <AvatarImage src={profileImage} alt="Saman Perera" />
+              <AvatarImage src={profileImage} alt={formData.fullName || t('profile.avatarAlt')} />
               <AvatarFallback className="bg-teal-700 text-white text-3xl font-semibold">
                 SP
               </AvatarFallback>
@@ -73,7 +100,7 @@ export function MyProfile() {
                 <button
                   onClick={handleAvatarClick}
                   className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors border border-gray-200"
-                  aria-label="Edit profile picture"
+                  aria-label={t('profile.ariaEditPicture')}
                 >
                   <Pencil className="w-4 h-4 text-gray-600" />
                 </button>
@@ -83,7 +110,7 @@ export function MyProfile() {
                   accept="image/*"
                   onChange={handleImageUpload}
                   className="hidden"
-                  aria-label="Upload profile picture"
+                  aria-label={t('profile.ariaUploadPicture')}
                 />
               </>
             )}
@@ -98,7 +125,7 @@ export function MyProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
-                Full Name
+                {t('profile.fullName')}
               </Label>
               <Input
                 id="fullName"
@@ -112,7 +139,7 @@ export function MyProfile() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Password
+                {t('profile.password')}
               </Label>
               <Input
                 id="password"
@@ -129,7 +156,7 @@ export function MyProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="mobileNumber" className="text-sm font-medium text-gray-700">
-                Mobile Number
+                {t('profile.mobileNumber')}
               </Label>
               <Input
                 id="mobileNumber"
@@ -143,7 +170,7 @@ export function MyProfile() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                Email
+                {t('profile.email')}
               </Label>
               <Input
                 id="email"
@@ -158,7 +185,7 @@ export function MyProfile() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="areaDistrict" className="text-sm font-medium text-gray-700">
-              Area/District
+              {t('profile.areaDistrict')}
             </Label>
             <Input
               id="areaDistrict"
@@ -177,7 +204,7 @@ export function MyProfile() {
                 onClick={() => setIsEditing(true)}
                 className="bg-[#1a5f5c] hover:bg-[#164d4a] text-white px-8"
               >
-                Edit Profile
+                {t('profile.editProfile')}
               </Button>
             ) : (
               <>
@@ -185,14 +212,14 @@ export function MyProfile() {
                   onClick={handleSave}
                   className="bg-[#1a5f5c] hover:bg-[#164d4a] text-white px-8"
                 >
-                  Save
+                  {t('profile.save')}
                 </Button>
                 <Button
                   onClick={handleCancel}
                   variant="outline"
                   className="px-8 border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
-                  Cancel
+                  {t('profile.cancel')}
                 </Button>
               </>
             )}

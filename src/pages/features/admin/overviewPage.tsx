@@ -34,15 +34,24 @@ export function OverviewPage() {
     AuthService.getMe().then((res) => {
       if (res.success && res.data?.full_name) setUserName(res.data.full_name);
     });
-    getAdminDashboardStats().then((stats) => {
-      if (stats && Object.keys(stats).length) setAdminStats((prev) => ({ ...prev, ...stats }));
-    }).catch(() => {});
-    getAreaPickups().then((data) => {
-      if (data?.length) setAreaPickupsData(data);
-    }).catch(() => {});
-    getItemTypeDistribution().then((data) => {
-      if (data?.length) setItemTypeDistribution(data.map((d, i) => ({ ...d, color: d.color ?? DEFAULT_CHART_COLORS[i % DEFAULT_CHART_COLORS.length] })));
-    }).catch(() => {});
+    getAdminDashboardStats().then((res) => {
+      if (res.success && res.data && Object.keys(res.data).length) {
+        setAdminStats((prev) => ({ ...prev, ...res.data }));
+      }
+    });
+    getAreaPickups().then((res) => {
+      if (res.success && res.data?.length) setAreaPickupsData(res.data);
+    });
+    getItemTypeDistribution().then((res) => {
+      if (res.success && res.data?.length) {
+        setItemTypeDistribution(
+          res.data.map((d, i) => ({
+            ...d,
+            color: d.color ?? DEFAULT_CHART_COLORS[i % DEFAULT_CHART_COLORS.length],
+          }))
+        );
+      }
+    });
   }, []);
 
   return (
@@ -56,7 +65,7 @@ export function OverviewPage() {
             {/* Welcome */}
             <div>
               <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-1">
-                Welcome, {userName || 'Admin'}
+                {t('admin.overview.welcome', { name: userName || t('admin.overview.admin') })}
               </h1>
             </div>
 
@@ -65,7 +74,7 @@ export function OverviewPage() {
               <Card className="bg-[#043937] text-white border-none shadow-lg">
                 <CardContent className="p-6 text-center space-y-3">
                   <Truck className="h-10 w-10 mx-auto opacity-90" />
-                  <p className="text-lg opacity-90">Today's Pickups</p>
+                  <p className="text-lg opacity-90">{t('admin.overview.statTodaysPickups')}</p>
                   <p className="text-4xl font-bold">{adminStats.todaysPickups ?? 0}</p>
                 </CardContent>
               </Card>
@@ -73,7 +82,7 @@ export function OverviewPage() {
               <Card className="bg-[#043937] text-white border-none shadow-lg">
                 <CardContent className="p-6 text-center space-y-3">
                   <Calendar className="h-10 w-10 mx-auto opacity-90" />
-                  <p className="text-lg opacity-90">Pending Schedules</p>
+                  <p className="text-lg opacity-90">{t('admin.overview.statPendingSchedules')}</p>
                   <p className="text-4xl font-bold">{adminStats.pendingSchedules ?? 0}</p>
                 </CardContent>
               </Card>
@@ -81,7 +90,7 @@ export function OverviewPage() {
               <Card className="bg-[#043937] text-white border-none shadow-lg">
                 <CardContent className="p-6 text-center space-y-3">
                   <Users className="h-10 w-10 mx-auto opacity-90" />
-                  <p className="text-lg opacity-90">Registered Citizens</p>
+                  <p className="text-lg opacity-90">{t('admin.overview.statRegisteredCitizens')}</p>
                   <p className="text-4xl font-bold">{adminStats.registeredCitizens ?? 0}</p>
                 </CardContent>
               </Card>
@@ -89,7 +98,7 @@ export function OverviewPage() {
               <Card className="bg-[#043937] text-white border-none shadow-lg">
                 <CardContent className="p-6 text-center space-y-3">
                   <UserCheck className="h-10 w-10 mx-auto opacity-90" />
-                  <p className="text-lg opacity-90">Active Collectors</p>
+                  <p className="text-lg opacity-90">{t('admin.overview.statActiveCollectors')}</p>
                   <p className="text-4xl font-bold">{adminStats.activeCollectors ?? 0}</p>
                 </CardContent>
               </Card>
@@ -97,7 +106,7 @@ export function OverviewPage() {
               <Card className="bg-[#043937] text-white border-none shadow-lg">
                 <CardContent className="p-6 text-center space-y-3">
                   <Layers className="h-10 w-10 mx-auto opacity-90" />
-                  <p className="text-lg opacity-90">Active Categories</p>
+                  <p className="text-lg opacity-90">{t('admin.overview.statActiveCategories')}</p>
                   <p className="text-4xl font-bold">{adminStats.activeCategories ?? 0}</p>
                 </CardContent>
               </Card>
@@ -109,7 +118,7 @@ export function OverviewPage() {
               <Card className="border-none shadow-md bg-white">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-6">
-                    Most Number of Pickups - Area Analysis
+                    {t('admin.overview.chartAreaTitle')}
                   </h3>
                   <div className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
@@ -128,16 +137,16 @@ export function OverviewPage() {
               <Card className="border-none shadow-md bg-white">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-6">
-                    Collection by Item Type
+                    {t('admin.overview.chartItemTypeTitle')}
                   </h3>
                   <p className="text-sm text-gray-600 mb-4">
-                    Distribution of collected materials
+                    {t('admin.overview.chartItemTypeSubtitle')}
                   </p>
                   <div className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
-                          data={itemTypeDistribution.length ? itemTypeDistribution : [{ name: 'No data', value: 100, color: '#e5e7eb' }]}
+                          data={itemTypeDistribution.length ? itemTypeDistribution : [{ name: t('admin.overview.chartNoData'), value: 100, color: '#e5e7eb' }]}
                           dataKey="value"
                           nameKey="name"
                           cx="50%"
@@ -146,7 +155,7 @@ export function OverviewPage() {
                           label={({ name, percent }) => `${name} ${(percent * 100).toFixed(1)}%`}
                           labelLine={true}
                         >
-                          {(itemTypeDistribution.length ? itemTypeDistribution : [{ name: 'No data', value: 100, color: '#e5e7eb' }]).map((entry, index) => (
+                          {(itemTypeDistribution.length ? itemTypeDistribution : [{ name: t('admin.overview.chartNoData'), value: 100, color: '#e5e7eb' }]).map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color ?? DEFAULT_CHART_COLORS[index % DEFAULT_CHART_COLORS.length]} />
                           ))}
                         </Pie>

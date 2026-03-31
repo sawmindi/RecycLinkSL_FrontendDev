@@ -1,0 +1,6048 @@
+[
+  {
+    "district": "Ampara",
+    "municipalCouncils": [
+      {
+        "name": "Kalmunai Municipal Council",
+        "mainCities": [
+          "Periyaneelavanai",
+          "Maruthamunai",
+          "Pandiruppu",
+          "Natpiddymunai",
+          "Chenaikudiyiruppu",
+          "Kalmunai",
+          "Kalmunaikudy",
+          "Sainthamaruthu"
+        ]
+      },
+      {
+        "name": "Akkaraipattu Municipal Council",
+        "mainCities": [
+          "Akkaraipattu",
+          "New Mosque",
+          "Technical College",
+          "Kathiriya North",
+          "Kathiriya South",
+          "Nooraniya",
+          "Badur",
+          "Town Mosque",
+          "Gran Mosque",
+          "Falah",
+          "Alim Nagar",
+          "Isankamicheemai",
+          "Pallikkudirippu North",
+          "Pallikkudirippu South",
+          "Pattiyadipitty"
+        ]
+      }
+    ],
+    "urbanCouncils": [
+      {
+        "name": "Ampara Urban Council",
+        "mainCities": [
+          "Rajawewa",
+          "Tissapura",
+          "Nawagampura",
+          "Samapura",
+          "Indrasarapura",
+          "Jayawardhanapura",
+          "Saddhathissapura",
+          "Mihindupura",
+          "Senanayakapura"
+        ]
+      }
+    ],
+    "pradeshiyaSabhas": [
+      {
+        "name": "Dehiattakandiya Pradeshiya Sabha",
+        "mainCities": [
+          "Rathmalkandura",
+          "Namalgama",
+          "Ranhelgama",
+          "Bakmeedeniya",
+          "Dehiattakandiya",
+          "Kadirapura",
+          "Mawanawela",
+          "Kudagala",
+          "Suriyapokuna",
+          "Mawanagama",
+          "Nagaswewa",
+          "Wijayapura",
+          "Salpitigama",
+          "Lihiniyagama",
+          "Sandamadulla",
+          "Uththalapura",
+          "Sandunpura",
+          "Kudagama",
+          "Nawamedagama",
+          "Wewgama",
+          "Henanigala",
+          "Wewmedagama"
+        ]
+      },
+      {
+        "name": "Damana Pradeshiya Sabha",
+        "mainCities": [
+          "Uksiripura",
+          "Hingurana",
+          "Padagoda",
+          "Pahalalanda",
+          "Kethsirigama",
+          "Wadinagala",
+          "Damana",
+          "Madawalalanda",
+          "Thottama",
+          "Pannalagama"
+        ]
+      },
+      {
+        "name": "Uhana Pradeshiya Sabha",
+        "mainCities": [
+          "Gonaolla",
+          "Nugelanda",
+          "Rajagalathenna",
+          "Galapitagala",
+          "Mayadunna",
+          "Verankatagoda",
+          "Bokkebedda",
+          "Mahakandiya",
+          "Himidurawa",
+          "Dematamalpelessa",
+          "Uhana",
+          "Thissapura",
+          "Weeragoda",
+          "Rajagama",
+          "Wijayapura",
+          "Dadayanthalawa",
+          "Ruhunugama"
+        ]
+      },
+      {
+        "name": "Mahaoya Pradeshiya Sabha",
+        "mainCities": [
+          "Unuwathura Bubula",
+          "Tempitiya",
+          "Samagipura",
+          "Mahaoya",
+          "Dambadeniya",
+          "Kekirihena",
+          "Kudaharasgala",
+          "Kelavinna",
+          "Aranthalawa",
+          "Pollebedda",
+          "Lahugala"
+        ]
+      },
+      {
+        "name": "Namaloya Pradeshiya Sabha",
+        "mainCities": [
+          "Dambethalawa",
+          "Karangawa",
+          "Galmaduwa",
+          "Muwangala",
+          "Kotavehera",
+          "Paragahakele",
+          "Ambagahawella",
+          "Namaloya",
+          "Polwaga Colony",
+          "Wavinna"
+        ]
+      },
+      {
+        "name": "Padiyathalawa Pradeshiya Sabha",
+        "mainCities": [
+          "Galode",
+          "Palathuruwella",
+          "Serankada",
+          "Moradeniya",
+          "Saranagama",
+          "Padiyathalawa",
+          "Kirawana",
+          "Kehelulla",
+          "Holike",
+          "Kolamanthalawa",
+          "Komana",
+          "Marangala"
+        ]
+      },
+      {
+        "name": "Navithanveli Pradeshiya Sabha",
+        "mainCities": [
+          "Central Camp North",
+          "Chalambaikerny North",
+          "Navithanveli",
+          "Annamali",
+          "Chalambaikerny Central",
+          "Central Camp",
+          "Sorikalmunai"
+        ]
+      },
+      {
+        "name": "Sammanthurai Pradeshiya Sabha",
+        "mainCities": [
+          "Malwaththa",
+          "Veeramunai",
+          "Sinnapali",
+          "Mattakalapu Tarawai",
+          "Thaikkapalli",
+          "Sammanthurai",
+          "Vilinayadi",
+          "Malayadi",
+          "Malkampitty",
+          "Valathapitiya"
+        ]
+      },
+      {
+        "name": "Irakkamam Pradeshiya Sabha",
+        "mainCities": [
+          "Varipathanchenai North",
+          "Irakkamam Central",
+          "Irakkamam North",
+          "Irakkamam East",
+          "Irakkamam West",
+          "Irakkamam South",
+          "Varipathanchenai South"
+        ]
+      },
+      {
+        "name": "Pothuvil Pradeshiya Sabha",
+        "mainCities": [
+          "Komarine",
+          "Hidaya Puram",
+          "Victor Estate",
+          "Vaddiveli",
+          "Rasak Moulana Nagar",
+          "Sinnaputhukudiyiruppu",
+          "Mathuran Chanai",
+          "Pothuvil",
+          "Kalappukaddu",
+          "Sarvodayapuram",
+          "Sinnaullai"
+        ]
+      },
+      {
+        "name": "Addalachchenai Pradeshiya Sabha",
+        "mainCities": [
+          "Deegawapiya",
+          "AL-Hamra",
+          "AL-Ashra",
+          "AL-Hidaya",
+          "Minhaj",
+          "Arafa",
+          "AL-Munira",
+          "Jummah-Mosque",
+          "Iqrah",
+          "Thaikka Nagar",
+          "Purathottam"
+        ]
+      },
+      {
+        "name": "Alayadiwembu Pradeshiya Sabha",
+        "mainCities": [
+          "Akkaraipattu A",
+          "Akkaraipattu B",
+          "Akkaraipattu C",
+          "Akkaraipattu D",
+          "Kolavil A",
+          "Kolavil B",
+          "Kolavil C",
+          "Pamamkadu",
+          "Kannakikiramam"
+        ]
+      },
+      {
+        "name": "Lahugala Pradeshiya Sabha",
+        "mainCities": [
+          "Kandahindagama",
+          "Hulannuge",
+          "Perani Lahugala",
+          "Lahugala",
+          "Dewalagoda",
+          "Pansalgoda",
+          "Panama Central",
+          "Panama North",
+          "Panama South"
+        ]
+      },
+      {
+        "name": "Karaitivu Pradeshiya Sabha",
+        "mainCities": [
+          "Maligaikadu East",
+          "Maligaikadu West",
+          "Karaitivu North",
+          "Karaitivu West",
+          "Mavadipalli",
+          "Karaitivu South",
+          "Karaitivu East"
+        ]
+      },
+      {
+        "name": "Ninthavur Pradeshiya Sabha",
+        "mainCities": [
+          "Manthottam",
+          "Meera Nagar",
+          "Vavuniya Nagar",
+          "Central Division",
+          "Puthu Nagar",
+          "Nellitivu",
+          "Musthafa Nagar",
+          "Arasadi Nagar"
+        ]
+      },
+      {
+        "name": "Thirukkovil Pradeshiya Sabha",
+        "mainCities": [
+          "Thambattai",
+          "Thambiluvil North",
+          "Thambiluvil East",
+          "Thambiluvil West",
+          "ThirukkoviI West",
+          "ThirukkoviI East",
+          "Vinayagapuram North",
+          "Vinayagapuram East",
+          "Vinayagapuram West",
+          "Thandiady"
+        ]
+      }
+    ]
+  },
+  {
+    "district": "Anuradhapura",
+    "municipalCouncils": [
+      {
+        "name": "Anuradhapura Municipal Council",
+        "mainCities": [
+          "Pethispura",
+          "Saliya Mawatha",
+          "Henewatta",
+          "Nuwarawewa",
+          "Isurumuniya",
+          "Abhaya Pedesa",
+          "Jayanthi Pedesa",
+          "Pubudupura",
+          "Mahanama Uyana",
+          "Kumbichchankulama",
+          "Samanpura",
+          "Buddagaya Pedesa",
+          "Thammennakulama",
+          "Sirimewan Uyana"
+        ]
+      }
+    ],
+    "urbanCouncils": [],
+    "pradeshiyaSabhas": [
+      {
+        "name": "Medawachchiya Pradeshiya Sabha",
+        "mainCities": [
+          "Poonewa",
+          "Mahakumbukgollewa",
+          "Ethakada",
+          "Hirallugama",
+          "Mahadivulwewa",
+          "Isinbessagama",
+          "Walpola",
+          "Yakawewa",
+          "Puleliya",
+          "Medawachchiya",
+          "Kanadara Divulwewa",
+          "Kirigalwewa"
+        ]
+      },
+      {
+        "name": "Rambewa Pradeshiya Sabha",
+        "mainCities": [
+          "Kadurugasdamana",
+          "Wahamalgollewa",
+          "Ikirigollewa",
+          "Diviyaudabendawewa",
+          "Pihimbiyagollewa",
+          "Konakumbukwewa",
+          "Kende Kallanchiya",
+          "Mahakanadarawa R.B.02",
+          "Rambewa",
+          "Pandukabhayapura",
+          "Rotawewa"
+        ]
+      },
+      {
+        "name": "Kebithigollewa Pradeshiya Sabha",
+        "mainCities": [
+          "Halmillawetiya",
+          "Kahatagollewa",
+          "Wahalkada North",
+          "Thittagonewa",
+          "Ethalwiddawewa",
+          "Kebithigollewa",
+          "Gonumeriyawa",
+          "Handagala Kirimetiyawa",
+          "Gonuhathdenawa",
+          "Bandaraulpatha"
+        ]
+      },
+      {
+        "name": "Padaviya Pradeshiya Sabha",
+        "mainCities": [
+          "Buddhangala",
+          "Parakkramapura",
+          "Elikimbulagala",
+          "Abhayapura",
+          "Maithreepura",
+          "Sudarshanagama",
+          "Padaviya",
+          "Bogahawewa",
+          "Mahasenpura",
+          "Kumbukwewa"
+        ]
+      },
+      {
+        "name": "Kahatagasdigiliya Pradeshiya Sabha",
+        "mainCities": [
+          "Rathmalgahawewa",
+          "Dachchihalmillewa",
+          "Mahakiribbewa",
+          "Rampathvila",
+          "Diganhalmillewa",
+          "Kahatagasdigiliya",
+          "Mahawewa",
+          "Pandarellewa",
+          "Divulwewa",
+          "Nekutunuwewa"
+        ]
+      },
+      {
+        "name": "Horowpothana Pradeshiya Sabha",
+        "mainCities": [
+          "Wahalkada South",
+          "Maradanmaduwa",
+          "Kapugollewa",
+          "Dutuwewa",
+          "Nikawewa",
+          "Sinhala Walahaviddawewa",
+          "Morakewa",
+          "Mukkarawewa",
+          "Horowpothana",
+          "Maradankadawala",
+          "Parangiyawadiya",
+          "Dekethipothana"
+        ]
+      },
+      {
+        "name": "Galenbindunuwewa Pradeshiya Sabha",
+        "mainCities": [
+          "Upuldeniya",
+          "Ellawewa",
+          "Dutuwewa",
+          "Kokawewa",
+          "Getalawa",
+          "Kumbukwewa",
+          "Galenbindunuwewa",
+          "Hurulu Jayapura",
+          "Sivalakulama",
+          "Yakalla",
+          "Kurunegala Colony"
+        ]
+      },
+      {
+        "name": "Thalawa Pradeshiya Sabha",
+        "mainCities": [
+          "Hirigollegama",
+          "Pahala Thalawa",
+          "Thalawa",
+          "Kurunduwewa",
+          "Kiralogama",
+          "Eriyagama",
+          "Kongollewa",
+          "Maha Bellankadawala",
+          "Nallachchiya",
+          "Thammennawa",
+          "Thambuttegama",
+          "Ikiriwewa",
+          "Thelhiriyawa",
+          "Ihala Halmillewa",
+          "Palugaswewa",
+          "Mawathawewa",
+          "Eppawala",
+          "Endagala",
+          "Katiyawa",
+          "Keledivulwewa"
+        ]
+      },
+      {
+        "name": "Nuwaragam Palatha East Pradeshiya Sabha",
+        "mainCities": [
+          "Shrawasthipura",
+          "Pothanegama",
+          "Wanniyankulama",
+          "Vijayapura",
+          "Thammennapura",
+          "Kalaththewa",
+          "Kawarakkulama",
+          "Sucharithagama",
+          "Nelubewa",
+          "Thuruvila",
+          "Hidogama"
+        ]
+      },
+      {
+        "name": "Nuwaragam Palatha Central Pradeshiya Sabha",
+        "mainCities": [
+          "Maha Vilachchiya",
+          "Pemaduwa",
+          "Thanthirimale",
+          "Gambirigaswewa",
+          "Ethdathkalla",
+          "Oyamaduwa",
+          "Elayapattuwa",
+          "Galkadawala",
+          "Paniyankadawala",
+          "Saliyapura",
+          "Perimiyankulama",
+          "Vihara Palugama",
+          "Mahabulankulama",
+          "Pandulagama",
+          "Dewanampiyathissapura",
+          "Theppankulama"
+        ]
+      },
+      {
+        "name": "Nochchiyagama Pradeshiya Sabha",
+        "mainCities": [
+          "Ehetuwagama",
+          "Bogahawewa",
+          "Mudithagama",
+          "Horuvila",
+          "Lindawewa",
+          "Nochchiyagama",
+          "Halmillakulama",
+          "Ralapanawa",
+          "Galadivulwewa",
+          "Dombawalagama",
+          "Pahala Halmillewa",
+          "Ottappuwa"
+        ]
+      },
+      {
+        "name": "Rajanganaya Pradeshiya Sabha",
+        "mainCities": [
+          "Rajanganaya Yaya 16-17",
+          "Rajanganaya Yaya 15",
+          "Rajanganaya Yaya 13-14",
+          "Rajanganaya Yaya 9-10-12",
+          "Gemunupura",
+          "Angamuwa",
+          "Rajanganaya Yaya 3-4",
+          "Rajanganaya Yaya 5 kanuwa",
+          "Sirimapura",
+          "Kalundegama"
+        ]
+      },
+      {
+        "name": "Galnewa Pradeshiya Sabha",
+        "mainCities": [
+          "Makulewa",
+          "Hurigaswewa",
+          "Kalankuttiya",
+          "Karuwalagaswewa",
+          "Bulnewa",
+          "Siyambalewa",
+          "Galnewa",
+          "Awkana",
+          "Negama",
+          "Siyambalagamuwa"
+        ]
+      },
+      {
+        "name": "Ipalogama Pradeshiya Sabha",
+        "mainCities": [
+          "Mahailuppallama",
+          "Ipalogama",
+          "Kunchikulama",
+          "Konapathirawa",
+          "Senapura",
+          "Kallanchiyagama",
+          "Hiripitiyagama",
+          "Kagama",
+          "Kalawewa",
+          "Vijithapura"
+        ]
+      },
+      {
+        "name": "Mihinthale Pradeshiya Sabha",
+        "mainCities": [
+          "Kunchikulama",
+          "Kurundankulama",
+          "Doramadalawa",
+          "Mahakanadarawa Left Bank",
+          "Seeppukulama",
+          "Mihinthale",
+          "Ruwangama",
+          "Namalwewa",
+          "Maradankalla",
+          "Kasamaduwa"
+        ]
+      },
+      {
+        "name": "Thirappane Pradeshiya Sabha",
+        "mainCities": [
+          "Nachchaduwa",
+          "Thirappane",
+          "Uttimaduwa",
+          "Pairimaduwa",
+          "Ethungama",
+          "Selesthimaduwa",
+          "Alisthana",
+          "Walagambahuwa",
+          "Labunoruwa",
+          "Muriyakadawala"
+        ]
+      },
+      {
+        "name": "Kekirawa Pradeshiya Sabha",
+        "mainCities": [
+          "Maradankadawala",
+          "Nawakkulama",
+          "Madawala",
+          "Ganewalpola",
+          "Olukaranda",
+          "Ihalagama",
+          "Kekirawa Town",
+          "Maldenipura",
+          "Palugaswewa",
+          "Habarana",
+          "Bellankadawala",
+          "Maha Kekirawa",
+          "Horapola",
+          "Uduruwa",
+          "Madatugama",
+          "Kandalama"
+        ]
+      },
+      {
+        "name": "Palagala Pradeshiya Sabha",
+        "mainCities": [
+          "Gamsabha Halmillewa",
+          "Balaluwewa",
+          "Katukeliyawa",
+          "Daniyagama",
+          "Andiyagala",
+          "Maneruwa",
+          "Pelbendiyawa",
+          "Budugehinna",
+          "Ranawa",
+          "Dambulu Halmillewa"
+        ]
+      }
+    ]
+  }, 
+  {
+  "district": "Badulla",
+  "municipalCouncils": [
+    {
+      "name": "Badulla Municipal Council",
+      "mainCities": [
+        "Medapathana",
+        "Kailagoda",
+        "Badulla North",
+        "Pitawelagama",
+        "Badulla West",
+        "Katupelella",
+        "Badulla Central",
+        "Budulupitiya",
+        "Badulla East",
+        "Hindagoda",
+        "Badulla South",
+        "Hingurugamuwa",
+        "Kanupelella"
+      ]
+    },
+    {
+      "name": "Bandarawela Municipal Council",
+      "mainCities": [
+        "Diyabibila",
+        "Wewathenna",
+        "Bindunuwewa",
+        "Kebillewela North",
+        "Bandarawela West",
+        "Bandarawela East",
+        "Inikambedda",
+        "Kinigama",
+        "Andeniya",
+        "Sirimalgoda",
+        "Damanwara",
+        "Kendagolla",
+        "Thelbedda Estate",
+        "Wewessa",
+        "Vineethagama",
+        "Udawela",
+        "Rambukpotha",
+        "Glen Alpin Estate",
+        "Mathetilla",
+        "Diganathenna",
+        "Kirioruwa",
+        "Egodagama",
+        "Makulella",
+        "Liyangahawela",
+        "Doolgolla",
+        "Kebillewela South",
+        "Obadaella",
+        "Nayabeddawatta"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Haputhale Urban Council",
+      "mainCities": [
+        "Panketiya",
+        "Sherwood Janapadaya",
+        "Station Road",
+        "Icepeella",
+        "Temple Road",
+        "Magiripura Pathana",
+        "Magiripura",
+        "Kahattewela",
+        "Kahagolla",
+        "Diyathalawa",
+        "Ellagama",
+        "Haputhalegama",
+        "Kadurugamuwa",
+        "Umankandura",
+        "Haputhale",
+        "Dambethenna"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Mahiyanganaya Pradeshiya Sabha",
+      "mainCities": [
+        "Rotalawela",
+        "Ginnoruwa",
+        "Ulhitiya",
+        "Aluttarama",
+        "Girandurukotte",
+        "Dambana",
+        "Beligalla",
+        "Bathalayaya",
+        "Sorabora",
+        "Mahiyanganaya",
+        "Elewela",
+        "Dambarawa",
+        "Mapakadawewa",
+        "Pangaragammana"
+      ]
+    },
+    {
+      "name": "Rideemaliyadda Pradeshiya Sabha",
+      "mainCities": [
+        "Serana",
+        "Keselpotha North",
+        "Keselpotha South",
+        "Ekiriyankumbura",
+        "Pethiyagoda",
+        "Uva Thissapura",
+        "Gemunupura",
+        "Andaulpatha",
+        "Rideemaliyadda North",
+        "Kuruvithenna",
+        "Arawa"
+      ]
+    },
+    {
+      "name": "Soranathota Pradeshiya Sabha",
+      "mainCities": [
+        "Budugekanda",
+        "Pussellawa",
+        "Egodawela",
+        "Kuttiyagolla",
+        "Rideepana",
+        "Pussellakanda",
+        "Soranathota",
+        "Kandegedara",
+        "Kohovila"
+      ]
+    },
+    {
+      "name": "Meegahakivula Pradeshiya Sabha",
+      "mainCities": [
+        "Balagolla",
+        "Karandagahamada",
+        "Meegahakivula",
+        "Akurukaduwa",
+        "Kalugahakandura",
+        "Roberiya",
+        "Pitamaruwa",
+        "Ketawatta",
+        "Kohana",
+        "Thaldena"
+      ]
+    },
+    {
+      "name": "Kandaketiya Pradeshiya Sabha",
+      "mainCities": [
+        "Mahakele",
+        "Kandakepoo Ulpotha",
+        "Baduluoya",
+        "Kandaketiya",
+        "Kivulegedara",
+        "Mudagamuwa",
+        "Maliyadda",
+        "Godunna",
+        "Galauda",
+        "Bokanoruwa"
+      ]
+    },
+    {
+      "name": "Passara Pradeshiya Sabha",
+      "mainCities": [
+        "Kahataruppa",
+        "Madugasthalawa",
+        "Welgolla",
+        "Maligathenna",
+        "Tholabowatta",
+        "Passara",
+        "Sapuroda",
+        "Pelgahathenna",
+        "Puhulwatta",
+        "Ambathenna",
+        "Bibilegama",
+        "Kanawerella"
+      ]
+    },
+    {
+      "name": "Lunugala Pradeshiya Sabha",
+      "mainCities": [
+        "Ekiriya",
+        "Batawatta",
+        "Janathapura",
+        "Arawakumbura",
+        "Pallekiruwa",
+        "Lunugala",
+        "Sumudugama",
+        "Madolsima",
+        "Yapamma",
+        "Maduwatta"
+      ]
+    },
+    {
+      "name": "Hali-Ela Pradeshiya Sabha",
+      "mainCities": [
+        "Jangulla",
+        "Bogoda",
+        "Anthuduwawela",
+        "Haliela",
+        "Bogahamaditta",
+        "Mahawattegama",
+        "Welikemmulla",
+        "Imbulgoda",
+        "Kandana",
+        "Springvalley",
+        "Medagama",
+        "Uduwara",
+        "Morethota",
+        "Niliathugoda",
+        "Etampitiya",
+        "Wepassawala",
+        "Katugaha",
+        "Maligathenna",
+        "Kurukude",
+        "Malitta"
+      ]
+    },
+    {
+      "name": "Uva Paranagama Pradeshiya Sabha",
+      "mainCities": [
+        "Maspanna",
+        "Wewegama",
+        "Gampaha",
+        "Dimbulana",
+        "Bambarapana",
+        "Weliulla",
+        "Pannalawela",
+        "Ethkandawaka",
+        "Paranagama",
+        "Thawalampola",
+        "Uduhawara",
+        "Perawella",
+        "Galahagama",
+        "Medawela",
+        "Dangamuwa",
+        "Ambagasdowa",
+        "Pallewela",
+        "Yahala Arawa",
+        "Kotawera",
+        "Rathamba"
+      ]
+    },
+    {
+      "name": "Welimada Pradeshiya Sabha",
+      "mainCities": [
+        "Boragass",
+        "Hulankapolla",
+        "Vidurupola",
+        "Divurumgama",
+        "Welimada",
+        "Puranwela",
+        "Landegama",
+        "Dambavinna",
+        "Dikkapitiya",
+        "Dayarabawatta",
+        "Mirahawatta",
+        "Udupeella",
+        "Nawala",
+        "Nedungamuwa",
+        "Idamegama",
+        "Keppetipola",
+        "Ambewela",
+        "Kandepuhulpola",
+        "Boralanda",
+        "Guruthalawa",
+        "Galedanda",
+        "Pitapola",
+        "Ohiya",
+        "Maligathenna"
+      ]
+    },
+    {
+      "name": "Ella Pradeshiya Sabha",
+      "mainCities": [
+        "Millagama",
+        "Halpe",
+        "Demodara",
+        "Beddewela",
+        "Pupula",
+        "Ballaketuwa",
+        "Ella",
+        "Rawanaella",
+        "Heeloya",
+        "Dowa"
+      ]
+    },
+    {
+      "name": "Haldummulla Pradeshiya Sabha",
+      "mainCities": [
+        "Uvathenna",
+        "Walhaputhenna",
+        "Haldummulla",
+        "Harankahawa",
+        "Soragune",
+        "Nikapotha",
+        "Koslanda",
+        "Poonagala",
+        "Gampaha",
+        "Mahalanda"
+      ]
+    }
+  ]
+  }, 
+  {
+  "district": "Batticaloa",
+  "municipalCouncils": [
+    {
+      "name": "Batticaloa Municipal Council",
+      "mainCities": [
+        "Amirthakali",
+        "Thiraimadu",
+        "Sathurukonda",
+        "Sinna Urani",
+        "Irudiyapuram",
+        "Karuvappankemy",
+        "Mamangam",
+        "Gnasooriyam Square",
+        "Thandawenveli",
+        "Arasady",
+        "Periyauppodai",
+        "Thirichchandhoor",
+        "Kallady",
+        "Nochchimunai",
+        "Navatkudah",
+        "Manjanthoduvai",
+        "Puliyanthivu",
+        "Puliyanthivu South",
+        "Thirupperumthurai",
+        "Puthunagar"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Eravur Urban Council",
+      "mainCities": [
+        "Ellainagar",
+        "Jiffriya",
+        "Makkamadi",
+        "Jamiul Akbar",
+        "Riffaipalli",
+        "Palliyadi",
+        "Rahumaniya",
+        "Arafa",
+        "Oddupalli",
+        "Kovilpuram"
+      ]
+    },
+    {
+      "name": "Kattankudy Urban Council",
+      "mainCities": [
+        "Baduriya",
+        "Al Aqsa",
+        "Anwar",
+        "Nuraniya",
+        "Dharussalam",
+        "Maulana",
+        "Meerapali",
+        "Hiluriya",
+        "Hasanath",
+        "Jamiullafireen"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Koralai Pattu West Pradeshiya Sabha",
+      "mainCities": [
+        "Vadamunai",
+        "Vahaneri",
+        "Thiyavattavan",
+        "Paper Town",
+        "Oddamavadi 01 North",
+        "Oddamavadi 01 South",
+        "Oddamavadi 2",
+        "Oddamavadi 3",
+        "Meeravodai West",
+        "Meeravodai East",
+        "Mancholai",
+        "Kudumbimalai",
+        "Koraveli",
+        "Valaichchenai Muslim",
+        "Braynthuraichenai North",
+        "Valaichchenai Tamil",
+        "Kalkudah",
+        "Kalmadu",
+        "Brainthuraichenai South",
+        "Semmannodai",
+        "Karuwakerni",
+        "Kinnayady",
+        "Kiran",
+        "Sandiveli",
+        "Morakottanchenai"
+      ]
+    },
+    {
+      "name": "Eravur Pattu Pradeshiya Sabha",
+      "mainCities": [
+        "Thannamunai",
+        "Kudiyiruppu",
+        "Meerakerny",
+        "Michnagar",
+        "Iyankerny Muslim",
+        "Thalavai",
+        "Kaluwankerny",
+        "Sittandy West",
+        "Vantharumoolai",
+        "Kommanthurai",
+        "Chenkalady",
+        "Pankudahvely",
+        "Eralakulam",
+        "Karadiyanaru",
+        "Pullumalai",
+        "Gemunupura"
+      ]
+    },
+    {
+      "name": "Koralai Pattu North Pradeshiya Sabha",
+      "mainCities": [
+        "Kadiraveli",
+        "Puchchakkerny",
+        "Palchenai",
+        "Ammbanthanaaveli",
+        "Vakarai",
+        "Uriyankattu",
+        "Panichchankerny",
+        "Madurankernykulam",
+        "Mankerny",
+        "Punanai East"
+      ]
+    },
+    {
+      "name": "Manmunai South & Eruvil Pattu Pradeshiya Sabha",
+      "mainCities": [
+        "Kurukkalmadam",
+        "Theththatheevu",
+        "Kaludawalai North",
+        "Kaludawalai South",
+        "Kaluwanchikudy",
+        "Eruvil",
+        "Kurumanvely",
+        "Mahiloor",
+        "Kottaikallar",
+        "Periyakallar",
+        "Thuraineelavanai"
+      ]
+    },
+    {
+      "name": "Manmunai Pattu Pradeshiya Sabha",
+      "mainCities": [
+        "Arayampathy East",
+        "Arayampathy West",
+        "Kankeyanodai",
+        "Arayampathy South",
+        "Selvanagar",
+        "Palamunai",
+        "Manmunai",
+        "Pudukudiyirippu",
+        "Kirankulam North",
+        "Kirankulam South"
+      ]
+    },
+    {
+      "name": "Manmunai West Pradeshiya Sabha",
+      "mainCities": [
+        "Mahilavaddavan",
+        "Ayithiyamalai",
+        "Karaveddi",
+        "Vilawattawan",
+        "Vavunativu",
+        "Kannankudah",
+        "Karayakantivu",
+        "Kanchirankudah",
+        "Gandhinagar",
+        "Unnichchai"
+      ]
+    },
+    {
+      "name": "Manmunai South West Pradeshiya Sabha",
+      "mainCities": [
+        "Ambalanthurai",
+        "Kadukkamunai",
+        "Arasadithivu",
+        "Mahiladithivu",
+        "Mudalaikkudah",
+        "Munaikkadu North",
+        "Munaikkadu South",
+        "Kokkadicholai",
+        "Pattipolai",
+        "Thanthamalai"
+      ]
+    },
+    {
+      "name": "Porativu Pattu Pradeshiya Sabha",
+      "mainCities": [
+        "Thikkodai",
+        "Thumpankerny",
+        "Palugamam",
+        "Munaitivu",
+        "Kovilporativu",
+        "Mandoor",
+        "Vellaveli",
+        "Palaiadivettai",
+        "Sinnawatta",
+        "Thambalawatta"
+      ]
+    }
+  ]
+  },
+  {
+  "district": "Colombo",
+  "municipalCouncils": [
+    {
+      "name": "Colombo Municipal Council",
+      "mainCities": [
+        "Sammanthranapura",
+        "Mattakkuliya",
+        "Modara",
+        "Mahawatta",
+        "Aluthmawatha",
+        "Lunupokuna",
+        "Kotahena West",
+        "Kotahena East",
+        "Bloemendhal",
+        "Grandpass North",
+        "Nawagampura",
+        "Dematagoda",
+        "Maligawatta East",
+        "Grandpass South",
+        "Khettarama",
+        "New Bazaar",
+        "Masangasweediya",
+        "Jinthupitiya",
+        "Kochchikade South",
+        "Aluthkade West",
+        "Aluthkade East",
+        "Keselwatta",
+        "Panchikawatta",
+        "Maligawatta West",
+        "Maradana",
+        "Kuppiyawatta East",
+        "Wanathamulla",
+        "Borella North",
+        "Kuppiyawatta West",
+        "Hunupitiya",
+        "Wekanda",
+        "Kollupitiya",
+        "Bambalapitiya",
+        "Cinnamon Gardens",
+        "Borella South",
+        "Gothamipura",
+        "Narahenpita",
+        "Thimbirigasyaya",
+        "Havelock Town",
+        "Kirula",
+        "Kirulapone",
+        "Pamankada East",
+        "Pamankada West",
+        "Wellawatta North",
+        "Wellawatta South"
+      ]
+    },
+    {
+      "name": "Dehiwala-Mount Lavinia Municipal Council",
+      "mainCities": [
+        "Vilawala",
+        "Dutugemunu",
+        "Kohuwala",
+        "Kalubovila",
+        "Hathbodhiya",
+        "Sri Saranankara",
+        "Dehiwala West",
+        "Dehiwala East",
+        "Udyanaya",
+        "Nedimala",
+        "Kawdana East",
+        "Karagampitiya",
+        "Malwatta",
+        "Dehiwala",
+        "Mount Lavinia",
+        "Kawdana West",
+        "Watarappala",
+        "Katukurunduwatta",
+        "Attidiya North",
+        "Attidiya South",
+        "Piriwena",
+        "Wathumulla",
+        "Wedikanda",
+        "Vihara",
+        "Rathmalana West",
+        "Rathmalana East",
+        "Kandawala"
+      ]
+    },
+    {
+      "name": "Sri Jayawardanapura Kotte Municipal Council",
+      "mainCities": [
+        "Obesekarapura",
+        "Arunodaya Mawatha",
+        "Moragasmulla",
+        "Meda Welikada",
+        "Rajagiriya",
+        "Bandaranayakapura",
+        "Nawala West",
+        "Koswatta",
+        "Ethulkotte West",
+        "Ethulkotte",
+        "Pitakotte East",
+        "Pitakotte",
+        "Pitakotte West",
+        "Nawala East",
+        "Nugegoda West",
+        "Pagoda North",
+        "Nugegoda East",
+        "Pagoda East",
+        "Gangodavila East",
+        "Gangodavila South",
+        "Gangodavila West"
+      ]
+    },
+    {
+      "name": "Kaduwela Municipal Council",
+      "mainCities": [
+        "Welivita",
+        "Hewagama",
+        "Kaduwela",
+        "Bomiriya North",
+        "Bomiriya South",
+        "Nawagamuwa",
+        "Ranala",
+        "Dedigamuwa",
+        "Korathota",
+        "Pore",
+        "Malabe North",
+        "Malabe",
+        "Thalahena",
+        "Muttettugoda",
+        "Thalangama",
+        "Walpola",
+        "Kalapaluwawa",
+        "Battaramulla",
+        "Pelawatta",
+        "Batapotha",
+        "Jayawadanagama",
+        "Pothuarawa",
+        "Wellangiriya",
+        "Arangala",
+        "Hokandara",
+        "Boralugoda",
+        "Athurugiriya",
+        "Oruwala"
+      ]
+    },
+    {
+      "name": "Moratuwa Municipal Council",
+      "mainCities": [
+        "Angulana",
+        "Kaldemulla",
+        "Borupana",
+        "Thelawala",
+        "Soysapura",
+        "Lakshpathiya North",
+        "Uyana",
+        "Lakshpathiya South",
+        "Katubedda North",
+        "Katubedda South",
+        "Molpe",
+        "Rawathawatta East",
+        "Rawathawatta West",
+        "Idama",
+        "Kadalana",
+        "Moratumulla West",
+        "Moratumulla",
+        "Villorawatta West",
+        "Villorawatta East",
+        "Indibedda East",
+        "Indibedda West",
+        "Moratuwella North",
+        "Moratuwella South",
+        "Koralawella West",
+        "Koralawella East",
+        "Katukurunda North",
+        "Katukurunda South",
+        "Egoda Uyana North Central",
+        "Egoda Uyana South"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Kolonnawa Urban Council",
+      "mainCities": [
+        "Sedawatta",
+        "Wadulla",
+        "Orugodawatta",
+        "Wellampitiya",
+        "Dahampura",
+        "Kolonnawa",
+        "Singhapura",
+        "Salamulla",
+        "Gajabapura"
+      ]
+    },
+    {
+      "name": "Seethawakapura Urban Council",
+      "mainCities": [
+        "Kiriwandala North",
+        "Kudagama",
+        "Seethawaka",
+        "Avissawella",
+        "Seethagama",
+        "Agara Pedesa",
+        "Ukwatta",
+        "Kiriwandala South",
+        "Kotahera",
+        "Aradhanakanda",
+        "Puwakpitiya",
+        "Egodagama"
+      ]
+    },
+    {
+      "name": "Maharagama Urban Council",
+      "mainCities": [
+        "Mirihana South",
+        "Mirihana North",
+        "Madiwela",
+        "Pragathipura",
+        "Udahamulla",
+        "Thalapathpitiya",
+        "Pamunuwa",
+        "Thalawathugoda",
+        "Kalalgoda",
+        "Depanama",
+        "Kottawa West",
+        "Kottawa East",
+        "Rukmale",
+        "Makumbura",
+        "Kottawa South",
+        "Kottawa Town",
+        "Pannipitiya",
+        "Maharagama South",
+        "Maharagama North",
+        "Pathiragoda",
+        "Navinna",
+        "Gangodavila",
+        "Wattegedara",
+        "Godigamuwa North",
+        "Godigamuwa South"
+      ]
+    },
+    {
+      "name": "Kesbewa Urban Council",
+      "mainCities": [
+        "Erewwala",
+        "Rathmaldeniya",
+        "Mahalwarawa",
+        "Pelenwatta",
+        "Bokundara",
+        "Mampe",
+        "Honnanthara",
+        "Mavittara",
+        "Vishwakalawa",
+        "Thumbovila",
+        "Wewala",
+        "Suwarapola",
+        "Kolamunna",
+        "Kesbewa",
+        "Halpita",
+        "Batuwandara",
+        "Batakettara",
+        "Dampe",
+        "Polhena",
+        "Kahapola"
+      ]
+    },
+    {
+      "name": "Boralesgamuwa Urban Council",
+      "mainCities": [
+        "Pepiliyana",
+        "Divulpitiya",
+        "Rattanapitiya",
+        "Boralesgamuwa West",
+        "Bellanvila",
+        "Werahera",
+        "Boralesgamuwa East",
+        "Bodhirajapura",
+        "Katuwawala",
+        "Neelammahara"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Kotikawatta - Mulleriyawa Pradeshiya Sabha",
+      "mainCities": [
+        "Halmulla",
+        "Welewatta",
+        "Kittampahuwa",
+        "Wennawatta",
+        "Maha Buthugamuwa",
+        "Kuda Buthugamuwa",
+        "Kelanimulla",
+        "Ambathale",
+        "Udumulla",
+        "Malgama",
+        "Mulleriyawa",
+        "Malpura",
+        "Kotikawatta",
+        "Batalandahena",
+        "Megoda Kolonnawa",
+        "Gothatuwa",
+        "Madinnagoda",
+        "Dodamgahahena",
+        "Himabutana",
+        "Udumulla South",
+        "Rajasinghagama"
+      ]
+    },
+    {
+      "name": "Seethawaka Pradeshiya Sabha",
+      "mainCities": [
+        "Kosgama",
+        "Eswatta",
+        "Hingurala",
+        "Kadugoda",
+        "Salawa",
+        "Kalu Aggala",
+        "Suduwella",
+        "Weragolla",
+        "Ilukovita",
+        "Welikanna",
+        "Kahahena",
+        "Diddeniya",
+        "Hanwella",
+        "Jayaweeragoda",
+        "Thunnana",
+        "Mawathagama",
+        "Pitumpe",
+        "Uggalla",
+        "Pinnawala",
+        "Waga",
+        "Bope",
+        "Weragala",
+        "Arukwatta",
+        "Galagedara",
+        "Padukka",
+        "Udumulla"
+      ]
+    },
+    {
+      "name": "Homagama Pradeshiya Sabha",
+      "mainCities": [
+        "Jalthara",
+        "Atigala",
+        "Watareka",
+        "Meegoda",
+        "Nawalamulla",
+        "Mullegama",
+        "Homagama",
+        "Galavilawatta",
+        "Panagoda",
+        "Godagama",
+        "Ovitigama",
+        "Madulawa",
+        "Dampe",
+        "Pitipana",
+        "Kiriberiyakele",
+        "Uduwana",
+        "Magammana",
+        "Hiripitiya",
+        "Siddamulla",
+        "Mattegodagama",
+        "Mattegoda Central",
+        "Siyambalagoda",
+        "Diyahena",
+        "Kiriwattuduwa",
+        "Kahathuduwa",
+        "Wethara",
+        "Palagama"
+      ]
+    }
+  ]
+},
+{
+  "district": "Galle",
+  "municipalCouncils": [
+    {
+      "name": "Galle Municipal Council",
+      "mainCities": [
+        "Ginthota",
+        "Dadalla",
+        "Bope",
+        "Kumbalwella",
+        "Madawalamulla",
+        "Beddugoda",
+        "Maitipe",
+        "Dangedara",
+        "Bataganvila",
+        "Sanghamiththapura",
+        "Galwadugoda",
+        "Kandewaththa",
+        "Kaluwella",
+        "Galle City",
+        "Weliwatta",
+        "Thalapitiya",
+        "Makuluwa",
+        "Milidduwa",
+        "Magalla",
+        "Katugoda"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Ambalangoda Urban Council",
+      "mainCities": [
+        "Keraminiya",
+        "Thalgasgoda",
+        "Polwatta",
+        "Kaluwadumulla",
+        "Poramba",
+        "Karittakanda",
+        "Heppumulla",
+        "Patabendimulla",
+        "Vilegoda",
+        "Hirewatta",
+        "Paniyandoowa",
+        "Maha Ambalangoda",
+        "Godahena",
+        "Batapola North",
+        "Batapola Central",
+        "Batapola East",
+        "Batapola West",
+        "Nindana",
+        "Meetiyagoda",
+        "Karuwalabedda",
+        "Aluthwala",
+        "Berathuduwam",
+        "Gonapinuwala",
+        "Arachchikanda"
+      ]
+    },
+    {
+      "name": "Hikkaduwa Urban Council",
+      "mainCities": [
+        "Hikkaduwa Nagarikaya",
+        "Hikkaduwa Central",
+        "Wawulagoda",
+        "Nalagasdeniya",
+        "Narigama",
+        "Thiranagama",
+        "Katukoliha",
+        "Pinkanda",
+        "Patuwatha",
+        "Modara Patuwatha",
+        "Dodandoowa"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Balapitiya Pradeshiya Sabha",
+      "mainCities": [
+        "Boraluketiya",
+        "Nanathotapalatha",
+        "Kosgoda",
+        "Mahapitiya",
+        "Katuwila",
+        "Bogahapitiya",
+        "Ahungalla",
+        "Wathuregama",
+        "Pathegangoda",
+        "Galmangoda",
+        "Brahmanawaththa",
+        "Balapitiya",
+        "Heenatiya",
+        "Mahaladoowa",
+        "Wathugedara",
+        "Andadola",
+        "Randombe",
+        "Wadumulla",
+        "Kandegoda"
+      ]
+    },
+    {
+      "name": "Welivitiya-Divithura Pradeshiya Sabha",
+      "mainCities": [
+        "Ethkandura",
+        "Thanabaddegama",
+        "Nambaraaththa",
+        "Divithura",
+        "Ampegama",
+        "Galahenkanda",
+        "Nugethota",
+        "Agaliya",
+        "Weliwitiya"
+      ]
+    },
+    {
+      "name": "Karandeniya Pradeshiya Sabha",
+      "mainCities": [
+        "Uragasmanhandiya North",
+        "Uragasmanhandiya South",
+        "Halgahawella",
+        "Hipankanda",
+        "Magala",
+        "Unagaswela",
+        "Mahaedanda",
+        "Thalgahawatta",
+        "Borakanda",
+        "Kurundugaha Hethekma",
+        "Galagoda Atta",
+        "Mahagoda"
+      ]
+    },
+    {
+      "name": "Bentota Pradeshiya Sabha",
+      "mainCities": [
+        "Yaththramulla",
+        "Bodhimaluwa",
+        "Dope",
+        "Haburugala",
+        "Elakaka",
+        "Mahagoda",
+        "Gonagalapura",
+        "Athuruwella",
+        "Kaikawala",
+        "Warakamulla",
+        "Miriswaththa",
+        "Ranthotuwila",
+        "Maha Uragaha"
+      ]
+    },
+    {
+      "name": "Elpitiya Pradeshiya Sabha",
+      "mainCities": [
+        "Awiththawa",
+        "Omatta",
+        "Mativiliya",
+        "Indipalegoda",
+        "Amugoda",
+        "Ketandola",
+        "Elpitiya",
+        "Nawadagala",
+        "Batuwanhena",
+        "Thalawa",
+        "Kudagala Kadirandola",
+        "Wallambagala",
+        "Pituwala",
+        "Ella",
+        "Ambanakahaduwa",
+        "Pinikahana",
+        "Thibbotuwawa"
+      ]
+    },
+    {
+      "name": "Neluwa Pradeshiya Sabha",
+      "mainCities": [
+        "Koswatta",
+        "Mavita",
+        "Batuwangala",
+        "Mawanana",
+        "Neluwa",
+        "Lelwala",
+        "Panagoda",
+        "Lankagama",
+        "Dellawa",
+        "Millawa"
+      ]
+    },
+    {
+      "name": "Thawalama Pradeshiya Sabha",
+      "mainCities": [
+        "Ela Ihala",
+        "Habarakada West",
+        "Thawalama",
+        "Hiniduma",
+        "Panangala West",
+        "Thalangalla",
+        "Halvitigala Colony",
+        "Opatha",
+        "Weerapana",
+        "Panangala East"
+      ]
+    },
+    {
+      "name": "Nagoda Pradeshiya Sabha",
+      "mainCities": [
+        "Malamura",
+        "Mapalagama",
+        "Parana Thanayamgoda",
+        "Gammaddegoda",
+        "Nagoda",
+        "Udugama",
+        "Homadola",
+        "Aluthwatta",
+        "Gonadeniya",
+        "Udalamatta",
+        "Keppetiyagoda",
+        "Uda Welivitiya",
+        "Unanvitiya",
+        "Urala",
+        "Yatalamatta"
+      ]
+    },
+    {
+      "name": "Niyagama Pradeshiya Sabha",
+      "mainCities": [
+        "Hattaka",
+        "Pitigala",
+        "Godamuna",
+        "Bambarwana",
+        "Welihena",
+        "Naranovita",
+        "Porawagama",
+        "Niyagama",
+        "Horangalla"
+      ]
+    },
+    {
+      "name": "Baddegama Pradeshiya Sabha",
+      "mainCities": [
+        "Halpathota",
+        "Baddegama",
+        "Nayapamula",
+        "Hemmeliya",
+        "Lelwala",
+        "Weihena",
+        "Baddegama South",
+        "Ganegama",
+        "Keredewala -Majuwana",
+        "Ginimellagaha",
+        "Thelikada",
+        "Balagoda",
+        "Andurathwilla",
+        "Pahala Keembiya",
+        "Deiyandara",
+        "Wanduramba",
+        "Mabotuwana",
+        "Pitiharawa",
+        "Ihala Keembiya"
+      ]
+    },
+    {
+      "name": "Yakkalamulla Pradeshiya Sabha",
+      "mainCities": [
+        "Thellambura",
+        "Nakiyadeniya",
+        "Nabadawa",
+        "Yakkalamulla",
+        "Kottawa",
+        "Newungala",
+        "Thalgampala",
+        "Polpagoda",
+        "Karagoda",
+        "Magedara",
+        "Uduwella",
+        "Walpala"
+      ]
+    },
+    {
+      "name": "Rajgama Pradeshiya Sabha",
+      "mainCities": [
+        "Urawatta",
+        "Kuleegoda",
+        "Madampagama",
+        "Akurala",
+        "Kahawa-Weragoda",
+        "Thelwatta",
+        "Kalupe",
+        "Thotagamuwa",
+        "Katudampe",
+        "Mawadavila",
+        "Hegoda",
+        "Maliduwa",
+        "Ganegoda",
+        "Bopagoda",
+        "Rathgama",
+        "Kapumulugoda",
+        "Boossa"
+      ]
+    },
+    {
+      "name": "Akmeemana Pradeshiya Sabha",
+      "mainCities": [
+        "Akmeemana",
+        "Badungoda",
+        "Ihalagoda",
+        "Ihalagoda Colony",
+        "Hiyare North",
+        "Hiyare East",
+        "Halgasmulla",
+        "Pinnadoowa",
+        "Walahanduwa",
+        "Anangoda",
+        "Haliwala",
+        "Yatagama",
+        "Melegoda",
+        "Pilana",
+        "Metaramba"
+      ]
+    },
+    {
+      "name": "Bope-Poddala Pradeshiya Sabha",
+      "mainCities": [
+        "Poddala",
+        "Narawala",
+        "Labudoowa",
+        "Uluvitike",
+        "Wakwella",
+        "Hapugala",
+        "Kurunduwatta",
+        "Welipitimodara",
+        "Kalegana",
+        "Kithulampitiya",
+        "Karapitiya",
+        "Kapuhempala"
+      ]
+    },
+    {
+      "name": "Imaduwa Pradeshiya Sabha",
+      "mainCities": [
+        "Bedipita",
+        "Kombala",
+        "Imaduwa",
+        "Dikkumbura",
+        "Thittagalla",
+        "Dorape",
+        "Kahanda",
+        "Induranvila",
+        "Andugoda",
+        "Kodagoda"
+      ]
+    },
+    {
+      "name": "Habaraduwa Pradeshiya Sabha",
+      "mainCities": [
+        "Unawatuna",
+        "Maharamba",
+        "Thalpe",
+        "Dodampe",
+        "Meepe",
+        "Pitidoowa",
+        "Harumalgoda",
+        "Katukurunda",
+        "Koggala",
+        "Kathaluwa",
+        "Welhengoda",
+        "Meegahagoda",
+        "Nakanda",
+        "Thaldoowa",
+        "Ahangama"
+      ]
+    }
+  ]
+},
+{
+  "district": "Gampaha",
+  "municipalCouncils": [
+    {
+      "name": "Negombo Municipal Council",
+      "mainCities": [
+        "Kammathura",
+        "Kochchikade",
+        "Pallansena South",
+        "Poruthota",
+        "Daluwakotuwa East",
+        "Palangathure",
+        "Ethukala",
+        "Kattuwa",
+        "Dalupotha",
+        "Dalupotha East",
+        "Kudapaduwa",
+        "Kudapaduwa North",
+        "Wellaweediya North",
+        "Wellaweediya South",
+        "Periyamulla",
+        "Hunupitiya",
+        "Angurukaramulla",
+        "Udayarthoppuwa",
+        "Munnakkara",
+        "Pitipana North",
+        "Doowa",
+        "Kadol Uyana",
+        "Bolawalana",
+        "Kurana",
+        "Siriwardhana Pedesa",
+        "Dakunupitipana East",
+        "Dakunupitipana West",
+        "Thalahena-Dungalpitiya",
+        "Kopungoda"
+      ]
+    },
+    {
+      "name": "Gampaha Municipal Council",
+      "mainCities": [
+        "Thittalapitigoda",
+        "Aluthgama Bogamuwa North",
+        "Aluthgama Bogamuwa South",
+        "Weediyawatta",
+        "Keselwathugoda",
+        "Indigolla",
+        "Ihalagama East",
+        "Ihalagama West",
+        "Medagama",
+        "Pahalagama",
+        "Bandiyamulla",
+        "Kidagammulla",
+        "Gampaha Aluthgama East",
+        "Yakkala North",
+        "Yakkala West",
+        "Yakkala",
+        "Henarathgoda",
+        "Makevita",
+        "Akaravita",
+        "Thibbotugoda",
+        "Bulugahagoda",
+        "Bollatha",
+        "Galahitiyawa",
+        "Ganemulla",
+        "Pahala Yagoda",
+        "Orutota",
+        "Mudungoda",
+        "Rathupaswala",
+        "Belummahara",
+        "Ihala Yagoda",
+        "Kossinna",
+        "Katuwalamulla",
+        "Parakandeniya",
+        "Amunugoda",
+        "Pahala Imbulgoda",
+        "Ihala Imbulgoda",
+        "Nedungamuwa",
+        "Weliweriya",
+        "Embaraluwa"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Wattala Mabole Urban Council",
+      "mainCities": [
+        "Mabola",
+        "Welikadamulla",
+        "Wattala",
+        "Ewariwatta",
+        "Galwetiya",
+        "Thelangapatha"
+      ]
+    },
+    {
+      "name": "Katunayake Seeduwa Urban Council",
+      "mainCities": [
+        "Kurana-Katunayake",
+        "Kurana Central",
+        "Katunayake",
+        "Liyanagemulla North",
+        "Amandoluwa",
+        "Liyanagemulla South",
+        "Seeduwa",
+        "Mookalangamuwa East",
+        "Bandarawatta",
+        "Ambalanmulla"
+      ]
+    },
+    {
+      "name": "Minuwangoda Urban Council",
+      "mainCities": [
+        "Minuwangoda West",
+        "Dharmarajarama Pedesa",
+        "Minuwangoda North",
+        "Minuwangoda East 2",
+        "Minuwangoda East 1",
+        "Meda Minuwangoda",
+        "Ambagahawatta",
+        "Burullapitiya"
+      ]
+    },
+    {
+      "name": "Ja - Ela Urban Council",
+      "mainCities": [
+        "Thudella",
+        "Kanuwana",
+        "Ja-Ela",
+        "Weligampitiya North",
+        "Indivitiya",
+        "Weligampitiya South",
+        "Kapuwatta",
+        "Wewala",
+        "Kalaeliya",
+        "Dandugama",
+        "Kudahakapola South",
+        "Gallawatta",
+        "Mahawatta",
+        "Ekala",
+        "Niwandama",
+        "Bandigoda",
+        "Alexendrawatta",
+        "Maeliya",
+        "Indiminna",
+        "Dolahena",
+        "Polpithimukalana",
+        "Batuwatta",
+        "Narangodapaluwa",
+        "Walpola",
+        "Jayasirigama",
+        "Hapugoda",
+        "Rilaulla",
+        "Kandana",
+        "Nagoda",
+        "Jayasamarugama",
+        "Peralanda",
+        "Ragama",
+        "Podiweekumbura",
+        "Ketagewatta",
+        "Dambuwa"
+      ]
+    },
+    {
+      "name": "Peliyagoda Urban Council",
+      "mainCities": [
+        "Peliyagoda Watta",
+        "Meegahawatta North",
+        "Pattiya North",
+        "Pattiya East",
+        "Rohana Vihara Pedesa",
+        "Meegahawatta South",
+        "Peliyagoda Gangabada",
+        "Peliyagoda Gangabada East",
+        "Pattiya West",
+        "Gurukula Vidyala Pedesa"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Wattala Pradeshiya Sabha",
+      "mainCities": [
+        "Pamunugama",
+        "Delathura",
+        "Boopitiya",
+        "Uswetakeiyawa",
+        "Nugape",
+        "Welisara",
+        "Magulpokuna",
+        "Mahabage",
+        "Horape",
+        "Kurukulawa",
+        "Heenkenda",
+        "Galudupita",
+        "Mattumagala",
+        "Kerewalapitya",
+        "Matagoda",
+        "Balagala",
+        "Palliyawatta",
+        "Thimbirigasyaya",
+        "Nayakakanda",
+        "Maha Hendala",
+        "Hekiththa"
+      ]
+    },
+    {
+      "name": "Katana Pradeshiya Sabha",
+      "mainCities": [
+        "Thoppuwa",
+        "Katana",
+        "Ethgala",
+        "Kandawala",
+        "Welihena",
+        "Silvapura",
+        "Kondagammulla",
+        "Kadirana North",
+        "Thimbirigaskatuwa",
+        "Katuwapitiya",
+        "Kadirana",
+        "Akkarapanaha",
+        "Kimbulapitiya Central",
+        "Kimbulapitiya West",
+        "Andiambalama",
+        "Dewamottawa",
+        "Madawala",
+        "Heenatiyana",
+        "Kuswala",
+        "Raddoluwagama",
+        "Raddoluwa North",
+        "Raddoluwa",
+        "Kotugoda",
+        "Udammita"
+      ]
+    },
+    {
+      "name": "Divulapitiya Pradeshiya Sabha",
+      "mainCities": [
+        "Badalgama",
+        "Mellawagedara",
+        "Kotadeniyawa",
+        "Nawana",
+        "Halpe",
+        "Kithulwala",
+        "Maditiyawala",
+        "Walpita",
+        "Delwagura",
+        "Godigamuwa",
+        "Akaragama",
+        "Pahala Madampella",
+        "Kongodamulla West",
+        "Bolagala",
+        "Kadawala",
+        "Induragara",
+        "Palliyapitiya",
+        "Barawawila",
+        "Balagalla",
+        "Divulapitiya",
+        "Bomugammana",
+        "Henpitagedara",
+        "Dunagaha",
+        "Dagonna",
+        "Aluthapola",
+        "Assennawaththa"
+      ]
+    },
+    {
+      "name": "Mirigama Pradeshiya Sabha",
+      "mainCities": [
+        "Nalla",
+        "Loluwagoda",
+        "Keenadeniya",
+        "Kandalama",
+        "Mirigama",
+        "Thawalampitiya",
+        "Madabawita",
+        "Bothale",
+        "Danovita",
+        "Weweldeniya",
+        "Pamunuwatta",
+        "Lindara",
+        "Indiparape",
+        "Elhena",
+        "Pelapitigama",
+        "Banduragoda",
+        "Muddaragama",
+        "Borukgamuwa",
+        "Weragoda",
+        "Hansagiriyam Bataleeya",
+        "Radawadunna",
+        "Dambutuwa",
+        "Pasyala",
+        "Panawala",
+        "Mottunna",
+        "Maligathenna",
+        "Kureekotuwa"
+      ]
+    },
+    {
+      "name": "Minuwangoda Pradeshiya Sabha",
+      "mainCities": [
+        "Unnaruwa",
+        "Yatiyana",
+        "Boragodawatta",
+        "Nilpanagoda",
+        "Wegowwa",
+        "Horampella",
+        "Watinapaha",
+        "Mabodala",
+        "Wadumulla",
+        "Naiwala",
+        "Marapola",
+        "Balabowa",
+        "Pethiyagoda",
+        "Udugampola",
+        "Ganihimulla",
+        "Mathammana",
+        "Paththaduwana",
+        "Galloluwa",
+        "Polwatta",
+        "Yagodamulla",
+        "Kotugoda",
+        "Nedagamuwa",
+        "Madelgamuwa",
+        "Kehelbaddara",
+        "Dombawala",
+        "Doranagoda",
+        "Asgiriya",
+        "Asgiriwalpola"
+      ]
+    },
+    {
+      "name": "Attanagalla Pradeshiya Sabha",
+      "mainCities": [
+        "Eluwapitiya",
+        "Veyangoda",
+        "Udammita Thalgasmote",
+        "Nittambuwa",
+        "Parana Veyangoda",
+        "Dadagamuwa",
+        "Magalegoda",
+        "Bemmulla",
+        "Raniswala",
+        "Katuwasgoda",
+        "Thihariya",
+        "Kaththota",
+        "Ranpokunagama",
+        "Ellakkala",
+        "Attanagalla",
+        "Palkumbura",
+        "Alawala",
+        "Urapola",
+        "Mathalana",
+        "Ogodapola",
+        "Bonegala",
+        "Koskandawala",
+        "Paranagama",
+        "Walgammulla",
+        "Bopagama"
+      ]
+    },
+    {
+      "name": "Mahara Pradeshiya Sabha",
+      "mainCities": [
+        "Pilikuttuwa",
+        "Warapalana",
+        "Maligathenna",
+        "Malwathuhiripitiya",
+        "Sivralumulla",
+        "Etikehelgalla",
+        "Wilimbula",
+        "Kirikitta",
+        "Naranwala",
+        "Udupila",
+        "Gonahena East",
+        "Webada",
+        "Kirillawala",
+        "Sooriyapaluwa North",
+        "Kendaliyaddapaluwa East",
+        "Kendaliyaddapaluwa North",
+        "Kendaliyaddapaluwa West",
+        "Mahara Nugegoda",
+        "Sooriyapaluwa South",
+        "Rammuthugala",
+        "Gonahena West",
+        "Eldeniya",
+        "Ihala Karagahamuna South",
+        "Ihala Karagahamuna North",
+        "Neligama",
+        "Pahala Karagahamuna",
+        "Kirimetiyagara",
+        "Dalupitiya",
+        "Nathuduwa",
+        "Enderamulla",
+        "Akbartown",
+        "Gongithota"
+      ]
+    },
+    {
+      "name": "Dompe Pradeshiya Sabha",
+      "mainCities": [
+        "Wathurugama",
+        "Diyawala",
+        "Millathe",
+        "Udagama",
+        "Meethirigala",
+        "Kirindiwela",
+        "Radawana",
+        "Nedungolla",
+        "Pepiliyawala",
+        "Ganihigama",
+        "Dangalla",
+        "Pugoda",
+        "Pelpita",
+        "Mandawala",
+        "Keragala",
+        "Demalagama",
+        "Kalukondayawa",
+        "Dekatana",
+        "Pelahela",
+        "Lunugama",
+        "Giridara",
+        "Samanabedda",
+        "Iddamaldeniya",
+        "Dompe",
+        "Mapitigama"
+      ]
+    },
+    {
+      "name": "Biyagama Pradeshiya Sabha",
+      "mainCities": [
+        "Pahala Biyanvila",
+        "Ihala Biyanvila North",
+        "Ihala Biyanvila Central",
+        "Mawaramandiya",
+        "Makola North Ihala",
+        "Pahala Biyanvila West",
+        "Makola North Pahala",
+        "Makola North Central",
+        "Makola South Ihala",
+        "Heiyanthuduwa North",
+        "Siyambalape North",
+        "Meegahawatta",
+        "Siyambalapewaththa",
+        "Delgoda",
+        "Kanduboda",
+        "Yatihena",
+        "Siyambalape South",
+        "Heiyanthuduwa East",
+        "Sapugaskanda",
+        "Gonawala East",
+        "Pamunuvila",
+        "Gonawala West",
+        "Gonawala Central",
+        "Bollegala",
+        "Pattivila",
+        "Mabima",
+        "Heiyanthuduwa",
+        "Biyagama South West",
+        "Biyagama North East",
+        "Yabaraluwa",
+        "Malwana",
+        "Walgama East"
+      ]
+    },
+    {
+      "name": "Kelaniya Pradeshiya Sabha",
+      "mainCities": [
+        "Hunupitiya North",
+        "Nahena",
+        "Eriyawetiya",
+        "Kiribathgoda",
+        "Thalawathuhenpita North",
+        "Thalawathuhenpita South",
+        "Warakanatta",
+        "Weweldoowa",
+        "Hunupitiya East",
+        "Wanawasala West",
+        "Wanawasala East",
+        "Dippitigoda",
+        "Himbutuwelgoda",
+        "Dalugama",
+        "Dalugamgoda",
+        "Koholwila",
+        "Galborella",
+        "Wedamulla",
+        "Pethiyagoda",
+        "Mewella",
+        "Pilapitiya",
+        "Sinharamulla North",
+        "Kelaniya"
+      ]
+    }
+  ]
+},
+{
+  "district": "Hambantota",
+  "municipalCouncils": [
+    {
+      "name": "Hambantota Municipal Council",
+      "mainCities": [
+        "Keliyapura",
+        "Koholankala",
+        "Mayurapura",
+        "Galwala",
+        "Siribopura",
+        "Samodagama",
+        "Mirijjawila",
+        "Alokapura",
+        "Indivinna",
+        "Hambantota Bazzar Street",
+        "Bundala",
+        "Pallemalala",
+        "Badagiriya",
+        "Gonnoruwa",
+        "Arawanamulla",
+        "Udaberagama",
+        "Walawa",
+        "Godawaya"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Tangalle Urban Council",
+      "mainCities": [
+        "Danketiya North",
+        "Danketiya South",
+        "Medaketiya",
+        "Indipokunagoda North",
+        "Indipokunagoda Central",
+        "Indipokunagoda South",
+        "Kotuwegoda",
+        "Pallikkudawa",
+        "Vitharanandeniya",
+        "Pattiyapola",
+        "Kattakaduwa",
+        "Ranna",
+        "Nidahasgama",
+        "Rekawa",
+        "Netolpitiya",
+        "Walgameliya",
+        "Thenagama",
+        "Nalagama",
+        "Polommaruwa",
+        "Unakuruwa",
+        "Kadurupokuna",
+        "Seenimodara",
+        "Kudawella",
+        "Mahawela"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Weeraketiya Pradeshiya Sabha",
+      "mainCities": [
+        "Julampitiya",
+        "Galpottayaya",
+        "Okandayaya",
+        "Debokkawa",
+        "Abakolawewa",
+        "Medamulana",
+        "Meegasara",
+        "Udukirivala",
+        "Bowala",
+        "Galahitiya",
+        "Ittademaliya",
+        "Weeraketiya",
+        "Bedigama",
+        "Mulgirigala",
+        "Modarawana",
+        "Kadigamuwa",
+        "Walasmulla",
+        "Kanumuldeniya West",
+        "Kanumuldeniya",
+        "Kanumuldeniya South"
+      ]
+    },
+    {
+      "name": "Katuwana Pradeshiya Sabha",
+      "mainCities": [
+        "Gomadiya",
+        "Siyarapitiya",
+        "Ritigahayaya",
+        "Welipitiya",
+        "Middeniya",
+        "Murungagasyaya",
+        "Ulahitiyawa",
+        "Horavinna",
+        "Katuwana",
+        "Wathukanda",
+        "Walgammulla",
+        "Namaneliya",
+        "Welandagoda",
+        "Warapitiya",
+        "Dehigahahena",
+        "Kekiriobada",
+        "Horewela"
+      ]
+    },
+    {
+      "name": "Beliatta Pradeshiya Sabha",
+      "mainCities": [
+        "Tharaperiya",
+        "Nihiluwa",
+        "Dammulla",
+        "Ihala Beligalla",
+        "Agulmaduwa",
+        "Aranwela",
+        "Waharakgoda",
+        "Mahaheella",
+        "Getamanna",
+        "Kudaheella",
+        "Beliatta",
+        "Puwakdandawa",
+        "Sitinamaluwa",
+        "Palapotha",
+        "Nakulugamuwa",
+        "Galagama"
+      ]
+    },
+    {
+      "name": "Angunakolapelessa Pradeshiya Sabha",
+      "mainCities": [
+        "Thalawa",
+        "Dabarella",
+        "Uswewa",
+        "Binkama",
+        "Dandenigama",
+        "Angunakolapelessa",
+        "Jandura",
+        "Dahaamuna",
+        "Hakuruwela",
+        "Udayala",
+        "Attanayala"
+      ]
+    },
+    {
+      "name": "Ambalantota Pradeshiya Sabha",
+      "mainCities": [
+        "Barawakumbuka",
+        "Ridiyagama",
+        "Koggalla",
+        "Walawewatta",
+        "Mamadala",
+        "Wetiya",
+        "Ethbatuwa",
+        "Mulana",
+        "Bataatha",
+        "Pallegama",
+        "Miniethiliya",
+        "Beminiyanvila",
+        "Malpettawa",
+        "Puhulyaya",
+        "Bolana",
+        "Ambalantota",
+        "Nonagama",
+        "Lunama"
+      ]
+    },
+    {
+      "name": "Thissamaharama Pradeshiya Sabha",
+      "mainCities": [
+        "Pannagamuwa",
+        "Vijithapura",
+        "Debarawewa",
+        "Gangasiripura",
+        "Mahasenpura",
+        "Kawanthissapura",
+        "Kirinda",
+        "Yodhakandiya",
+        "Ranakeliya",
+        "Magama",
+        "Thissamaharama",
+        "Nedigamwila",
+        "Thissapura"
+      ]
+    },
+    {
+      "name": "Sooriyawewa Pradeshiya Sabha",
+      "mainCities": [
+        "Meegahajadura",
+        "Surawirugama",
+        "Sooriyawewa",
+        "Wiharagala",
+        "Hathporuwa",
+        "Andarawewa"
+      ]
+    },
+    {
+      "name": "Lunugamvehera Pradeshiya Sabha",
+      "mainCities": [
+        "Mattala",
+        "Ranawarnawa",
+        "Lunugamvehera New Town",
+        "Kendagasmankada",
+        "Beralihela",
+        "Saddhathissapura",
+        "Mihindupura",
+        "Weeravila New Town",
+        "Agbopura",
+        "Rambukwewa"
+      ]
+    }
+  ]
+}, 
+{
+  "district": "Jaffna",
+  "municipalCouncils": [
+    {
+      "name": "Jaffna Municipal Council",
+      "mainCities": [
+        "Vannarpannai North",
+        "Kantharmadam North West",
+        "Kantharmadam North East",
+        "Nallur Rajathany",
+        "Sangiliyan Thoppu",
+        "Ariyalai",
+        "Kalaimagal",
+        "Kantharmadam South",
+        "Iyanar Kovilady",
+        "New Moor Street",
+        "Navanthurai North",
+        "Navanthurai South",
+        "Old Moor Street",
+        "Grand Bazaar",
+        "Aththiyady",
+        "Chundukuli Maruthady",
+        "Ariyalai West",
+        "Columbuthurai",
+        "Passaiyoor",
+        "Eachchamoddai",
+        "Cathidral",
+        "Thirunagar",
+        "Gurunagar",
+        "Jaffna Town",
+        "Koddady Fort",
+        "Reclamation West",
+        "Reclamation East"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Valvettithurai Urban Council",
+      "mainCities": [
+        "Thondamanaru",
+        "Aathykovilady",
+        "Revady",
+        "Polikandy",
+        "Valvettithurai",
+        "Sivan Koviladi",
+        "Valvetty North",
+        "Kommanthurai",
+        "Mailiyathanai"
+      ]
+    },
+    {
+      "name": "Point Pedro Urban Council",
+      "mainCities": [
+        "Thuraimugam",
+        "Bazaar",
+        "Munai",
+        "Thampuruvalai",
+        "Nellandai",
+        "Thumpalai",
+        "Puloly North",
+        "Oodakkarai",
+        "Puloly Centre",
+        "Kerudavil",
+        "Polikandy",
+        "Alvai North West",
+        "Viyaparimoolai",
+        "Puloly West",
+        "Puloly East",
+        "Vallipuram Kovil",
+        "Kudattanai",
+        "Nakarkovil",
+        "Maruthankeni",
+        "Udutturai",
+        "Mulliyan"
+      ]
+    },
+    {
+      "name": "Chavakachcheri Urban Council",
+      "mainCities": [
+        "Kalvayal",
+        "Chavakachcheri North",
+        "Manduvil",
+        "Meesalai West",
+        "Meesalai East",
+        "Sangathanai",
+        "Chavakachcheri Town",
+        "Nunavil East-Centre",
+        "Nunavil West",
+        "Kovilkudyiruppu(Sea) Side",
+        "Kovilkudyiruppu-A(Land) Side",
+        "Varani",
+        "Navatkadu Karambai",
+        "Manthuvil",
+        "Sarasalai",
+        "Madduvil North",
+        "Madduvil Chandrapuram",
+        "Kaithady North",
+        "Kaithady South",
+        "Madduvil Nunavil",
+        "Meesalai Ramavil",
+        "Kodikamam Town Ship",
+        "Usan Mirusuvil",
+        "Karampaham Eluthumadduval",
+        "Vidaththalpalai Palavi",
+        "Kachchai Allarai",
+        "Thanankilappu Maravanpulo",
+        "Navatkuli"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Karainagar Pradeshiya Sabha",
+      "mainCities": [
+        "Thangodai",
+        "Aalady",
+        "Valanthalai",
+        "Kalapoomy",
+        "Vijavil",
+        "Thuraimugam"
+      ]
+    },
+    {
+      "name": "Kayts Pradeshiya Sabha",
+      "mainCities": [
+        "Eluvaitivu",
+        "Kayts",
+        "Naranthanai North",
+        "Naranthanai South",
+        "Karampon",
+        "Analaitivu North",
+        "Analaitivu South",
+        "Puliyankoodal"
+      ]
+    },
+    {
+      "name": "Delft Pradeshiya Sabha",
+      "mainCities": [
+        "Delft One",
+        "Delft Two",
+        "Delft Three",
+        "Delft Four",
+        "Delft Five",
+        "Delft Six",
+        "Delft Seven",
+        "Delft Eight"
+      ]
+    },
+    {
+      "name": "Velanai Pradeshiya Sabha",
+      "mainCities": [
+        "Saravanai",
+        "Velanai North East",
+        "Allaipiddy",
+        "Mandaitivu",
+        "Velanai East",
+        "Velanai South",
+        "Velanai West",
+        "Nainativu North",
+        "Nainativu South",
+        "Pungudutivu West",
+        "Pungudutivu East",
+        "Pungudutivu Centre"
+      ]
+    },
+    {
+      "name": "Valikamam West Pradeshiya Sabha",
+      "mainCities": [
+        "Chulipuram West and Chulipuram Centre",
+        "Chulipuram East",
+        "Pannagam-Panippulam",
+        "Ponnalai",
+        "Tholpuram",
+        "Vaddukkoddai East-Sithankerny",
+        "Chankanai West and Chankanai Centre",
+        "Moolai",
+        "Vaddukkoddai North and West",
+        "Chankanai East and South",
+        "Sangarathai",
+        "Vaddukkoddai South and South West",
+        "Arali Centre and Arali West",
+        "Arali South",
+        "Arali East and North"
+      ]
+    },
+    {
+      "name": "Valikamam North Pradeshiya Sabha",
+      "mainCities": [
+        "Ilavalai North West",
+        "Keerimalai",
+        "Kankesanthurai",
+        "Thaiyiddy",
+        "Myliddy",
+        "Palaly West",
+        "Palaly North",
+        "Palaly South East",
+        "Mavai Veemankamam",
+        "Kollankaladdy",
+        "Tellippalai South West",
+        "Kumpilavalai",
+        "Tellippalai West",
+        "Varuthalaivilan",
+        "Vasavilan",
+        "Kurumpasiddy-Kadduvan",
+        "Tellipalai",
+        "Alaveddy East",
+        "Alaveddy South West",
+        "Mallakam",
+        "Mallakam South"
+      ]
+    },
+    {
+      "name": "Valikamam South West Pradeshiya Sabha",
+      "mainCities": [
+        "Mathagal",
+        "Lilavalai",
+        "Periyavillan",
+        "Pandatheruppu",
+        "Sillalai",
+        "Vadaliadaippu",
+        "Piranpattu",
+        "Masiapiddy Sandilipay",
+        "Sandilipay South West",
+        "Manipay North West",
+        "Navali North",
+        "Manipay South East",
+        "Suthumalai",
+        "Navali South East",
+        "Navatkadu",
+        "Uyarappulam",
+        "Anaikoddai"
+      ]
+    },
+    {
+      "name": "Valikamam South Pradeshiya Sabha",
+      "mainCities": [
+        "Earlalai North, East",
+        "Earlalai West",
+        "Earlalai Centre",
+        "Kuppilan",
+        "Punnalaikadduvan",
+        "Earlalai South",
+        "Chunnakam East",
+        "Chunnakam West",
+        "Kantharodai",
+        "Sanguvely",
+        "Uduvil North",
+        "Chunnakam South",
+        "Inuvil East",
+        "Uduvil South",
+        "Uduvil South East",
+        "Inuvil West",
+        "Thavady North",
+        "Thavady South"
+      ]
+    },
+    {
+      "name": "Valikamam East Pradeshiya Sabha",
+      "mainCities": [
+        "Valalai",
+        "Pathameny",
+        "Atchuvely West",
+        "Atchuvely South",
+        "Avarangal",
+        "Vatharavattai",
+        "Puttur East",
+        "Puttur West",
+        "Sirupiddy",
+        "Atchelu",
+        "Urelu",
+        "Urumpirai North",
+        "Urumpirai East",
+        "Neervely",
+        "Neervely North",
+        "Kopay North",
+        "Urumpirai South",
+        "Urumpirai West",
+        "Kopay Centre",
+        "Kopay South",
+        "Kalviyankadu",
+        "Irupalai"
+      ]
+    },
+    {
+      "name": "Vadamarachchi South West Pradeshiya Sabha",
+      "mainCities": [
+        "Kambaramalai",
+        "Valvetty",
+        "Samarabahu",
+        "Navindil",
+        "Vathiry",
+        "Alvai",
+        "Aththai",
+        "Nelliaddy",
+        "Imayanan",
+        "Imayanan West",
+        "Udupitty",
+        "Kalluvan Mandan",
+        "Karanavai",
+        "Uchchil Kappudu",
+        "Karaveddy North and West",
+        "Karaveddy",
+        "Thunnalai",
+        "Kaddaively",
+        "Thunnalai South and West"
+      ]
+    },
+    {
+      "name": "Nallur Pradeshiya Sabha",
+      "mainCities": [
+        "Karaikal",
+        "Kondavil North",
+        "Kondavil East",
+        "Kokkuvil West",
+        "Keniyady",
+        "Kokkuvil Centre",
+        "Kokkuvil East",
+        "Thirunelvely Centre",
+        "Thirunelvely",
+        "Kalviyankadu South",
+        "Ariyalai East",
+        "Maniyamthoddam"
+      ]
+    }
+  ]
+}, 
+{
+  "district": "Kalutara",
+  "municipalCouncils": [],
+  "urbanCouncils": [
+    {
+      "name": "Panadura Urban Council",
+      "mainCities": [
+        "Walana",
+        "Udahamulla",
+        "Pattiya North",
+        "Bazaar Street",
+        "Walapala Pattiya",
+        "Wekada North",
+        "Wekada West",
+        "Pattiya South",
+        "Nallooruwa North",
+        "Nallooruwa",
+        "Horethuduwa",
+        "Gorakana",
+        "Paratta",
+        "Sarikkamulla",
+        "kesalwatta-Henamulla",
+        "Diggala",
+        "Thotawatta",
+        "Wattalpola",
+        "Gorakapola",
+        "Ambalanduwa",
+        "Bekkegama",
+        "Galthude",
+        "Hirana",
+        "Malamulla",
+        "Walapala",
+        "Wekada-Eluvila",
+        "Kaludewala",
+        "Dibbedda",
+        "Pinwatta",
+        "Thalpitiya North",
+        "Thalpitiya South",
+        "Maha Wadduwa",
+        "Wadduwa East",
+        "Wadduwa West",
+        "Molligoda"
+      ]
+    },
+    {
+      "name": "Horana Urban Council",
+      "mainCities": [
+        "Galedandugoda",
+        "Horana North",
+        "Munagama West",
+        "Horana South",
+        "Horana East",
+        "Wewala West",
+        "Halthotiyawatte"
+      ]
+    },
+    {
+      "name": "Kalutara Urban Council",
+      "mainCities": [
+        "Deshasthra Kalutara-West",
+        "Widyasara",
+        "Deshasthra-Thotupala",
+        "Kalutara North",
+        "Kalutara South",
+        "Welpura",
+        "Kuda Heenatiyangala",
+        "Mahawatta",
+        "Kurunduwatta",
+        "Wettumakade",
+        "Katukurunda-Kalapuwa",
+        "Nagoda-West",
+        "Gonadoowa",
+        "Morontuduwa",
+        "Mawala",
+        "Melegama",
+        "Pohoddaramulla",
+        "Potupitiya",
+        "Delduwa-Nugagoda",
+        "Kalapugama",
+        "Diyagama",
+        "Panapitiya",
+        "Uggalbada",
+        "Dediyawala",
+        "Kuda Waskaduwa East",
+        "Kuda Waskaduwa West",
+        "Maha Waskaduwa",
+        "Wilegoda North",
+        "Ethanamadala",
+        "Palatota",
+        "Kitulawa",
+        "Pulerton",
+        "Etavila",
+        "Maha Henatiyangala",
+        "Nagoda South",
+        "Weniwelketiya",
+        "Ethagama",
+        "Kalamulla"
+      ]
+    },
+    {
+      "name": "Beruwala Urban Council",
+      "mainCities": [
+        "Polkotuwa",
+        "Akkaragoda",
+        "Chhenakotuwa",
+        "Kanakanamgoda",
+        "Maligahena",
+        "Maradana",
+        "Gorakaduwa",
+        "Mahagoda",
+        "Payagala",
+        "malegoda",
+        "Palayangoda",
+        "Pinidiyamulla",
+        "Pothuwila",
+        "Katukurundugahalanda",
+        "Halkandawila",
+        "Diyalagoda",
+        "Maggona",
+        "Magalkanda",
+        "Munhena",
+        "Ambepitiya",
+        "Walathara",
+        "Kalawila",
+        "Padagoda",
+        "Hettimulla",
+        "Moragalla",
+        "Kaluwamodara",
+        "Aluthgama",
+        "Dharga Town",
+        "Welipitiya",
+        "Malewanna",
+        "Warapitiya"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Bandaragama Pradeshiya Sabha",
+      "mainCities": [
+        "Kindellapitiya",
+        "Aluthgama",
+        "Gammanpila",
+        "Kotalawala",
+        "Raigama",
+        "Weedagama",
+        "Bandaragama",
+        "Alubomulla",
+        "Kuda Aruggoda",
+        "Newdawa",
+        "Maha Aruggoda",
+        "Pinwala",
+        "Mahavila",
+        "Pamunugama",
+        "Mahabellana",
+        "Bolgoda",
+        "Wewita",
+        "Atulugama West",
+        "Atulugama East",
+        "Kolamediriya"
+      ]
+    },
+    {
+      "name": "Horana Pradeshiya Sabha",
+      "mainCities": [
+        "Halapitiya",
+        "Godigamuwa",
+        "Palannoruwa",
+        "Oluboduwa",
+        "Thalagala",
+        "Kahatapitiya",
+        "Millewa",
+        "Kotigamgoda",
+        "Kindelpitiya",
+        "Meewanapalana",
+        "Pelpitigoda",
+        "Handapangoda",
+        "Arakawila",
+        "Kurana",
+        "Maha Ingiriya",
+        "Urugala",
+        "Ingiriya",
+        "Maputugala",
+        "Wagawatte",
+        "Gurugoda",
+        "Uduwa",
+        "Kananwila",
+        "Batuwita",
+        "Kubuka",
+        "Pokunuwita",
+        "Kulupana",
+        "Midellamulahena",
+        "Narthanagala",
+        "Wewala"
+      ]
+    },
+    {
+      "name": "Madurawala Pradeshiya Sabha",
+      "mainCities": [
+        "Kandana",
+        "Ballapitiya",
+        "Remuna",
+        "Werawatta",
+        "Mahayala",
+        "Anguruwathota",
+        "Karannagoda",
+        "Nahalla",
+        "Warakagoda"
+      ]
+    },
+    {
+      "name": "Bulathsinhala Pradeshiya Sabha",
+      "mainCities": [
+        "Naragala",
+        "Kobawaka",
+        "Egaloya",
+        "Halwathura",
+        "Delmella",
+        "Amaragedara",
+        "Bulathsinhala",
+        "Galahena",
+        "Govinna",
+        "Mahagama",
+        "Kudaligama",
+        "Polegoda",
+        "Welgama",
+        "Paragoda"
+      ]
+    },
+    {
+      "name": "Mathugama Pradeshiya Sabha",
+      "mainCities": [
+        "Yatadolawatta",
+        "Bopitiya",
+        "Panthiya",
+        "Mathugama North",
+        "Mathugama West",
+        "Mathugama East",
+        "Ovitigala",
+        "Narawila",
+        "Aluth Gamgoda",
+        "Keeranthidiya",
+        "Kotagedara",
+        "Indigasthuduwa",
+        "Bondupitiya",
+        "Meegama-Andawala",
+        "Walagedara-Kurudippita",
+        "Lewwanduwa",
+        "Welipenna",
+        "Badugama",
+        "Horawala"
+      ]
+    },
+    {
+      "name": "Dodangoda Pradeshiya Sabha",
+      "mainCities": [
+        "Koholana",
+        "Gamagoda",
+        "Remunagoda",
+        "Nebada",
+        "Wellatha-Thebuwana",
+        "Thudugala",
+        "Bombuwala North",
+        "Bombuwala South",
+        "Dodangoda West",
+        "Dodangoda West-North",
+        "Dodangoda East",
+        "Nehinna",
+        "Puhambugoda"
+      ]
+    },
+    {
+      "name": "Palindanuwara Pradeshiya Sabha",
+      "mainCities": [
+        "Bellana",
+        "Ilukpotha",
+        "Pelenda",
+        "Kelinkanda",
+        "Athwelthota",
+        "Morapitiya",
+        "Midalana",
+        "Baduraliya",
+        "Magura",
+        "Athale",
+        "Hedigalla",
+        "Ingurudaluwa",
+        "Boralugoda"
+      ]
+    },
+    {
+      "name": "Agalawatta Pradeshiya Sabha",
+      "mainCities": [
+        "Pimbura",
+        "Omatta",
+        "Kakulandala",
+        "Udawela",
+        "Yatiyana",
+        "Agalawatta",
+        "Mulatiyana",
+        "Kalupahana",
+        "Kithulgoda",
+        "Kevitiyagala",
+        "Kurupita",
+        "Rathmale"
+      ]
+    },
+    {
+      "name": "Walallawita Pradeshiya Sabha",
+      "mainCities": [
+        "Ittapana",
+        "Loolbathduwa",
+        "Pannila",
+        "Moragala",
+        "Maddegama",
+        "Meegahathenna",
+        "Bothalawa",
+        "Ihala Hewessa",
+        "Palawatte",
+        "Gorakadoowa",
+        "Makalandawa",
+        "Walallawita",
+        "Pareigama",
+        "Karapagala"
+      ]
+    },
+    {
+      "name": "Millaniya Pradeshiya Sabha",
+      "mainCities": [
+        "Gungamuwa",
+        "Welikala",
+        "Yalagala",
+        "Haltota",
+        "Millaniya",
+        "Paragastota",
+        "Pelpola",
+        "Batagoda",
+        "Weniwelpitiya",
+        "Uduwara",
+        "Yatawara"
+      ]
+    }
+  ]
+}, 
+{
+  "district": "Kandy",
+  "municipalCouncils": [
+    {
+      "name": "Kandy Municipal Council",
+      "mainCities": [
+        "Yatiwawala",
+        "Senkadagala",
+        "Mawilmada",
+        "Mahaweli Uyana",
+        "Wattaranthenna",
+        "Mapanawathura",
+        "Aniwatta Dodamwala",
+        "Asgiriya",
+        "Poomawatta West",
+        "Mahaiyawa",
+        "Aruppala",
+        "Boowelikada",
+        "Ampitiya",
+        "Malwatta",
+        "Deiyannewela",
+        "Katukele",
+        "Suduhumpala",
+        "Bowala",
+        "Gatambe"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Wattegama Urban Council",
+      "mainCities": [
+        "Udurawana",
+        "Dewalawaka",
+        "Nuwarathenna",
+        "Narandanda",
+        "Atalahagoda",
+        "Galadeniya",
+        "Yatirawana",
+        "Balahela",
+        "Pitiyegedara"
+      ]
+    },
+    {
+      "name": "Kadugannawa Urban Council",
+      "mainCities": [
+        "Kadugannawa",
+        "Naulla",
+        "Kadawathgama",
+        "Kandangama",
+        "Madarangoda",
+        "Arambegama",
+        "Ilukwatta",
+        "Pilimathalawa",
+        "Govindala"
+      ]
+    },
+    {
+      "name": "Gampola Urban Council",
+      "mainCities": [
+        "Kahatapitiya",
+        "Kirinda",
+        "Udovita",
+        "Bothalapitiya",
+        "Gampola East",
+        "Mount Temple",
+        "Keerapane",
+        "Rathmalkanduwa",
+        "Godagama",
+        "Gampola West",
+        "Polkumbura",
+        "Illawathura",
+        "Angammana West",
+        "Angammana East",
+        "Eregoda",
+        "Kudamake",
+        "Jayamalapura"
+      ]
+    },
+    {
+      "name": "Nawalapitiya Urban Council",
+      "mainCities": [
+        "Dolosbage Para",
+        "Gondennawa",
+        "Beli Para",
+        "Penithudumulla Soizakele",
+        "Penithudumulla Ihala",
+        "Handungala Watta",
+        "Jayasundare",
+        "Godamuduna Soizakele",
+        "IDH Mahakumbura"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Thumpane Pradeshiya Sabha",
+      "mainCities": [
+        "Galabawa",
+        "Uduwa",
+        "Naranwala",
+        "Damunugasthenne",
+        "Bananga",
+        "Kumburegama",
+        "Idamegama",
+        "Dehideniya",
+        "Galagedara",
+        "Minigamuwa",
+        "Welivita",
+        "Aludeniya",
+        "Dedunupitiya",
+        "Hatharaliyadda",
+        "Yaggala",
+        "Alagalla",
+        "Kolugala",
+        "Muruddeniya"
+      ]
+    },
+    {
+      "name": "Harispattuwa Pradeshiya Sabha",
+      "mainCities": [
+        "Medawala",
+        "Attaragama",
+        "Gonigoda",
+        "Hedeniya",
+        "Karanduwawala",
+        "Hiriyalagammana",
+        "Thiththapajjala",
+        "Hapugoda",
+        "Ranawana",
+        "Uduwawala",
+        "Nugawela",
+        "Kulugammana",
+        "Uguressapitiya",
+        "Senarathgama",
+        "Inigala",
+        "Polwatta",
+        "Hamangoda North",
+        "Gohagoda",
+        "Hamangoda South",
+        "Haloluwa",
+        "Yatihalagala Udagama",
+        "Yatihalagala Pallegama"
+      ]
+    },
+    {
+      "name": "Akurana Pradeshiya Sabha",
+      "mainCities": [
+        "Vilana Udugama",
+        "Vilana Pallegama",
+        "Alawathugoda",
+        "Mawathupola",
+        "Dippitiya",
+        "Neerella",
+        "Konakalagala",
+        "Pangollamada",
+        "Kurugoda",
+        "Bilugohothenna",
+        "Udaweliketiya",
+        "Akurana",
+        "Waragashinna",
+        "Kurudugahaela",
+        "Thelambugahawatta",
+        "Deegala Dunuwila"
+      ]
+    },
+    {
+      "name": "Poojapitiya Pradeshiya Sabha",
+      "mainCities": [
+        "Ihalamulla",
+        "Ankumbura",
+        "Kithulgolla",
+        "Batagolladeniya",
+        "Galhinna",
+        "Morakanda",
+        "Bokkawala",
+        "Udahingulwala",
+        "Gallella",
+        "Marathugoda",
+        "Godahena",
+        "Ovissa",
+        "Dombagammana",
+        "Paleepana",
+        "Batugoda",
+        "Mullegama",
+        "Kahawatta"
+      ]
+    },
+    {
+      "name": "Pathadumbara Pradeshiya Sabha",
+      "mainCities": [
+        "Aluthgama",
+        "Doragamuwa",
+        "Gunembil",
+        "Yatawara",
+        "Meegammana",
+        "Udathalavinna Madige",
+        "Udathalavinna",
+        "Pallethalavinna",
+        "Paranagama",
+        "Ambathenna",
+        "Megodagama",
+        "Kahalla",
+        "Polgolla",
+        "Meegamawatta",
+        "Madawala Madige",
+        "Madawala",
+        "Pihilladeniya",
+        "Leemagahadeniya"
+      ]
+    },
+    {
+      "name": "Panvila Pradeshiya Sabha",
+      "mainCities": [
+        "Kelebokka",
+        "Mahapathana-Watakale",
+        "Kosgama",
+        "Thawalanthenna",
+        "Beddegama-Gomaraya",
+        "Arattana",
+        "Madolkele",
+        "Hathale",
+        "Angammana-Panvila",
+        "Pitawala-Udugoda"
+      ]
+    },
+    {
+      "name": "Udadumbara Pradeshiya Sabha",
+      "mainCities": [
+        "Meemure",
+        "Kalugala",
+        "Dambagahapitiya",
+        "Hunnasgiriya",
+        "Udadumbara",
+        "Mediwaka",
+        "Rambukwella",
+        "Bamgarabedda",
+        "Madugalla",
+        "Dewahandiya"
+      ]
+    },
+    {
+      "name": "Minipe Pradeshiya Sabha",
+      "mainCities": [
+        "Udattawa",
+        "Himbutuwa",
+        "Kolongoda",
+        "Udawela",
+        "Ulpathagama",
+        "Mahayaya",
+        "Hasalaka",
+        "Mahaeswedduma",
+        "Pallewatta",
+        "Morayaya",
+        "Handaganwa",
+        "Ambagahapelessa",
+        "Minipe"
+      ]
+    },
+    {
+      "name": "Medadumbara Pradeshiya Sabha",
+      "mainCities": [
+        "Galabadawatta",
+        "Rangala",
+        "Makuldeniya",
+        "Werapitiya",
+        "Putuhapuwa",
+        "Watapana",
+        "Ellepola",
+        "Karalliyaddam Rambukwella",
+        "Poddalgoda",
+        "Retiyagama",
+        "Rambukpotha",
+        "Medamahanuwara",
+        "Wegala",
+        "Senarathwela",
+        "Ambale",
+        "Wenadaruwa"
+      ]
+    },
+    {
+      "name": "Kundasale Pradeshiya Sabha",
+      "mainCities": [
+        "Galpihilla",
+        "Naranpanawa",
+        "Mulwegama",
+        "Deliwalathenna",
+        "Udagama",
+        "Hurikaduwa",
+        "Menikhinna",
+        "Malpana",
+        "Kumbukkandura",
+        "Rajawella",
+        "Wijaya Sri Gama",
+        "Ambakote",
+        "Balagolla",
+        "Kengalla",
+        "Kundasale South Nithuletenna",
+        "Dambarawa",
+        "Amunugama",
+        "Gunnepana",
+        "Gbadagama",
+        "Sirimalwatta",
+        "Degakdoruwa",
+        "Mahawatta",
+        "Galmaduwa",
+        "Kundasale North"
+      ]
+    },
+    {
+      "name": "Pathahewaheta Pradeshiya Sabha",
+      "mainCities": [
+        "Uduwela",
+        "Monaragala",
+        "Uduwela Pallegama",
+        "Hippola",
+        "Bootawatta",
+        "Kapuliyaddam Mailapitiya",
+        "Bolepe",
+        "Ankelipitiya",
+        "Ethulgama",
+        "Ratemulla",
+        "Pereawatta",
+        "Nugaliyadda",
+        "Medagama",
+        "Marassana",
+        "Hewavissa",
+        "Bopitiya",
+        "Maussawa",
+        "Udadelthota",
+        "Delthota",
+        "Pattiyagama",
+        "Kolambissa",
+        "Gabadagama-Karagaskada"
+      ]
+    },
+    {
+      "name": "Kandy Four Gravets and Gangawata Korale Pradeshiya Sabha",
+      "mainCities": [
+        "Godagandeniya",
+        "Peradeniya",
+        "Mahakanda",
+        "Ogastawatta",
+        "Bowala",
+        "Hanthana",
+        "Ampitiya Udagama",
+        "Thennekumbura",
+        "Wewathenna",
+        "Ulpathakumbura",
+        "Ketawala Lewula",
+        "Gurudeniya East",
+        "Maligatenna"
+      ]
+    },
+    {
+      "name": "Yatinuwara Pradeshiya Sabha",
+      "mainCities": [
+        "Kobbekaduwa",
+        "Yahalathenna",
+        "Dehianga",
+        "Dodamwala",
+        "Udamwala",
+        "Walgampaya",
+        "Kotaligoda",
+        "Menikdiwela",
+        "Alagalla",
+        "Godigamuwa",
+        "Balana",
+        "Amunupura",
+        "Maligathenna",
+        "Haliyadda",
+        "Danthure",
+        "Arambegama",
+        "Giragama",
+        "Sooriyagoda",
+        "Gannoruwa",
+        "Eriyagama",
+        "Dehideniya",
+        "Pilapitiya",
+        "Edaduwawa",
+        "Bulumulla",
+        "Embilmeegama"
+      ]
+    },
+    {
+      "name": "Udunuwara Pradeshiya Sabha",
+      "mainCities": [
+        "Lagamuwa",
+        "Kurukuththala",
+        "Hiddavulla",
+        "Gadaladeniya",
+        "Gangoda",
+        "Lankathilaka",
+        "Alapalawala",
+        "Hendeniya",
+        "Penideniya",
+        "Piligalla",
+        "Arattana",
+        "Davulagala",
+        "Embekka",
+        "Walagedara",
+        "Manikkawa",
+        "Weligalla",
+        "Thalawathura",
+        "Appallagoda",
+        "Ganhatha",
+        "Ketakumbura",
+        "Pethiyagoda",
+        "Gelioya"
+      ]
+    },
+    {
+      "name": "Udapalatha Pradeshiya Sabha",
+      "mainCities": [
+        "Egoda Kalugamuwa",
+        "Ganegoda",
+        "Nillamba",
+        "Palledelthota",
+        "Doluwa",
+        "Hapugaspitiya",
+        "Ilangawatta",
+        "Gampolwatta",
+        "Naranvita",
+        "Kahawatta",
+        "Gothatuwela",
+        "Panwilathenna",
+        "Masgolla",
+        "Mulgama",
+        "Pupuressa",
+        "Dunukedulla",
+        "Ihalagama",
+        "Pallegama",
+        "Amurupuraya",
+        "Delpitiya",
+        "Galatha",
+        "Paradeka",
+        "Pussellewa",
+        "Doragala",
+        "Mawathura"
+      ]
+    },
+    {
+      "name": "Ganga Ihala Korale Pradeshiya Sabha",
+      "mainCities": [
+        "Galpaya",
+        "Wallahagoda",
+        "Gampolawela",
+        "Ethgala",
+        "Thembiligala",
+        "Ulapane",
+        "Pellapitiya",
+        "Kurunduwatta",
+        "Watakedeniya",
+        "Patithalawa",
+        "Dolosbage",
+        "Alugolla",
+        "Yatapana"
+      ]
+    },
+    {
+      "name": "Pasbage Korale Pradeshiya Sabha",
+      "mainCities": [
+        "Warakawa",
+        "Dandubediruppa",
+        "Penithuduwa",
+        "Rambukpitiya",
+        "Balanthota",
+        "Dekinda",
+        "Weligampola",
+        "Bauwagama",
+        "Kadiyanlena",
+        "Inguruoya",
+        "Westholl"
+      ]
+    }
+  ]
+}, 
+{
+  "district": "Kegalle",
+  "municipalCouncils": [],
+  "urbanCouncils": [
+    {
+      "name": "Kegalle Urban Council",
+      "mainCities": [
+        "Ambanpitiya Nagarikaya",
+        "Habudugala",
+        "Anguruwella",
+        "Wewaladeniya",
+        "Olagama",
+        "Kurunduhinna",
+        "Madeyawa",
+        "Meepitiya",
+        "Nilmalgoda",
+        "Pitihuma",
+        "Narangoda",
+        "Rockhill"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Warakapola Pradeshiya Sabha",
+      "mainCities": [
+        "Thulhiriya",
+        "Opatha",
+        "Kodapaluwa",
+        "Waddeniya",
+        "Egalla",
+        "Morawaka",
+        "Mangedara",
+        "Ambepussa",
+        "Warakapola",
+        "Othnapitiya",
+        "Nelumdeniya",
+        "Dedigama",
+        "Kukulpane",
+        "Ethnawala",
+        "Godawela",
+        "Algama Ihalagama",
+        "Uduwaka",
+        "Weragoda",
+        "Menikkadawara",
+        "Mahapallegama",
+        "Alpitiya",
+        "Algama",
+        "Pahala Lenagala",
+        "Weragala"
+      ]
+    },
+    {
+      "name": "Galigamuwa Pradeshiya Sabha",
+      "mainCities": [
+        "Helamada",
+        "Wattarama",
+        "Dewalegama",
+        "Walagama",
+        "Edurapotha",
+        "Hathnagoda",
+        "Yattogodam Kobbewala",
+        "Galigamuwa",
+        "Naberiyawa",
+        "Alawala",
+        "Bambararena",
+        "Atugoda",
+        "Kinigama",
+        "Arandara",
+        "Nadeniya",
+        "Pindeniya",
+        "Malwana",
+        "Kotiyakumbura",
+        "Aruggammana"
+      ]
+    },
+    {
+      "name": "Kegalle Pradeshiya Sabha",
+      "mainCities": [
+        "Siyambalapitiya",
+        "Puwakdeniya",
+        "Kalugalla",
+        "Paranagampola",
+        "Ambanpitiya",
+        "Paragammana",
+        "Ekiriyagala",
+        "Deewela",
+        "Hettimulla",
+        "Makoora",
+        "Malvita",
+        "Hungampola",
+        "Meedeniya",
+        "Alapalawala",
+        "Eragama",
+        "Undugoda",
+        "Bogala",
+        "Ganthuna"
+      ]
+    },
+    {
+      "name": "Rambukkana Pradeshiya Sabha",
+      "mainCities": [
+        "Kudagama",
+        "Hewadiwela",
+        "Gabbala",
+        "Parape",
+        "Weligamuwa",
+        "Deliwala",
+        "Walgama",
+        "Meeduma",
+        "Diyasunnatha",
+        "Eriyagolla",
+        "Kansalagamuwa",
+        "Pinnawala",
+        "Imbulgasdeniya",
+        "Hiriwadunna",
+        "Kiriwandeniya",
+        "Dunukewala",
+        "Naranbedda",
+        "Kumbaloluwa",
+        "Molagoda",
+        "Kadigamuwa",
+        "Beddawala"
+      ]
+    },
+    {
+      "name": "Mawanella Pradeshiya Sabha",
+      "mainCities": [
+        "Weganthale",
+        "Randiwala",
+        "Makehelwala",
+        "Makadawara",
+        "Hingula",
+        "Hinguloya",
+        "Mahawatta",
+        "Mawanella",
+        "Uthuwankanda",
+        "Ambulugala",
+        "Lewke",
+        "Kiringadeniya",
+        "Edanduwawa",
+        "Uyanwatta",
+        "Aluthnuwara",
+        "Mawela",
+        "Mahanthegama",
+        "Werake",
+        "Ambadeniya",
+        "Eraminigammana",
+        "Ginihappitiya",
+        "Hemmathagama",
+        "Madulbowa",
+        "Kehelpannala"
+      ]
+    },
+    {
+      "name": "Aranayaka Pradeshiya Sabha",
+      "mainCities": [
+        "Deewala",
+        "Uduwewela",
+        "Ussapitiya",
+        "Thalagamuwa",
+        "Nikapitiya",
+        "Asmadala",
+        "Debathgama",
+        "Hathgampala",
+        "Gevilipitiya",
+        "Dippitiya",
+        "Habalakkawa",
+        "Thalgaspitiya",
+        "Getaberi Kanda",
+        "Ganthuna",
+        "Narangala",
+        "Aranayaka",
+        "Hakurugammana",
+        "Selawa"
+      ]
+    },
+    {
+      "name": "Yatiyanthota Pradeshiya Sabha",
+      "mainCities": [
+        "Mattamagoda",
+        "Galpatha",
+        "Kabulumulla",
+        "Yatiyanthota",
+        "Jayavinda Gama",
+        "Dombepola",
+        "Amanawala",
+        "Seepoth",
+        "Dumukedeniya",
+        "Malwatta",
+        "Neluwathukanda",
+        "Ganepalla",
+        "Garagoda",
+        "Meegasthenna",
+        "Pelellegama",
+        "Gonagamuwa",
+        "Kithulgala"
+      ]
+    },
+    {
+      "name": "Bulathkohupitiya Pradeshiya Sabha",
+      "mainCities": [
+        "Kabagamuwa",
+        "Puspane",
+        "Bulathkohupitiya",
+        "Ihala Nevusmiyar",
+        "Uduwa",
+        "Kendawa",
+        "Lewala",
+        "Wegalla",
+        "Ampagala",
+        "Panapitiya",
+        "Dedugala"
+      ]
+    },
+    {
+      "name": "Ruwanwella Pradeshiya Sabha",
+      "mainCities": [
+        "Mahakanda",
+        "Galpitamada",
+        "Lewanagama",
+        "Pethangoda",
+        "Doranuwa",
+        "Siyambalawala",
+        "Bopeththa",
+        "Dannoruwa",
+        "Wahakula",
+        "Morawaththa",
+        "Ruwanwella",
+        "Wendala",
+        "Moraliya",
+        "Medagoda",
+        "Amithirigala"
+      ]
+    },
+    {
+      "name": "Deraniyagala Pradeshiya Sabha",
+      "mainCities": [
+        "Ballahela",
+        "Keerihena",
+        "Udabage",
+        "Wattegedara",
+        "Deraniyagala",
+        "Basnagala",
+        "Polgaswatta",
+        "Poddenikanda",
+        "Miyanavita",
+        "Udapola",
+        "Magala",
+        "Dikellakanda"
+      ]
+    },
+    {
+      "name": "Dehiovita Pradeshiya Sabha",
+      "mainCities": [
+        "Kurupetta",
+        "Magammana",
+        "Kelegama",
+        "Kanangama",
+        "Atulugamwela",
+        "Ihala Thaldoowa",
+        "Pahala Thaldoowa",
+        "Dehiovita",
+        "Walpola",
+        "Boralankada",
+        "Dikella",
+        "Batangala",
+        "Bomaluwa",
+        "Maniyangama",
+        "Madola",
+        "Welangalla",
+        "Panawala",
+        "Hinguranketha",
+        "Ambalampitiya",
+        "Imbulpitiya"
+      ]
+    }
+  ]
+},
+{
+  "district": "Kilinochchi",
+  "municipalCouncils": [],
+  "urbanCouncils": [],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Pachchilaipallai Pradeshiya Sabha",
+      "mainCities": [
+        "Muhamalai",
+        "Kilaly",
+        "Pallai",
+        "Thambagamam",
+        "Mullaiyadi",
+        "Soranpattu",
+        "Muhavil",
+        "Mullippattu"
+      ]
+    },
+    {
+      "name": "Karachchi Pradeshiya Sabha",
+      "mainCities": [
+        "Paranthan",
+        "Murasumottai",
+        "Kandawalai",
+        "Punnaineeravi",
+        "Piramanthanaru",
+        "Kalmadunagar",
+        "Ramanathapuram",
+        "Wattakkachchi",
+        "Thiruwaiyaru",
+        "Kilinochchi Town",
+        "Ganeshapuram",
+        "Periyaparanthan",
+        "Uruththirapuram",
+        "Akkarayan",
+        "Wannerikkulam",
+        "Konavil",
+        "Selvanagar",
+        "Udayanagar",
+        "Krishnapuram",
+        "Barathipuram",
+        "Kanahampikaikkulam"
+      ]
+    },
+    {
+      "name": "Poonakary Pradeshiya Sabha",
+      "mainCities": [
+        "Gowdarimunai",
+        "Gnanimadam",
+        "Pallikudah",
+        "Kollakuruchchi",
+        "Nallur",
+        "Jeyapuram",
+        "Ponnaveli",
+        "Iranaithivu",
+        "Pallavarayankattu",
+        "Kariyalainagapaduvan",
+        "Mulankavil"
+      ]
+    }
+  ]
+},
+{
+  "district": "Kurunegala",
+  "municipalCouncils": [
+    {
+      "name": "Kurunegala Municipal Council",
+      "mainCities": [
+        "Gangoda",
+        "Angangala",
+        "North Lake",
+        "Maliga Area",
+        "Kurunegala Town East",
+        "Gettuwana",
+        "Madamegama",
+        "Illuppugedara",
+        "Malkaduwawa Nagarikaya",
+        "Wehera Nagarikaya",
+        "Jayanthipura",
+        "Udawalpola",
+        "Theliyagonna",
+        "Minhettiya",
+        "Thalvita",
+        "Wellawa",
+        "Waraddana",
+        "Kudagalgamuwa",
+        "Maspotha",
+        "Siyambalangamuwa",
+        "Yanthampalawa",
+        "Bamunugedara",
+        "Maraluwawa",
+        "Thonayaya",
+        "Kowana",
+        "Kawdawatta",
+        "Malkaduwawa",
+        "Bamunawala",
+        "Boyagane",
+        "Wanduragala",
+        "Wilbawa",
+        "Mallawapitiyam Mehiella",
+        "Millawa",
+        "Doraliyawa",
+        "Wattegedara",
+        "Mathawa",
+        "Katupitiya"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Kuliyapitiya Urban Council",
+      "mainCities": [
+        "Meegahakotuwa",
+        "Kanadulla",
+        "Dandagamuwa",
+        "Kadurugashena",
+        "Kuliyapitiya Town",
+        "Pallapitiya",
+        "Maxiwatta",
+        "Labuyaya",
+        "Assedduma"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Giribawa Pradeshiya Sabha",
+      "mainCities": [
+        "Jayanthipura",
+        "Perakumpura",
+        "Dharmarajapura",
+        "Hasthirajapura",
+        "Saliya Asokapura",
+        "Giribawa",
+        "Devipura",
+        "Warawewa",
+        "Rohanapura",
+        "Shailapura"
+      ]
+    },
+    {
+      "name": "Galgamuwa Pradeshiya Sabha",
+      "mainCities": [
+        "Jayabima",
+        "Usgala Siyambalangamuwa",
+        "Maithrisenpura",
+        "Buduruwakanda",
+        "Nilagiri",
+        "Mahananneriya",
+        "Maha Thorawa",
+        "Nahettikulama",
+        "Galgamuwa Town",
+        "Maha Galgamuwa",
+        "Mahasenpura",
+        "Govigampura",
+        "Resveherapura",
+        "Divulgane",
+        "Gallewa",
+        "Dewagiripura",
+        "Atharagalla",
+        "Ehetuwewa",
+        "Embogama"
+      ]
+    },
+    {
+      "name": "Polpithigama Pradeshiya Sabha",
+      "mainCities": [
+        "Kumbukkadawala",
+        "Moragollagama",
+        "Nikawewa",
+        "Madagalla",
+        "Hathigamuwa",
+        "Polpithigama",
+        "Egodagama",
+        "Thalakolawewa",
+        "Pothuwila",
+        "Makulpotha",
+        "Maeliya",
+        "Koruwawa",
+        "Ambagaswewa",
+        "Kalugalla",
+        "Doraweruwa",
+        "Moroththa",
+        "Pansiyagama",
+        "Madahapola"
+      ]
+    },
+    {
+      "name": "Nikaweratiya Pradeshiya Sabha",
+      "mainCities": [
+        "Aluthgama",
+        "Kumbukwewa",
+        "Meewellewa",
+        "Kotavehera",
+        "Ambale",
+        "Koralayagama",
+        "Thumbulla",
+        "Kandegedara",
+        "Sirisethagama",
+        "Dalukgolla",
+        "Randenigama",
+        "Havenpelessa",
+        "Unagolla",
+        "Rasnayakapura",
+        "Kadigawa",
+        "Nammuwawa",
+        "Heelogama",
+        "Nikaweratiya North",
+        "Nikaweratiya South",
+        "Katagamuwa",
+        "Kiridigalla"
+      ]
+    },
+    {
+      "name": "Kobeigane Pradeshiya Sabha",
+      "mainCities": [
+        "Boruluwewa",
+        "Hathalewa",
+        "Hengamuwa",
+        "Vithikuliya",
+        "Pannawa",
+        "Walaswewa",
+        "Alahenegama",
+        "Kobeigane",
+        "Baladora",
+        "Bamunugama"
+      ]
+    },
+    {
+      "name": "Mahawa Pradeshiya Sabha",
+      "mainCities": [
+        "Kasikote",
+        "Ranoruwa",
+        "Ambanpola",
+        "Abakolawewa",
+        "Kettapahuwa",
+        "Walaliya",
+        "Ipalogama",
+        "Daladagama",
+        "Mahawa",
+        "Thumbullegama",
+        "Ihalagama",
+        "Konwewa",
+        "Yapahuwa",
+        "Karambe",
+        "Embogama",
+        "Panwewa",
+        "Balalla",
+        "Katuwannawa",
+        "Nagollagama"
+      ]
+    },
+    {
+      "name": "Ibbagamuwa Pradeshiya Sabha",
+      "mainCities": [
+        "Divulvewa",
+        "Thambagalla",
+        "Ganewatta",
+        "Malagamuwa",
+        "Hiripitiya",
+        "Kumbukgate",
+        "Thiththawella",
+        "Kimbulwanapura",
+        "Medamulla",
+        "Ussawa",
+        "Panliyadda",
+        "Kendawala",
+        "Ambanpola",
+        "Thihawa",
+        "Dolukanda East",
+        "Hunupola",
+        "Kiribamuna",
+        "Kandulawa",
+        "Polgolla",
+        "Meddeketiya",
+        "Kirindigalla",
+        "Ibbagamuwa",
+        "Mahamookalanyaya",
+        "Bakmeegolla",
+        "Bathalagoda"
+      ]
+    },
+    {
+      "name": "Wariyapola Pradeshiya Sabha",
+      "mainCities": [
+        "Ethawa",
+        "Thennakoongama",
+        "Diwulkele",
+        "Ebawalapitiya",
+        "Amunugama",
+        "Pothuwewa",
+        "Werella",
+        "Padeniya",
+        "Awlegama",
+        "Hanarawa",
+        "Rambawewa",
+        "Wariyapola",
+        "Wilakatupotha",
+        "Elavitigama",
+        "Mahakeliya",
+        "Walpola",
+        "Bamunakotuwa",
+        "Katupotham Panadare",
+        "Kadapathwehera",
+        "Ethanawaththa",
+        "Kanotuwa",
+        "Demataluwa"
+      ]
+    },
+    {
+      "name": "Panduwasnuwara Pradeshiya Sabha",
+      "mainCities": [
+        "Dothella",
+        "Kevitiya",
+        "Pallegama",
+        "Hettipola",
+        "Sunandapura",
+        "Mandapola",
+        "Panduwasnuwara",
+        "Palugaswewa",
+        "Bandara Koswatta",
+        "Kolambagama",
+        "Rathmalla",
+        "Thissawa",
+        "Thengodagedara",
+        "Moonamaldeniya",
+        "Dehenekgedara",
+        "Pihimbiya",
+        "Karagahagedara",
+        "Gomugomuwa",
+        "Magulagama",
+        "Wijaya Udagama",
+        "Kirimetiyawa",
+        "Kanogama"
+      ]
+    },
+    {
+      "name": "Bingiriya Pradeshiya Sabha",
+      "mainCities": [
+        "Gatulawa",
+        "Manelembuwa",
+        "Weerapokuna",
+        "Thisogama",
+        "Panawewa",
+        "Bingiriya",
+        "Wellarawa",
+        "Kaduruwewa",
+        "Maunawa",
+        "Halmillewa",
+        "Tharana",
+        "Padiwela",
+        "Heenpannawa"
+      ]
+    },
+    {
+      "name": "Udubaddawa Pradeshiya Sabha",
+      "mainCities": [
+        "Weerakodiyana",
+        "Yagamwela",
+        "Divurumpola",
+        "Kappangamuwa",
+        "Udubaddawa",
+        "Bunnehepola",
+        "Kattimahana",
+        "Dummalasooriya",
+        "Bibiladeniya",
+        "Dunukadeniya",
+        "Horathepola"
+      ]
+    },
+    {
+      "name": "Pannala Pradeshiya Sabha",
+      "mainCities": [
+        "Gallehemulla",
+        "Welpalla",
+        "Nadalagamuwa",
+        "Eriyagolla",
+        "Paragammana",
+        "Ingaradavula",
+        "Hamangalla",
+        "Katugampala",
+        "Wettewa",
+        "Malgamuwa",
+        "Meddepola",
+        "Bammanna",
+        "Elabadagama",
+        "Kongoda",
+        "Daraluwa",
+        "Gonulla",
+        "Sadalankawa",
+        "Nalawalana",
+        "Makadura",
+        "Pannala",
+        "Thalammehera",
+        "Labbala",
+        "Bopitiya",
+        "Mattegama"
+      ]
+    },
+    {
+      "name": "Kuliyapitiya Pradeshiya Sabha",
+      "mainCities": [
+        "Koshena",
+        "Deegalla",
+        "Kabalewa",
+        "Embawa",
+        "Piduma",
+        "Kirindawa",
+        "Beminigalla",
+        "Medelpola",
+        "Pothuhera",
+        "Kekunagolla",
+        "Karangamuwa",
+        "Siyambalagaskotuwa",
+        "Bogamula",
+        "Horombawa",
+        "Nakkawatta",
+        "Kithalawa",
+        "Bohingamuwa",
+        "Galahitiyawa",
+        "Kumbalwala",
+        "Mahinpitiya",
+        "Kalugamuwa",
+        "Diyadora",
+        "Wewagama",
+        "Galgammulla",
+        "Deekirikewa"
+      ]
+    },
+    {
+      "name": "Alawwa Pradeshiya Sabha",
+      "mainCities": [
+        "Galgamuwa",
+        "Kandegedara",
+        "Maharachchimulla",
+        "Nungamuwa",
+        "Waduwawa",
+        "Wettewa",
+        "Nugawela",
+        "Boyawalana",
+        "Nawathalwatta",
+        "Humbuluwa",
+        "Abbowa",
+        "Yattalgoda",
+        "Paramaulla",
+        "Alawwa",
+        "Koholana"
+      ]
+    },
+    {
+      "name": "Narammala Pradeshiya Sabha",
+      "mainCities": [
+        "Kadahapola",
+        "Ganegoda",
+        "Narammala",
+        "Dampelessa",
+        "Kottapitiya",
+        "Rangallepola",
+        "Kiwulgalla",
+        "Muthugala",
+        "Dambadeniya",
+        "Paranagama",
+        "Kudagammana"
+      ]
+    },
+    {
+      "name": "Polgahawela Pradeshiya Sabha",
+      "mainCities": [
+        "Lokahettiya",
+        "Weerambugedara",
+        "Piduruwella",
+        "Kanumale",
+        "Uhumeeya",
+        "Bulupitiya",
+        "Kalugamuwa",
+        "Udugama",
+        "Hiripathwella",
+        "Mawathagama",
+        "Pothuhera",
+        "Hadugala",
+        "Thalawaththegedara",
+        "Udapola",
+        "Rathmalgoda",
+        "Polpitiya",
+        "Aragoda",
+        "Godawela",
+        "Epakanda",
+        "Polgahawela North",
+        "Polgahawela South",
+        "Panaliya"
+      ]
+    },
+    {
+      "name": "Mawathagama Pradeshiya Sabha",
+      "mainCities": [
+        "Barandana",
+        "Hidagolla",
+        "Udanagama",
+        "Pothubowa",
+        "Pilessa",
+        "Arampola",
+        "Delgolla Watta",
+        "Mawathagama North",
+        "Mawathagama South",
+        "Meethenwala",
+        "Watareka",
+        "Kahapathwala",
+        "Ilukwela",
+        "Paragahadeniya",
+        "Bandaragala",
+        "Matibokka"
+      ]
+    },
+    {
+      "name": "Rideegama Pradeshiya Sabha",
+      "mainCities": [
+        "Adapola",
+        "Waduressa",
+        "Minirangama",
+        "Balawattala",
+        "Lihiniwahara",
+        "Dodangaslanda",
+        "Palleyaya",
+        "Rideegama",
+        "Morathiha",
+        "Rambadagalla",
+        "Delvita",
+        "Eriyagolla",
+        "Panagamuwa",
+        "Ambakote",
+        "Buluwala",
+        "Hawanpola",
+        "Medagama",
+        "Ogodapola",
+        "Meeliyadda",
+        "Pihimbuwa",
+        "Pussella",
+        "Kanadeniyawala"
+      ]
+    }
+  ]
+},
+{
+  "district": "Mannar",
+  "municipalCouncils": [],
+  "urbanCouncils": [
+    {
+      "name": "Mannar Urban Council",
+      "mainCities": [
+        "Eluththoor",
+        "Chawatkattu",
+        "Southbar",
+        "Panankattikottu",
+        "Pettah",
+        "Uppukulam",
+        "Pallimunai",
+        "Thalaimannar",
+        "Thalaimannar Pier East",
+        "Thullukudiyiruppu",
+        "Pesalai",
+        "Pesalai South",
+        "Siruthoppu",
+        "Puthukudiyiruppu",
+        "Erukkalampiddy",
+        "Thalvupadu",
+        "Tharapuram",
+        "Uyilankulam"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Nanattan Pradeshiya Sabha",
+      "mainCities": [
+        "Vankalai North",
+        "Vankalai",
+        "Nanattan",
+        "Valkaipettankandal",
+        "Ilahadipiddy",
+        "Murunkan",
+        "Katkidanthakulam",
+        "Kattaiadappan"
+      ]
+    },
+    {
+      "name": "Musali Pradeshiya Sabha",
+      "mainCities": [
+        "Arippu East",
+        "Arippu West",
+        "Pandaraveli",
+        "Puduveli",
+        "Silawathurai",
+        "Ahathimurippu Koolankulam",
+        "Potkerni",
+        "Marudamadu Veppankulam",
+        "Kondachchi",
+        "Palaikuli"
+      ]
+    },
+    {
+      "name": "Manthai West Pradeshiya Sabha",
+      "mainCities": [
+        "Vellankulam",
+        "Iluppaikadavai",
+        "Periyamadu",
+        "Vidaththalthivu",
+        "Nedunkandal",
+        "Alkadiveli",
+        "Adampan",
+        "Vattakandal",
+        "Madhu",
+        "Iranailuppaikulam",
+        "Kakayankulam"
+      ]
+    }
+  ]
+},
+{
+  "district": "Matale",
+  "municipalCouncils": [
+    {
+      "name": "Dambulla Municipal Council",
+      "mainCities": [
+        "Bulagala",
+        "Pelwehera",
+        "Athuparayaya",
+        "Dambulugama",
+        "Saluapullanawewa",
+        "Dambulla Town",
+        "Pahalawewa",
+        "Rathmalgahaela",
+        "Yapagama",
+        "Pohoranwewa",
+        "Kapuwatta",
+        "Moragollewa",
+        "Namaluwa",
+        "Digampathaha",
+        "Sigiriya",
+        "Mailattewa",
+        "Palutawa",
+        "Pallegama",
+        "Kandalama",
+        "Nikawatawana",
+        "Wewalawewa",
+        "Erevula",
+        "Yakkuragala",
+        "Kalundewa",
+        "Pannampitiya",
+        "Kiralagolla",
+        "Ethabendiwewa",
+        "Lenadora"
+      ]
+    },
+    {
+      "name": "Matale Municipal Council",
+      "mainCities": [
+        "Aluvihare Town",
+        "Kaludewala",
+        "Malwatta",
+        "Vihara Pedesa",
+        "Madya Nagaraya",
+        "Dumriyapola Pedesa",
+        "Sangamiththa Pedesa",
+        "Hulangamuwa",
+        "Nagolla",
+        "Maligathenna",
+        "Koombiyangoda"
+      ]
+    }
+  ],
+  "urbanCouncils": [],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Pallepola Pradeshiya Sabha",
+      "mainCities": [
+        "Aluthgama",
+        "Janakagama",
+        "Millawana",
+        "Kandewatta",
+        "Ehelepola",
+        "Pallepola",
+        "Maningamuwa",
+        "Rusigama",
+        "Paldeniya",
+        "Koholanwela"
+      ]
+    },
+    {
+      "name": "Galewela Pradeshiya Sabha",
+      "mainCities": [
+        "Dandubendiruppa",
+        "Thalakiriyagama",
+        "Dewahoowa",
+        "Bulanawewa",
+        "Moragolla",
+        "Damunumulla",
+        "Walaswewa",
+        "Galewela",
+        "Bambaragaswewa",
+        "Beligamuwa",
+        "Divulgaskotuwa",
+        "Bambawa",
+        "Nabadagahawatta",
+        "Wahakotte",
+        "Medabedda",
+        "Elamalpotha",
+        "Madipola"
+      ]
+    },
+    {
+      "name": "Ambanganga Korale Pradeshiya Sabha",
+      "mainCities": [
+        "Imbulgolla",
+        "Kumbaloluwa",
+        "Gammaduwa",
+        "Pussella",
+        "Tibbatukanatha",
+        "Metihakka",
+        "Gurubebila",
+        "Pallethenna",
+        "Narangolla"
+      ]
+    },
+    {
+      "name": "Naula Pradeshiya Sabha",
+      "mainCities": [
+        "Bibila",
+        "Bobelle",
+        "Dambagolla",
+        "Thalagoda",
+        "Kongahawela",
+        "Naula",
+        "Arangala",
+        "Alugolla",
+        "Nalanda",
+        "Lihinipitiya"
+      ]
+    },
+    {
+      "name": "Laggala Pellegama Pradeshiya Sabha",
+      "mainCities": [
+        "Kaluganga",
+        "Hattotaamuna",
+        "Ilukkumbura",
+        "Akarehediya",
+        "Gutuwela",
+        "Pallegama",
+        "Mahalakotuwa",
+        "Halminiya",
+        "Narangamuwa"
+      ]
+    },
+    {
+      "name": "Wilgamuwa Pradeshiya Sabha",
+      "mainCities": [
+        "Handungamuwa",
+        "Dunuvilapitiya",
+        "Maraka",
+        "Gemburuoya",
+        "Malgammana",
+        "Dewagiriya",
+        "Hettipola",
+        "Wanarawa",
+        "Nugagolla",
+        "Wilgamuwa"
+      ]
+    },
+    {
+      "name": "Matale Pradeshiya Sabha",
+      "mainCities": [
+        "Madawala Ulpotha",
+        "Thalagasyaya",
+        "Rajjammana",
+        "Puwakpitiya",
+        "Galwadukumbura",
+        "Dombawela",
+        "Ellepola",
+        "Palapathwala",
+        "Kottegoda",
+        "Dorakumbura",
+        "Kirigalpotta",
+        "Parawatta",
+        "Aluwiharaya",
+        "Kandegedara",
+        "Pandivita",
+        "Kotuwegedara"
+      ]
+    },
+    {
+      "name": "Yatawatta Pradeshiya Sabha",
+      "mainCities": [
+        "Selagama",
+        "Mahawela",
+        "Dikkumbura",
+        "Nikagolla",
+        "Yatawatta",
+        "Matalapitiya Dangan Place",
+        "Deevilla",
+        "Dullewam Ethipola"
+      ]
+    },
+    {
+      "name": "Ukuwela Pradeshiya Sabha",
+      "mainCities": [
+        "Makulemada",
+        "Ovilikanda",
+        "Thenna",
+        "Kalalpitiya",
+        "Warakamura",
+        "Elawala",
+        "Wariyapola",
+        "Nawarathnagoda",
+        "Paragahawela",
+        "Ukuwela",
+        "Nagolla",
+        "Nugapitiya",
+        "Marukona",
+        "Raithalawela",
+        "Imbulpitiya",
+        "Elkaduwa"
+      ]
+    },
+    {
+      "name": "Rattota Pradeshiya Sabha",
+      "mainCities": [
+        "Kaikawala",
+        "Rattota",
+        "Lonvil",
+        "Bodhikotuwa",
+        "Dankanda",
+        "Bambarakiriella",
+        "Alakolamada",
+        "Bogambara",
+        "Weragama",
+        "Viharagama",
+        "Bandarapola",
+        "Muwandeniya",
+        "Alwatta",
+        "Kandenuwara",
+        "Thambalagala"
+      ]
+    }
+  ]
+},
+{
+  "district": "Matara",
+  "municipalCouncils": [
+    {
+      "name": "Matara Municipal Council",
+      "mainCities": [
+        "Hittatiya",
+        "Hittatiya East",
+        "Thudawa",
+        "Weheragampita",
+        "Uyanwatta",
+        "Kadeweediya",
+        "Weliweriya",
+        "Issadeen Town",
+        "Hittatiya West",
+        "Walgama North",
+        "Madiha",
+        "Walgama South",
+        "Welegoda",
+        "Polhena",
+        "Thotamuna",
+        "Kotuwegoda",
+        "Meddawatta",
+        "Kanatagoda",
+        "Wewahamandoowa",
+        "Godagama",
+        "Navimana South",
+        "Navimana North",
+        "Deeyagaha",
+        "Kekanadura",
+        "Kokawala",
+        "Parawahera",
+        "Bandaranayakapura",
+        "Kekanadura Central",
+        "Makavita",
+        "Ruwan Ella",
+        "Veherahena",
+        "Wewa Ihalagoda",
+        "Thalpavila",
+        "Rassandeniya"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Weligama Urban Council",
+      "mainCities": [
+        "Aluth Weediya",
+        "Galbokka",
+        "Pelena West",
+        "Parana Kade",
+        "Hetti Weediya",
+        "Walliwala East",
+        "Walliwala West",
+        "Maha Weediya",
+        "Kapparathota South",
+        "Kapparathota North",
+        "Whala Kanake",
+        "Puhulahena",
+        "Wellana",
+        "Kokmaduwa",
+        "Ibbawala",
+        "Pathegama",
+        "Midigama West",
+        "Midigama East",
+        "Moodugamuwa",
+        "Palalla",
+        "Welipitiya",
+        "Hallala",
+        "Udukawa",
+        "Jayawickramapura",
+        "Denipitiya",
+        "Polwatta",
+        "Polwathumodara",
+        "Warakapitiya",
+        "Kotavila",
+        "Kanburugamuwa",
+        "Hanwella",
+        "Mirissa",
+        "Mirissa Udupila",
+        "Thalaramba"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Pitabeddara Pradeshiya Sabha",
+      "mainCities": [
+        "Kalubovitiyana",
+        "Dangala",
+        "Alapaladeniya",
+        "Morawaka",
+        "Rambukana East",
+        "Kosnilgoda",
+        "Derangala",
+        "Pitabeddara",
+        "Dankoluwa",
+        "Siyambalagoda",
+        "Elamaldeniya",
+        "Dehigaspe"
+      ]
+    },
+    {
+      "name": "Kotapola Pradeshiya Sabha",
+      "mainCities": [
+        "Mederipitiya",
+        "Kiriweldola",
+        "Kandilpana",
+        "Thenipita",
+        "Deniyaya",
+        "Pallegama",
+        "Kolawenigama",
+        "Kotapola North",
+        "Ilukpitiya",
+        "Kotapola South",
+        "Waralla",
+        "Morawaka",
+        "Horagala"
+      ]
+    },
+    {
+      "name": "Kirinda Puhulwella Pradeshiya Sabha",
+      "mainCities": [
+        "Puhulwella",
+        "Galkanda",
+        "Kirinda",
+        "Hettiyawala",
+        "Karathota",
+        "Walakanda",
+        "Wathukolakanda"
+      ]
+    },
+    {
+      "name": "Mulatiyana Pradeshiya Sabha",
+      "mainCities": [
+        "Gomabaddala",
+        "Mulatiyana",
+        "Deiyandara",
+        "Ketiyape",
+        "Dewalegama",
+        "Pitawalgamuwa",
+        "Radawela",
+        "Seenipellam Beragama",
+        "Makandura",
+        "Ransegoda",
+        "Meepavita",
+        "Bamunugama"
+      ]
+    },
+    {
+      "name": "Pasgoda Pradeshiya Sabha",
+      "mainCities": [
+        "Atandura",
+        "Wijayagama",
+        "Beralapanathara",
+        "Pattigala",
+        "Ginnaliya",
+        "Urubokka",
+        "Keeripitiya",
+        "Kirilipana",
+        "Bengamuwa",
+        "Dampahala",
+        "Heegoda",
+        "Pasgoda",
+        "Andaluwa",
+        "Rotumba",
+        "Panakaduwa",
+        "Mawarala"
+      ]
+    },
+    {
+      "name": "Athuraliya Pradeshiya Sabha",
+      "mainCities": [
+        "Urumutta",
+        "Welihena",
+        "Porathota",
+        "Thalahagama",
+        "Vilpita West",
+        "Vilpita East",
+        "Godapitiya",
+        "Thibbotuwawa",
+        "Ihala Athuraliya",
+        "Pahala Athulariya"
+      ]
+    },
+    {
+      "name": "Akuressa Pradeshiya Sabha",
+      "mainCities": [
+        "Dolamawatha",
+        "Ehelape",
+        "Ketanvila",
+        "Weliketiya",
+        "Lenama",
+        "Maramba",
+        "Peddapitiya",
+        "Akuressa",
+        "Iluppella",
+        "Bopitiya",
+        "Yakabedda",
+        "Paraduwa",
+        "Henegama",
+        "Nimalawa"
+      ]
+    },
+    {
+      "name": "Malimbada Pradeshiya Sabha",
+      "mainCities": [
+        "Elgiriya",
+        "Dampella",
+        "Horagoda",
+        "Thelijjawila",
+        "Kadduwa",
+        "Malimbada",
+        "Kirimetimulla",
+        "Akurugoda",
+        "Sulthanagoda",
+        "Malimbada Galpamuna"
+      ]
+    },
+    {
+      "name": "Hakmana Pradeshiya Sabha",
+      "mainCities": [
+        "Denagama Mee Ella",
+        "Panangwela",
+        "Wepathaira",
+        "Narawelpita",
+        "Ellewela",
+        "Kongala",
+        "Muruthamuraya",
+        "Udapeellegoda",
+        "Gangodagama"
+      ]
+    },
+    {
+      "name": "Kamburupitiya Pradeshiya Sabha",
+      "mainCities": [
+        "Gathara",
+        "Narandeniya",
+        "Karaputugala",
+        "Ullala",
+        "Kamburupitiya",
+        "Karagoda Uyangoda",
+        "Vitiyala",
+        "Mapalana",
+        "Kahagala",
+        "Urapola"
+      ]
+    },
+    {
+      "name": "Thihagoda Pradeshiya Sabha",
+      "mainCities": [
+        "Pahala Vitiyala",
+        "Thihagoda",
+        "Batuvita",
+        "Yatiyana",
+        "Kapudoowa",
+        "Naimbala",
+        "Kithalagama",
+        "Attudawa",
+        "Nadugala",
+        "Palatuwa"
+      ]
+    },
+    {
+      "name": "Devinuwara Pradeshiya Sabha",
+      "mainCities": [
+        "Kadawedduwa",
+        "Uda Aparekka",
+        "Pathegama",
+        "Naotunna",
+        "Thalalla North",
+        "Thalalla",
+        "Kapugama",
+        "Kapugama West",
+        "Devinuwara",
+        "Devinuwara Point",
+        "Kapugama East",
+        "Gandara"
+      ]
+    },
+    {
+      "name": "Dickwella Pradeshiya Sabha",
+      "mainCities": [
+        "Dandeniya",
+        "Urugamuwa",
+        "Walasgala",
+        "Dandeniya South",
+        "Rathmale",
+        "Belideniya",
+        "Beliwatta",
+        "Kottagoda",
+        "Bambarenda",
+        "Batheegama",
+        "Wattegama",
+        "Dickwella South",
+        "Yonakapura",
+        "Wevurukannala",
+        "Dodampahala West",
+        "Dodampahala East"
+      ]
+    }
+  ]
+}, 
+{
+  "district": "Monaragala",
+  "municipalCouncils": [],
+  "urbanCouncils": [],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Bibile Pradeshiya Sabha",
+      "mainCities": [
+        "Radaliyadda",
+        "Nilgala",
+        "Pitakumbura",
+        "Nagala",
+        "Bibile",
+        "Wegama",
+        "Mallehewa",
+        "Kuruwamba",
+        "Dodamgolla",
+        "Kotagama"
+      ]
+    },
+    {
+      "name": "Medagama Pradeshiya Sabha",
+      "mainCities": [
+        "Pothubandana",
+        "Kotabowa",
+        "Nannapurawa",
+        "Kohukumbura",
+        "Monarawana",
+        "Thimbiriya",
+        "Medagama",
+        "Kendavinna",
+        "Bakinigahawela",
+        "Amunekandura"
+      ]
+    },
+    {
+      "name": "Madulla Pradeshiya Sabha",
+      "mainCities": [
+        "Inginiyagala",
+        "Baduluwela",
+        "Thampalawela",
+        "Makulla",
+        "Alpitiya",
+        "Inhawa",
+        "Mariarawa",
+        "Neelawabedda",
+        "Obbegoda",
+        "Dambagalla",
+        "Therela"
+      ]
+    },
+    {
+      "name": "Siyambalanduwa Pradeshiya Sabha",
+      "mainCities": [
+        "Buddama",
+        "Pallewela Kotagoda",
+        "Samanalabedda",
+        "Muthukandiya",
+        "Mahakalugolla",
+        "Siyambalanduwa",
+        "Kodayana",
+        "Dombagahawela",
+        "Liyangolla",
+        "Ethimale",
+        "Gamunupura",
+        "Thissapura",
+        "Kotiyagala"
+      ]
+    },
+    {
+      "name": "Monaragala Pradeshiya Sabha",
+      "mainCities": [
+        "Nakkala",
+        "Batugammana",
+        "Magandanamulla",
+        "Monaragala",
+        "Muppane",
+        "Maduruketiya",
+        "Horombuwa",
+        "Hulandawa",
+        "Bohitiya",
+        "Kahambana"
+      ]
+    },
+    {
+      "name": "Badalkumbura Pradeshiya Sabha",
+      "mainCities": [
+        "Wekumbura",
+        "Maligathenna",
+        "Karawila",
+        "Madukotanarawa",
+        "Eththalamulla",
+        "Badalkumbura",
+        "Alupotha",
+        "Dewathura",
+        "Hingurukaduwa",
+        "Athala",
+        "Katugahagalge"
+      ]
+    },
+    {
+      "name": "Buttala Pradeshiya Sabha",
+      "mainCities": [
+        "Pelwatta",
+        "Yudaganawa",
+        "Udagama",
+        "Medagama",
+        "Gaminipura",
+        "Maligavila",
+        "Okkampitiya",
+        "Gonaganara",
+        "Puhulkotuwa",
+        "Mahasenpura",
+        "Kukurampola"
+      ]
+    },
+    {
+      "name": "Kataragama Pradeshiya Sabha",
+      "mainCities": [
+        "Karavile",
+        "Sellakatharagama",
+        "Kataragama",
+        "Mylagama",
+        "Kandasurindugama",
+        "Detagamuwa Janapadaya",
+        "Kataragama New Town"
+      ]
+    },
+    {
+      "name": "Wellawaya Pradeshiya Sabha",
+      "mainCities": [
+        "Randeniya",
+        "Kotikambokka",
+        "Anapallama",
+        "Warunagama",
+        "Wellawaya",
+        "Buduruwagala",
+        "Neluwagala",
+        "Handapanagala",
+        "Siripuragama",
+        "Thelulla",
+        "Mahaaragama",
+        "Uva kudaoya",
+        "Balaharuwa"
+      ]
+    },
+    {
+      "name": "Thanamalvila Pradeshiya Sabha",
+      "mainCities": [
+        "Kandiyapitawewa",
+        "Kotaveheramankada",
+        "Hambegamuwa",
+        "Mahawewa",
+        "Sooriyaara",
+        "Sittarama",
+        "Seenukkuwa",
+        "Bodagama",
+        "Katupilagama North",
+        "Katupilagama South",
+        "Muthuminigama",
+        "Sewanagala",
+        "Indikolapelessa",
+        "Habaraluwewa",
+        "Kirilbbanwewa",
+        "Samagipura",
+        "Nugegalayaya",
+        "Habarugala",
+        "Habarattawela",
+        "Mahagama"
+      ]
+    }
+  ]
+}, 
+{
+  "district": "Mullaitivu",
+  "municipalCouncils": [],
+  "urbanCouncils": [],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Manthai East Pradeshiya Sabha",
+      "mainCities": [
+        "Vinayagapuram",
+        "Karunpulliyan",
+        "Pandiyankulam",
+        "Palinagar",
+        "Oddaruttakulam",
+        "Panankamam",
+        "Selvapuram",
+        "Naddankandal"
+      ]
+    },
+    {
+      "name": "Thunukkai Pradeshiya Sabha",
+      "mainCities": [
+        "Ampalaperumalkulam",
+        "Puttuvedduvan",
+        "Uyilankulam",
+        "Thunukkai",
+        "Mallavi",
+        "Anichchiyankulam",
+        "Yogapuram",
+        "Barathinagar"
+      ]
+    },
+    {
+      "name": "Puthukudiyiruppu Pradeshiya Sabha",
+      "mainCities": [
+        "Visuwamadu",
+        "Bharathipuram",
+        "Udayarkattu",
+        "Muppuram",
+        "Kombavil",
+        "Punithavalanagar",
+        "Puthukudiyiruppu East",
+        "Muthayankattu",
+        "Pandaravanni",
+        "Thanduvan",
+        "Oddusuddan",
+        "Thirumurukandi"
+      ]
+    },
+    {
+      "name": "Maritimepattu Pradeshiya Sabha",
+      "mainCities": [
+        "Karikkaddumoolai North",
+        "Vattapalai",
+        "Mullai Town",
+        "Hijirapuram",
+        "Mulliyawalai West",
+        "Mulliyawalai East",
+        "Thanniyootu",
+        "Kanukerni",
+        "Mullaiyoor",
+        "Karikkaddumolai East",
+        "Kumulamunai",
+        "Karikkaddumolai South",
+        "Welioya East"
+      ]
+    }
+  ]
+},
+{
+  "district": "Nuwara Eliya",
+  "municipalCouncils": [
+    {
+      "name": "Nuwara Eliya Municipal Council",
+      "mainCities": [
+        "Bambarakele",
+        "Nuwara Eliya",
+        "Hawa Eliya North",
+        "Hawa Eliya West",
+        "Hawa Eliya East",
+        "Nuwara Eliya Central",
+        "Kalukele",
+        "Sadathenna",
+        "Magastota",
+        "Kandapola",
+        "Park",
+        "Galpalama",
+        "Peddro",
+        "Shanthipura",
+        "Gratewestern",
+        "Watagoda",
+        "Rathnagiriya",
+        "Nanuoya",
+        "Magoda",
+        "Ruwaneliya",
+        "Seethaeliya",
+        "Meepilimana",
+        "Perakumpura",
+        "Kirimetiya",
+        "Waltrim",
+        "Coombwood",
+        "Devon",
+        "Dimbula",
+        "Bogahawatta",
+        "Kotagala",
+        "Kudaoya",
+        "Yuilefield",
+        "Rahanwatta",
+        "Nagasena",
+        "Holbrook",
+        "Henfold",
+        "Thangakele",
+        "Ambewela",
+        "Dayagama",
+        "Waverley",
+        "Agarapathana",
+        "Elabedda"
+      ]
+    }
+  ],
+  "urbanCouncils": [
+    {
+      "name": "Hatton-Dikoya Urban Council",
+      "mainCities": [
+        "Wilfredpura",
+        "Ariyagama",
+        "Ponnagar",
+        "Hatton",
+        "Dunbar",
+        "Dikoya"
+      ]
+    },
+    {
+      "name": "Thalawakele-Lindula Urban Council",
+      "mainCities": [
+        "Holyrood",
+        "Thalawakele",
+        "Thalawakele South",
+        "Bandaranayaka",
+        "Lindula"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Ambagamuwa Pradeshiya Sabha",
+      "mainCities": [
+        "Sellipigama",
+        "Rampadeniya",
+        "Kalugala",
+        "Polpitiya",
+        "Jambutenna",
+        "Kehelwarawa",
+        "Lakshapana",
+        "Vidulipura",
+        "Ginigathhena",
+        "Watwala",
+        "Rosella",
+        "Ruwanpura",
+        "Sanon",
+        "Maussakele",
+        "Samaravalley",
+        "Wanaraja",
+        "Salankanda",
+        "Nawa Weligama",
+        "Norwood",
+        "Brownlow",
+        "Seethagangula",
+        "Maray",
+        "Brownswick",
+        "Maskeliya",
+        "Mahanelu",
+        "Thenmaduri",
+        "Letchumie Pahala",
+        "Puliyawatta",
+        "Lectchumie Ihala",
+        "Bogawana",
+        "Loinon",
+        "Bogawanthalawa",
+        "Upcut",
+        "Devakanda",
+        "Dambetenna"
+      ]
+    },
+    {
+      "name": "Kothmale Pradeshiya Sabha",
+      "mainCities": [
+        "Rajaela",
+        "Helboda",
+        "Froft",
+        "Sangilipalama",
+        "Helsirigama",
+        "Maswela",
+        "Kadadora",
+        "Mallanda",
+        "Ruwanpura",
+        "Hapugasthalawa",
+        "Harangala",
+        "Kalapitiya",
+        "Niyamgandora",
+        "Ramboda",
+        "Labookelle",
+        "Pudaluoya",
+        "Kadadorapitiya",
+        "Madakumbura",
+        "Maldeniya",
+        "Godamadiththa",
+        "Nawa Tispane",
+        "Ketambulawa",
+        "Queensberry",
+        "Rawanagoda",
+        "Medakumbura",
+        "Seen",
+        "Dunsinance",
+        "Kudaoya"
+      ]
+    },
+    {
+      "name": "Hanguranketha Pradeshiya Sabha",
+      "mainCities": [
+        "Adikarigama",
+        "Hakuruthala",
+        "Malulla",
+        "Sangarajagama",
+        "Hanguranketha",
+        "Unanthenna",
+        "Rikillegaskada",
+        "Madenwela",
+        "Udawaththa",
+        "Happawara",
+        "Makuruppa",
+        "Udalumada",
+        "Poramadulla",
+        "Gannewa",
+        "Karamidula",
+        "Rahathungoda",
+        "Dehipe",
+        "Idampitiya",
+        "Muloya",
+        "Hope",
+        "Elamulla",
+        "Mathurata",
+        "Gonapitiya",
+        "Mandaram Nuwara"
+      ]
+    },
+    {
+      "name": "Walapane Pradeshiya Sabha",
+      "mainCities": [
+        "Pannala",
+        "Theripeha",
+        "Udamadura North",
+        "Kalaganwatta",
+        "Thibbatugoda",
+        "Kumbalagamuwa",
+        "Liyanwala",
+        "Landupita",
+        "Padiyapelella",
+        "Kurudu Oya",
+        "Highforest",
+        "Walapane",
+        "Mahauva",
+        "Nildandahinna",
+        "Udamadura",
+        "Yatimadura",
+        "Madulla",
+        "Ambaliyadda",
+        "Kotambe",
+        "Harasbedda",
+        "Brookside",
+        "Ragala",
+        "Senarathpura",
+        "Kurupanawela",
+        "Udupussellawa",
+        "Delmar",
+        "St. Leonard",
+        "Ekagapura"
+      ]
+    }
+  ]
+}, 
+{
+  "district": "Polonnaruwa",
+  "municipalCouncils": [],
+  "urbanCouncils": [],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Elahera Pradeshiya Sabha",
+      "mainCities": [
+        "Diyabeduma",
+        "Konduruwawa",
+        "Attanakadawala",
+        "Madudamana",
+        "Segala",
+        "Damanayaya",
+        "Bakamuna",
+        "Maluweyaya",
+        "Elahera",
+        "Atharagallewa"
+      ]
+    },
+    {
+      "name": "Hingurakgoda Pradeshiya Sabha",
+      "mainCities": [
+        "Galoya",
+        "Moragaswewa",
+        "Minihirigama",
+        "Ulpathwewa",
+        "Yodha Ela",
+        "Siriketha",
+        "Hinguraka Bandaragama",
+        "Samapura",
+        "Yatiyalpathana",
+        "Minneriya",
+        "Bathgamapattuwa",
+        "Girithale",
+        "Bubula",
+        "Hingurakgoda",
+        "Ulkatupotha",
+        "Unagalavehera",
+        "Jayanthipura",
+        "Agbopura",
+        "Chethiyagirigama",
+        "Sudukanda-Nikawewa"
+      ]
+    },
+    {
+      "name": "Medirigiriya Pradeshiya Sabha",
+      "mainCities": [
+        "Bisoura",
+        "Jayathugama",
+        "Meegaswewa",
+        "Palliyagodella",
+        "Ambagaswewa",
+        "Bisobandaragama",
+        "Nawanagaraya",
+        "Meniksorowwa",
+        "Bisobandara",
+        "Medirigiriya",
+        "Perakumpura",
+        "Diyasenpura",
+        "Jayagampura",
+        "Wijayapura",
+        "Thalakolawewa",
+        "Kusumpokuna",
+        "Divulankadawala",
+        "Yudhaganawa",
+        "Veheragala"
+      ]
+    },
+    {
+      "name": "Lankapura Pradeshiya Sabha",
+      "mainCities": [
+        "Pansalgodella",
+        "Buddhayaya",
+        "Sungawila",
+        "Nelumpura",
+        "Patunugama",
+        "Kegalugama",
+        "Senanayakapura",
+        "Hingurakdamana",
+        "Pulasthigama",
+        "Thambala",
+        "Alhilalpura",
+        "Lankapura",
+        "Thalpotha"
+      ]
+    },
+    {
+      "name": "Welikanda Pradeshiya Sabha",
+      "mainCities": [
+        "Sinhapura",
+        "Kandakaduwa",
+        "Katuwanvila",
+        "Karapola",
+        "Sandunpitiya",
+        "Mahasenpura",
+        "Kadawathmaduwa",
+        "Monarathenna",
+        "Sevanapitiya",
+        "Nelumwewa"
+      ]
+    },
+    {
+      "name": "Dimbulagala Pradeshiya Sabha",
+      "mainCities": [
+        "Dimbulagala",
+        "Wijayabapura",
+        "Aralaganvila",
+        "Bogaswewa",
+        "Ellewewa",
+        "Kalukele",
+        "Yakkure",
+        "Siripura",
+        "Galeliya",
+        "Veheragala",
+        "Pimburaththawa",
+        "Alawakumbura"
+      ]
+    },
+    {
+      "name": "Thamankaduwa Pradeshiya Sabha",
+      "mainCities": [
+        "Vijayabahupura",
+        "Sewagama",
+        "Vijayarajapura",
+        "Medamaluwa",
+        "Kadawala Wewa",
+        "Bendiwewa",
+        "Polonnaruwa",
+        "Palugasdamana",
+        "Pothgul Pedesa",
+        "Mahaweli Pedesa",
+        "Kaduruwela",
+        "Aluth Wewa",
+        "Gallella",
+        "Kalahagala"
+      ]
+    }
+  ]
+},
+{
+  "district": "Trincomalee",
+  "municipalCouncils": [],
+  "urbanCouncils": [
+    {
+      "name": "Trincomalee Urban Council",
+      "mainCities": [
+        "Anbuvelipuram",
+        "Abayapura",
+        "Murugapuri",
+        "Thirukkadaloor",
+        "Peruntheru",
+        "Sivapuri",
+        "Orr's Hill",
+        "Thilainagar",
+        "Sonakawadi",
+        "Manayaveli",
+        "Villundi"
+      ]
+    },
+    {
+      "name": "Kinniya Urban Council",
+      "mainCities": [
+        "Periyathumunai",
+        "Kinniya",
+        "Sinna Kinniya",
+        "Mancholeichennai",
+        "Mancholei",
+        "Annalnagar",
+        "Faizalnagar",
+        "Alankeni",
+        "Munaichenai",
+        "Kurinjankerny",
+        "Kakkamunai",
+        "Soorangal",
+        "Naduuttu",
+        "Maharuf Gramam",
+        "Poovaransanthivu",
+        "Ayiliyadi"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Verugal Pradeshiya Sabha",
+      "mainCities": [
+        "Uppooral",
+        "Illangaithurai Mugaththuvaram",
+        "Karukkamunai",
+        "Poonagar",
+        "Eachchalampattu",
+        "Verugal Mugaththuvaram",
+        "Anaitheevu",
+        "Verugal"
+      ]
+    },
+    {
+      "name": "Seruvila Pradeshiya Sabha",
+      "mainCities": [
+        "Neelapola",
+        "Navatkernikadu",
+        "Selvanagar",
+        "Seruvila",
+        "Dehiwatta",
+        "Lingapuram",
+        "Thanganagar",
+        "Serunuwara",
+        "Mahaweligama",
+        "Somapura"
+      ]
+    },
+    {
+      "name": "Kanthale Pradeshiya Sabha",
+      "mainCities": [
+        "Ganthalawa",
+        "Vanela",
+        "Jayanthipura",
+        "Rajaela",
+        "Vendrasanpura",
+        "Bhathiyagama North",
+        "Bhathiyagama South",
+        "Kanthale",
+        "Peraru West",
+        "Peraru East",
+        "Rajawewa",
+        "Batukachchiya",
+        "Agbopura"
+      ]
+    },
+    {
+      "name": "Morawewa Pradeshiya Sabha",
+      "mainCities": [
+        "Namalwatta",
+        "Morawewa North",
+        "Pankulama",
+        "Nochchikulam",
+        "Mahadiulwewa Stage 2",
+        "Mahadiulwewa Stage 1 North",
+        "Ethabendiwewa",
+        "Rotawewa",
+        "Mahadiulwewa Stage 1 South"
+      ]
+    },
+    {
+      "name": "Gomarankadawela Pradeshiya Sabha",
+      "mainCities": [
+        "Pamburugaswewa",
+        "Mailawewa",
+        "Kivulakadawala",
+        "Medawachchiya",
+        "Galkadawala",
+        "Bakmeegama",
+        "Pulikandikulama",
+        "Kalyanapura",
+        "Gomarankadawala",
+        "Kandamalawa"
+      ]
+    },
+    {
+      "name": "Padavi Sripura Pradeshiya Sabha",
+      "mainCities": [
+        "Seva Janapada",
+        "Gemunupura",
+        "Kawanthissapura",
+        "Lassanagama",
+        "Singhapura",
+        "Samanpura",
+        "Sri Thissapura",
+        "Sripura",
+        "Jayanthiwewa",
+        "Parana Madawachchiya"
+      ]
+    },
+    {
+      "name": "Trincomalee Town and Four Gravets Pradeshiya Sabha",
+      "mainCities": [
+        "Samapalthivu",
+        "Puliyankulam",
+        "Kanniya",
+        "Kappalthurai",
+        "Andankulam",
+        "Palaiyoothu",
+        "Singhapura",
+        "Kavattikuda",
+        "Wellaimanal"
+      ]
+    },
+    {
+      "name": "Kuchchaveli Pradeshiya Sabha",
+      "mainCities": [
+        "Thennamarawadi",
+        "Pulmoddai",
+        "Arafathnagar",
+        "Thiriyaya",
+        "Jayanagar",
+        "Kuchchaveli",
+        "Kumburupitiya",
+        "Irakkandi",
+        "Nilaweli",
+        "Iqbalnagar"
+      ]
+    },
+    {
+      "name": "Thambalagamuwa Pradeshiya Sabha",
+      "mainCities": [
+        "Galmetiyawa North",
+        "Thambalagamuwa",
+        "Pokkuruni",
+        "Meeranagar",
+        "Sirajnagar",
+        "Galmetiyawa South",
+        "Mollipothana North",
+        "Mollipothana East",
+        "Mollipothana",
+        "Mollipothana South"
+      ]
+    },
+    {
+      "name": "Muttur Pradeshiya Sabha",
+      "mainCities": [
+        "Sampoor",
+        "Kattaparichchan",
+        "Neidalnagar",
+        "Akkaraichenai",
+        "Muttur",
+        "Jayanagar",
+        "Periyapalam",
+        "Iruthayapuram",
+        "Kiliweddi",
+        "Palathopoor",
+        "Thopoor",
+        "Alleinagar",
+        "Pallikudirippu"
+      ]
+    }
+  ]
+},
+{
+  "district": "Vavuniya",
+  "municipalCouncils": [],
+  "urbanCouncils": [
+    {
+      "name": "Vavuniya Urban Council",
+      "mainCities": [
+        "Thandikulam",
+        "Pattanichchipuliyankulam",
+        "Pandarikulam",
+        "Vairavapuliyankulam",
+        "Kudiyiruppu",
+        "Kadai Veethy",
+        "Moonrumurippu",
+        "Rambaikulam",
+        "Sinnaputhukulam",
+        "Kovilkulam"
+      ]
+    }
+  ],
+  "pradeshiyaSabhas": [
+    {
+      "name": "Vavuniya North Pradeshiya Sabha",
+      "mainCities": [
+        "Kanagarayankulam North - Mannakulam",
+        "Kanagarayankulam South",
+        "Sinnaadampan - Nainamaduwa",
+        "Kulavisuddan - Marailuppai",
+        "Nedunkerny",
+        "Olumadu - Mamadu",
+        "Puliyankulam North & South",
+        "Paranthan - Anandar Pulliyakulam",
+        "Unchalkatty - Maruthoddai",
+        "Paddikudiyiruppu - Katkulam",
+        "Gajabapura Monarawewa",
+        "Kalayanapura Gammanaya",
+        "Ethawetunawewa",
+        "Sampath Nuwara"
+      ]
+    },
+    {
+      "name": "Vengalacheddikulam Pradeshiya Sabha",
+      "mainCities": [
+        "Periyathamoanai-Piramanalankulam",
+        "Andiyapuliyankulam",
+        "Kurukkalputhukkulam-Kanthasaminagar",
+        "Pavatkulam",
+        "Sooduventhapulavu",
+        "Periyapuliyakankulam",
+        "Mugaththankulam-Cheddikulam",
+        "Muthaliyankulam-Kristhavakulam",
+        "Neriyakulam",
+        "Sinnasippikulam"
+      ]
+    },
+    {
+      "name": "Vavuniya South (Tamil) Pradeshiya Sabha",
+      "mainCities": [
+        "Marandamadu",
+        "Semamadhu",
+        "Echchankulam",
+        "Sasthirikoolankulam",
+        "Poovarasankulam",
+        "Pambaimadu",
+        "Marekkarampalai",
+        "Maharambaikulam",
+        "Nelukkulam",
+        "Kandapuram",
+        "Samalankulam",
+        "Asikulam"
+      ]
+    },
+    {
+      "name": "Vavuniya South (Sinhala) Pradeshiya Sabha",
+      "mainCities": [
+        "Mamaduwa",
+        "Nedunkulam",
+        "Mahakachchakodiya",
+        "Madukanda",
+        "Awaranthulawa",
+        "Periya Ukkulama",
+        "Erattaperiyakulama",
+        "Alagalla",
+        "Maradammaduwa"
+      ]
+    }
+  ]
+}
+]

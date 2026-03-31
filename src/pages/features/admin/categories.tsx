@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, ToggleLeft, ToggleRight, Layers } from 'lucide-react';
-import { toast } from 'react-toastify';
+import { Plus, Edit, Trash2, Layers } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { swalConfirm, swalError, swalSuccess } from '../../../lib/swal';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../../../components/ui/alert-dialog';
-import { AlertDialogCancel } from '@radix-ui/react-alert-dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../../components/ui/dialog';
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
@@ -21,6 +20,7 @@ import {
 } from '../../../services/AdminService';
 
 export function CategoriesPage() {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<Category[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -39,14 +39,13 @@ export function CategoriesPage() {
   }, []);
 
   const fetchCategories = async () => {
-    try {
-      const data = await getCategories();
-      setCategories(data);
-    } catch (err) {
-      toast.error('Failed to load categories');
-    } finally {
-      setLoading(false);
+    const res = await getCategories();
+    if (res.success) {
+      setCategories(res.data);
+    } else {
+      await swalError(t('admin.categories.toastLoadFail'), res.message);
     }
+    setLoading(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -83,7 +82,7 @@ export function CategoriesPage() {
     e.preventDefault();
 
     if (!formData.name || !formData.unit) {
-      toast.error('Please fill all required fields');
+      await swalError(t('admin.categories.toastRequired'));
       return;
     }
 
@@ -94,29 +93,34 @@ export function CategoriesPage() {
       is_active: formData.isActive,
     };
 
-    try {
-      if (currentCategory) {
-        await updateCategory(currentCategory._id, payload);
-      } else {
-        await createCategory(payload);
-      }
-      toast.success(currentCategory ? 'Category updated!' : 'Category added!');
+    const res = currentCategory
+      ? await updateCategory(currentCategory._id, payload)
+      : await createCategory(payload);
+    if (res.success) {
+      await swalSuccess(currentCategory ? t('admin.categories.toastUpdated') : t('admin.categories.toastAdded'));
       resetForm();
       setIsAddModalOpen(false);
       setIsEditModalOpen(false);
       fetchCategories();
-    } catch (err: unknown) {
-      toast.error((err as Error).message || 'Something went wrong');
+    } else {
+      await swalError(t('admin.categories.toastGeneric'), res.message);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteCategory(id);
-      toast.success('Category deleted');
+  const handleDelete = async (id: string, name: string) => {
+    const ok = await swalConfirm({
+      title: t('admin.categories.deleteTitle'),
+      text: t('admin.categories.deleteDesc', { name }),
+      confirmButtonText: t('admin.common.delete'),
+      cancelButtonText: t('admin.common.cancel'),
+    });
+    if (!ok) return;
+    const res = await deleteCategory(id);
+    if (res.success) {
+      await swalSuccess(t('admin.categories.toastDeleted'));
       fetchCategories();
-    } catch (err) {
-      toast.error('Failed to delete category');
+    } else {
+      await swalError(t('admin.categories.toastDeleteFail'), res.message);
     }
   };
 
@@ -139,10 +143,10 @@ export function CategoriesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
-            Category Management
+            {t('admin.categories.title')}
           </h1>
           <p className="text-lg text-gray-600">
-            Manage recyclable material categories
+            {t('admin.categories.subtitle')}
           </p>
         </div>
         <Button 
@@ -150,17 +154,17 @@ export function CategoriesPage() {
           onClick={handleOpenAddModal}
         >
           <Plus className="h-4 w-4" />
-          Add Category
+          {t('admin.categories.addCategory')}
         </Button>
       </div>
 
       {loading ? (
-        <p className="text-center py-10">Loading categories...</p>
+        <p className="text-center py-10">{t('admin.categories.loading')}</p>
       ) : categories.length === 0 ? (
         <div className="text-center py-20 text-gray-500">
           <Layers className="h-16 w-16 mx-auto mb-6 opacity-40" />
-          <p className="text-xl font-medium">No categories yet</p>
-          <p className="mt-3">Click "Add Category" to start.</p>
+          <p className="text-xl font-medium">{t('admin.categories.emptyTitle')}</p>
+          <p className="mt-3">{t('admin.categories.emptyHint')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -189,7 +193,7 @@ export function CategoriesPage() {
                         category.isActive ? 'bg-green-100 text-green-800 border-green-300' : 'bg-red-100 text-red-800 border-red-300'
                       }`}
                     >
-                      {category.isActive ? 'Active' : 'Inactive'}
+                      {category.isActive ? t('admin.common.active') : t('admin.common.inactive')}
                     </Badge>
                   </div>
                 </div>
@@ -208,34 +212,17 @@ export function CategoriesPage() {
                     onClick={() => handleOpenEditModal(category)}
                   >
                     <Edit className="h-4 w-4 mr-2" />
-                    Edit
+                    {t('admin.common.edit')}
                   </Button>
 
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="outline" size="sm" className="border-red-500 text-red-600 hover:bg-red-50">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Category?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure you want to delete <strong>{category.name}</strong>? 
-                          This will remove it from citizen view.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleDelete(category._id)}
-                          className="bg-red-600 hover:bg-red-700 text-white"
-                        >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-red-500 text-red-600 hover:bg-red-50"
+                    onClick={() => handleDelete(category._id, category.name)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -252,17 +239,17 @@ export function CategoriesPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">
-              {currentCategory ? 'Edit Category' : 'Add New Category'}
+              {currentCategory ? t('admin.categories.modalEdit') : t('admin.categories.modalAdd')}
             </DialogTitle>
           </DialogHeader>
 
           <div className="py-6 space-y-6">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="name">Category Name *</Label>
+                <Label htmlFor="name">{t('admin.categories.nameLabel')}</Label>
                 <Input
                   id="name"
-                  placeholder="e.g., Iron"
+                  placeholder={t('admin.categories.namePlaceholder')}
                   value={formData.name}
                   onChange={handleInputChange}
                   name="name"
@@ -271,13 +258,13 @@ export function CategoriesPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="unit">Unit *</Label>
+                <Label htmlFor="unit">{t('admin.categories.unitLabel')}</Label>
                 <Select 
                   value={formData.unit} 
                   onValueChange={(v) => handleSelectChange(v)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select unit" />
+                    <SelectValue placeholder={t('admin.categories.unitPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="kg">kg</SelectItem>
@@ -287,10 +274,10 @@ export function CategoriesPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('admin.categories.descriptionLabel')}</Label>
                 <Textarea
                   id="description"
-                  placeholder="e.g., Scrap iron and metal items"
+                  placeholder={t('admin.categories.descriptionPlaceholder')}
                   value={formData.description}
                   onChange={handleInputChange}
                   name="description"
@@ -300,14 +287,14 @@ export function CategoriesPage() {
 
               {currentCategory && (
                 <div className="flex items-center space-x-3 pt-3">
-                  <Label htmlFor="isActive">Active Status</Label>
+                  <Label htmlFor="isActive">{t('admin.categories.activeStatus')}</Label>
                   <Switch
                     id="isActive"
                     checked={formData.isActive}
                     onCheckedChange={(checked) => setFormData(prev => ({ ...prev, isActive: checked }))}
                   />
                   <span className={formData.isActive ? 'text-green-600' : 'text-red-600'}>
-                    {formData.isActive ? 'Active' : 'Inactive'}
+                    {formData.isActive ? t('admin.common.active') : t('admin.common.inactive')}
                   </span>
                 </div>
               )}
@@ -322,13 +309,13 @@ export function CategoriesPage() {
                     resetForm();
                   }}
                 >
-                  Cancel
+                  {t('admin.common.cancel')}
                 </Button>
                 <Button
                   type="submit"
                   className="bg-teal-700 hover:bg-teal-800 text-white"
                 >
-                  {currentCategory ? 'Update Category' : 'Create Category'}
+                  {currentCategory ? t('admin.categories.update') : t('admin.categories.create')}
                 </Button>
               </DialogFooter>
             </form>

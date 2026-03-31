@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, CheckCircle, XCircle } from 'lucide-react';
-import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
+import { swalConfirm, swalError, swalSuccess } from '../../../lib/swal';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
@@ -18,6 +19,7 @@ import {
 } from '../../../services/AdminService';
 
 export function CollectionListsPage() {
+  const { t } = useTranslation();
   const [requests, setRequests] = useState<PickupRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
@@ -33,40 +35,48 @@ export function CollectionListsPage() {
 
   const fetchRequests = async () => {
     setLoading(true);
-    try {
-      const data = await getPickupRequests();
-      const formatted = data.map((req) => ({
+    const res = await getPickupRequests();
+    if (res.success) {
+      const formatted = res.data.map((req) => ({
         ...req,
         rough_weight: Number(req.rough_weight || 0),
         estimated_earnings: Number(req.estimated_earnings || 0),
       }));
       setRequests(formatted);
-    } catch (err) {
-      console.error(err);
-      toast.error('Could not load pickup requests');
-    } finally {
-      setLoading(false);
+    } else {
+      await swalError(t('admin.collections.toastLoadFail'), res.message);
     }
+    setLoading(false);
   };
 
   const fetchCollectors = async () => {
-    try {
-      const data = await getCollectors();
-      setCollectors(data);
-    } catch (err) {
-      console.error(err);
-    }
+    const res = await getCollectors();
+    if (res.success) setCollectors(res.data);
+  };
+
+  const collectionStatusLabel = (raw: string) => {
+    const s = raw.toLowerCase();
+    if (s === 'pending') return t('admin.collections.statusPending');
+    if (s === 'assigned') return t('admin.collections.statusAssigned');
+    if (s === 'completed') return t('admin.collections.statusCompleted');
+    if (s === 'cancelled') return t('admin.collections.statusCancelled');
+    return raw.charAt(0).toUpperCase() + raw.slice(1);
   };
 
   const handleStatusChange = async (requestId: string, newStatus: string) => {
-    if (!confirm(`Change status to "${newStatus}"?`)) return;
+    const ok = await swalConfirm({
+      title: t('admin.collections.confirmStatus', { status: collectionStatusLabel(newStatus) }),
+      confirmButtonText: 'OK',
+      cancelButtonText: t('admin.common.cancel'),
+    });
+    if (!ok) return;
 
-    try {
-      await updatePickupRequestStatus(requestId, newStatus);
-      toast.success(`Status updated to ${newStatus}`);
+    const res = await updatePickupRequestStatus(requestId, newStatus);
+    if (res.success) {
+      await swalSuccess(t('admin.collections.toastStatusSet', { status: collectionStatusLabel(newStatus) }));
       fetchRequests();
-    } catch (err) {
-      toast.error('Failed to update status');
+    } else {
+      await swalError(t('admin.collections.toastStatusFail'), res.message);
     }
   };
 
@@ -79,13 +89,13 @@ export function CollectionListsPage() {
   const handleReassignSubmit = async () => {
     if (!reassignRequest || !selectedCollectorId) return;
 
-    try {
-      await assignCollectorToPickupRequest(reassignRequest._id, selectedCollectorId);
-      toast.success('Collector reassigned successfully');
+    const res = await assignCollectorToPickupRequest(reassignRequest._id, selectedCollectorId);
+    if (res.success) {
+      await swalSuccess(t('admin.collections.toastReassignOk'));
       setReassignModalOpen(false);
       fetchRequests();
-    } catch (err: unknown) {
-      toast.error((err as Error).message || 'Failed to reassign');
+    } else {
+      await swalError(t('admin.collections.toastReassignFail'), res.message);
     }
   };
 
@@ -94,16 +104,15 @@ export function CollectionListsPage() {
     : requests.filter(r => r.status.toLowerCase() === statusFilter.toLowerCase());
 
   const getStatusBadge = (status: string) => {
-    const colors = {
+    const colors: Record<string, string> = {
       pending: 'bg-yellow-100 text-yellow-800',
       assigned: 'bg-blue-100 text-blue-800',
       completed: 'bg-green-100 text-green-800',
       cancelled: 'bg-red-100 text-red-800',
     };
+    const key = status.toLowerCase();
     return (
-      <Badge className={colors[status.toLowerCase() as keyof typeof colors] || 'bg-gray-100 text-gray-800'}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </Badge>
+      <Badge className={colors[key] || 'bg-gray-100 text-gray-800'}>{collectionStatusLabel(status)}</Badge>
     );
   };
 
@@ -113,24 +122,24 @@ export function CollectionListsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
-            Collections List
+            {t('admin.collections.title')}
           </h1>
           <p className="text-lg text-gray-600">
-            View and manage all pickup requests submitted by citizens
+            {t('admin.collections.subtitle')}
           </p>
         </div>
 
         <div className="flex items-center gap-4">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-44">
-              <SelectValue placeholder="Filter by status" />
+              <SelectValue placeholder={t('admin.collections.filterPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="assigned">Assigned</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectItem value="all">{t('admin.collections.filterAll')}</SelectItem>
+              <SelectItem value="pending">{t('admin.collections.statusPending')}</SelectItem>
+              <SelectItem value="assigned">{t('admin.collections.statusAssigned')}</SelectItem>
+              <SelectItem value="completed">{t('admin.collections.statusCompleted')}</SelectItem>
+              <SelectItem value="cancelled">{t('admin.collections.statusCancelled')}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -144,27 +153,27 @@ export function CollectionListsPage() {
       <Card className="border-none shadow-lg">
         <CardContent className="p-0">
           {loading ? (
-            <div className="p-10 text-center text-gray-500">Loading collections...</div>
+            <div className="p-10 text-center text-gray-500">{t('admin.collections.loading')}</div>
           ) : filteredRequests.length === 0 ? (
             <div className="text-center py-20 text-gray-500">
-              <p className="text-xl font-medium">No collections yet</p>
-              <p className="mt-3">When citizens submit pickup requests, they will appear here.</p>
+              <p className="text-xl font-medium">{t('admin.collections.emptyTitle')}</p>
+              <p className="mt-3">{t('admin.collections.emptyHint')}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-50">
-                    <TableHead>Citizen</TableHead>
-                    <TableHead>Area</TableHead>
-                    <TableHead>Item</TableHead>
-                    <TableHead>Weight (kg)</TableHead>
-                    <TableHead>Est. Earnings (LKR)</TableHead>
-                    <TableHead>Priority</TableHead>
-                    <TableHead>Assigned Collector</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>{t('admin.collections.thCitizen')}</TableHead>
+                    <TableHead>{t('admin.collections.thArea')}</TableHead>
+                    <TableHead>{t('admin.collections.thItem')}</TableHead>
+                    <TableHead>{t('admin.collections.thWeight')}</TableHead>
+                    <TableHead>{t('admin.collections.thEarnings')}</TableHead>
+                    <TableHead>{t('admin.collections.thPriority')}</TableHead>
+                    <TableHead>{t('admin.collections.thCollector')}</TableHead>
+                    <TableHead>{t('admin.collections.thStatus')}</TableHead>
+                    <TableHead>{t('admin.collections.thDate')}</TableHead>
+                    <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -180,7 +189,7 @@ export function CollectionListsPage() {
                         {req.assigned_collector ? (
                           <span className="font-medium text-blue-700">{req.assigned_collector}</span>
                         ) : (
-                          <span className="text-gray-500">Unassigned</span>
+                          <span className="text-gray-500">{t('admin.collections.unassigned')}</span>
                         )}
                       </TableCell>
                       <TableCell>{getStatusBadge(req.status)}</TableCell>
@@ -194,7 +203,7 @@ export function CollectionListsPage() {
                             className="text-red-600 hover:text-red-700"
                             onClick={() => handleStatusChange(req._id, 'cancelled')}
                           >
-                            <XCircle className="h-4 w-4 mr-1" /> Cancel
+                            <XCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnCancelRequest')}
                           </Button>
                         )}
 
@@ -205,7 +214,7 @@ export function CollectionListsPage() {
                               size="sm"
                               onClick={() => handleReassign(req)}
                             >
-                              Reassign
+                              {t('admin.collections.btnReassign')}
                             </Button>
 
                             <Button
@@ -213,7 +222,7 @@ export function CollectionListsPage() {
                               size="sm"
                               onClick={() => handleStatusChange(req._id, 'completed')}
                             >
-                              <CheckCircle className="h-4 w-4 mr-1" /> Complete
+                              <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnComplete')}
                             </Button>
                           </>
                         )}
@@ -231,23 +240,30 @@ export function CollectionListsPage() {
       <Dialog open={reassignModalOpen} onOpenChange={setReassignModalOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Reassign Collector</DialogTitle>
+            <DialogTitle>{t('admin.collections.modalReassign')}</DialogTitle>
           </DialogHeader>
 
           <div className="py-4 space-y-6">
             {reassignRequest && (
               <div className="p-3 bg-gray-50 rounded border space-y-1 text-sm">
-                <p><strong>Citizen:</strong> {reassignRequest.citizen_name}</p>
-                <p><strong>Item:</strong> {reassignRequest.item_name}</p>
-                <p><strong>Current Collector:</strong> {reassignRequest.assigned_collector || 'None'}</p>
+                <p>
+                  <strong>{t('admin.collections.summaryCitizen')}</strong> {reassignRequest.citizen_name}
+                </p>
+                <p>
+                  <strong>{t('admin.collections.summaryItem')}</strong> {reassignRequest.item_name}
+                </p>
+                <p>
+                  <strong>{t('admin.collections.summaryCollector')}</strong>{' '}
+                  {reassignRequest.assigned_collector || t('admin.collections.none')}
+                </p>
               </div>
             )}
 
             <div className="space-y-2">
-              <Label>New Collector</Label>
+              <Label>{t('admin.collections.newCollector')}</Label>
               <Select value={selectedCollectorId} onValueChange={setSelectedCollectorId}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select new collector" />
+                  <SelectValue placeholder={t('admin.collections.selectCollectorPh')} />
                 </SelectTrigger>
                 <SelectContent>
                   {collectors.map(c => (
@@ -262,14 +278,14 @@ export function CollectionListsPage() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setReassignModalOpen(false)}>
-              Cancel
+              {t('admin.common.cancel')}
             </Button>
             <Button
               disabled={!selectedCollectorId}
               onClick={handleReassignSubmit}
               className="bg-teal-700 hover:bg-teal-800 text-white"
             >
-              Reassign
+              {t('admin.collections.btnReassign')}
             </Button>
           </DialogFooter>
         </DialogContent>

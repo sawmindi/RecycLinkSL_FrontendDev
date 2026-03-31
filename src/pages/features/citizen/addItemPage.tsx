@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { Plus, Trash2 } from 'lucide-react';
+import { swalError, swalSuccess } from '../../../lib/swal';
+import { Trash2 } from 'lucide-react';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Label } from '../../../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
@@ -9,19 +9,11 @@ import { Input } from '../../../components/ui/input';
 import { Textarea } from '../../../components/ui/textarea';
 import { Button } from '../../../components/ui/button';
 import { useTranslation } from 'react-i18next';
-
-
-interface Item {
-  id: number;
-  item_name: string;
-  current_price: number;
-  category_name?: string;  
-  category_id: number;
-}
+import { getActiveItems, createPickupRequest, type CitizenItem } from '../../../services/CitizenService';
 
 interface AddedItem {
   id: string;
-  itemId: number;
+  itemId: string;
   itemType: string;
   weight: number;
   unit: 'g' | 'kg';
@@ -33,43 +25,40 @@ export function AddItemPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<CitizenItem[]>([]);
   const [loadingItems, setLoadingItems] = useState(true);
 
-  const [itemId, setItemId] = useState<string>(''); 
+  const [itemId, setItemId] = useState<string>('');
   const [weight, setWeight] = useState<string>('');
   const [unit, setUnit] = useState<'g' | 'kg'>('kg');
   const [description, setDescription] = useState<string>('');
   const [estimatedEarning, setEstimatedEarning] = useState<number | null>(null);
   const [addedItems, setAddedItems] = useState<AddedItem[]>([]);
 
-
   useEffect(() => {
     const stored = localStorage.getItem('recycLinkAddedItems');
     if (stored) {
-      setAddedItems(JSON.parse(stored));
+      try {
+        setAddedItems(JSON.parse(stored));
+      } catch {
+        setAddedItems([]);
+      }
     }
   }, []);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const res = await fetch('http://localhost:4000/api/items/active');
-        if (!res.ok) throw new Error('Failed to load items');
-        const data = await res.json();
-        setItems(data);
-      } catch (err) {
-        console.error(err);
-        toast.error('Could not load item items. Backend may be down.');
-      } finally {
-        setLoadingItems(false);
-      }
-    };
-
-    fetchItems();
+    getActiveItems()
+      .then((res) => {
+        if (res.success) setItems(res.data);
+        else {
+          void swalError('Could not load items', res.message);
+          setItems([]);
+        }
+      })
+      .finally(() => setLoadingItems(false));
   }, []);
 
-  const selectedItem = items.find(c => c.id === Number(itemId));
+  const selectedItem = items.find((c) => c._id === itemId);
 
   const canGetEstimate =
     itemId !== '' &&
@@ -90,32 +79,23 @@ export function AddItemPage() {
   const handleAddToList = async () => {
     if (!canGetEstimate || estimatedEarning === null || !selectedItem) return;
 
-    try {
-      const res = await fetch('http://localhost:4000/api/pickups', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          item_id: selectedItem.id,
-          rough_weight: Number(weight) / (unit === 'g' ? 1000 : 1), 
-          priority: 'medium', 
-          estimated_earnings: estimatedEarning,
-        }),
-      });
+    const roughWeight = Number(weight) / (unit === 'g' ? 1000 : 1);
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || 'Failed to save item');
-      }
-
-      toast.success('Item saved to your pickup requests!');
-    } catch (err) {
-      console.error(err);
-      toast.error('Failed to save item to backend. Saved locally only.');
+    const res = await createPickupRequest({
+      item_id: selectedItem._id,
+      rough_weight: roughWeight,
+      priority: 'medium',
+      estimated_earnings: estimatedEarning,
+    });
+    if (res.success) {
+      await swalSuccess('Saved', 'Item saved to your pickup requests!');
+    } else {
+      await swalError('Save failed', res.message || 'Failed to save item to backend. Saved locally only.');
     }
 
     const newItem: AddedItem = {
       id: Date.now().toString(),
-      itemId: selectedItem.id,
+      itemId: selectedItem._id,
       itemType: selectedItem.item_name,
       weight: Number(weight),
       unit,
@@ -127,7 +107,6 @@ export function AddItemPage() {
     setAddedItems(updated);
     localStorage.setItem('recycLinkAddedItems', JSON.stringify(updated));
 
-    // Reset form
     setItemId('');
     setWeight('');
     setUnit('kg');
@@ -167,8 +146,8 @@ export function AddItemPage() {
                     <SelectValue placeholder={t('citizen.selectItemType')}/>
                   </SelectTrigger>
                   <SelectContent>
-                    {items.map(i=> (
-                      <SelectItem key={i.id} value={i.id.toString()}>
+                    {items.map((i) => (
+                      <SelectItem key={i._id} value={i._id}>
                         {i.item_name} (Rs. {(Number(i.current_price) || 0).toFixed(2)}/kg)
                       </SelectItem>
                     ))}

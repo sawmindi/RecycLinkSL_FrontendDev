@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
 import { Badge } from '../../../components/ui/badge';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../../../components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../../components/ui/dialog';
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
@@ -20,6 +20,7 @@ import {
 } from '../../../services/AdminService';
 
 export default function PriceManagementPage() {
+  const { t, i18n } = useTranslation();
   const [priceItems, setPriceItems] = useState<PriceItem[]>([]);
   const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,24 +39,23 @@ export default function PriceManagementPage() {
   }, []);
 
   const fetchCategories = async () => {
-    try {
-      const data = await getCategoriesForSelect();
-      setCategories(data);
-    } catch (err) {
-      toast.error('Failed to load categories');
+    const res = await getCategoriesForSelect();
+    if (res.success) {
+      setCategories(res.data);
+    } else {
+      await swalError(t('admin.priceManagement.toastLoadCategories'), res.message);
     }
   };
 
   const fetchItems = async () => {
     setLoading(true);
-    try {
-      const data = await getItems();
-      setPriceItems(data);
-    } catch (err) {
-      toast.error('Failed to load prices: ' + ((err as Error).message || 'Check backend'));
-    } finally {
-      setLoading(false);
+    const res = await getItems();
+    if (res.success) {
+      setPriceItems(res.data);
+    } else {
+      await swalError(t('admin.priceManagement.toastLoadPrices'), res.message);
     }
+    setLoading(false);
   };
 
   const resetForm = () => {
@@ -81,7 +81,7 @@ export default function PriceManagementPage() {
     e.preventDefault();
 
     if (!formData.category_id || !formData.itemName || !formData.currentPrice) {
-      toast.error('All fields required');
+      await swalError(t('admin.priceManagement.toastAllFields'));
       return;
     }
 
@@ -91,48 +91,57 @@ export default function PriceManagementPage() {
       current_price: Number(formData.currentPrice),
     };
 
-    try {
-      if (currentItem) {
-        await updateItem(currentItem._id, payload);
-      } else {
-        await createItem(payload);
-      }
-      toast.success(currentItem ? 'Price updated!' : 'Item price added!');
+    const res = currentItem
+      ? await updateItem(currentItem._id, payload)
+      : await createItem(payload);
+    if (res.success) {
+      await swalSuccess(currentItem ? t('admin.priceManagement.toastUpdated') : t('admin.priceManagement.toastAdded'));
       setIsModalOpen(false);
       resetForm();
       fetchItems();
-    } catch (err) {
-      toast.error('Operation failed');
+    } else {
+      await swalError(t('admin.priceManagement.toastOpFail'), res.message);
     }
   };
 
   const handleToggleActive = async (id: string, currentStatus: string) => {
-    try {
-      await updateItem(id, { status: currentStatus === 'active' ? 'inactive' : 'active' });
-      toast.success(`Item ${currentStatus === 'active' ? 'deactivated' : 'activated'}`);
+    const res = await updateItem(id, { status: currentStatus === 'active' ? 'inactive' : 'active' });
+    if (res.success) {
+      await swalSuccess(
+        currentStatus === 'active'
+          ? t('admin.priceManagement.toastDeactivated')
+          : t('admin.priceManagement.toastActivated')
+      );
       fetchItems();
-    } catch (err) {
-      toast.error('Status update failed');
+    } else {
+      await swalError(t('admin.priceManagement.toastStatusFail'), res.message);
     }
   };
 
-
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this price entry?')) return;
-    try {
-      await deleteItem(id);
-      toast.success('Deleted');
+  const handleDelete = async (id: string, itemName: string) => {
+    const ok = await swalConfirm({
+      title: t('admin.priceManagement.deleteTitle'),
+      text: t('admin.priceManagement.deleteDesc', { name: itemName }),
+      confirmButtonText: t('admin.common.delete'),
+      cancelButtonText: t('admin.common.cancel'),
+    });
+    if (!ok) return;
+    const res = await deleteItem(id);
+    if (res.success) {
+      await swalSuccess(t('admin.priceManagement.toastDeleted'));
       fetchItems();
-    } catch (err) {
-      toast.error('Delete failed');
+    } else {
+      await swalError(t('admin.priceManagement.toastDeleteFail'), res.message);
     }
   };
 
   const getChangeDisplay = (change: number) => {
     if (change > 0) return <span className="text-green-600">↑ +{change.toFixed(1)}%</span>;
     if (change < 0) return <span className="text-red-600">↓ {change.toFixed(1)}%</span>;
-    return <span className="text-gray-500">-</span>;
+    return <span className="text-gray-500">—</span>;
   };
+
+  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-GB';
 
   return (
     <div className="space-y-10">
@@ -140,10 +149,10 @@ export default function PriceManagementPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
-            Price Management
+            {t('admin.priceManagement.title')}
           </h1>
           <p className="text-lg text-gray-600">
-            Manage current and historical prices for recyclable items
+            {t('admin.priceManagement.subtitle')}
           </p>
         </div>
 
@@ -152,7 +161,7 @@ export default function PriceManagementPage() {
           onClick={() => openModal()}
         >
           <Plus className="h-4 w-4" />
-          Add Item Price
+          {t('admin.priceManagement.addItemPrice')}
         </Button>
       </div>
 
@@ -160,15 +169,15 @@ export default function PriceManagementPage() {
       <Card className="border-none shadow-lg">
         <CardContent className="p-0">
           <div className="p-6 border-b border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900">Item Prices</h3>
+            <h3 className="text-xl font-semibold text-gray-900">{t('admin.priceManagement.sectionTitle')}</h3>
           </div>
 
           {loading ? (
-            <div className="p-10 text-center text-gray-500">Loading prices...</div>
+            <div className="p-10 text-center text-gray-500">{t('admin.priceManagement.loading')}</div>
           ) : priceItems.length === 0 ? (
             <div className="text-center py-20 text-gray-500">
-              <p className="text-xl font-medium">No prices added yet</p>
-              <p className="mt-3">Click "Add Item Price" to start managing.</p>
+              <p className="text-xl font-medium">{t('admin.priceManagement.emptyTitle')}</p>
+              <p className="mt-3">{t('admin.priceManagement.emptyHint')}</p>
             </div>
           ) : (
 
@@ -176,14 +185,14 @@ export default function PriceManagementPage() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50">
-                  <TableHead className="font-medium text-gray-700">Item Name</TableHead>
-                  <TableHead className="font-medium text-gray-700">Category</TableHead>
-                  <TableHead className="font-medium text-gray-700">Current Price(LKR)</TableHead>
-                  <TableHead className="font-medium text-gray-700">Previous Price(LKR)</TableHead>
-                  <TableHead className="font-medium text-gray-700">Change</TableHead>
-                  <TableHead className="font-medium text-gray-700">Last Updated</TableHead>
-                  <TableHead className="font-medium text-gray-700">Status</TableHead>
-                  <TableHead className="font-medium text-gray-700 text-right">Actions</TableHead>
+                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colItem')}</TableHead>
+                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colCategory')}</TableHead>
+                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colCurrent')}</TableHead>
+                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colPrevious')}</TableHead>
+                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colChange')}</TableHead>
+                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colUpdated')}</TableHead>
+                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colStatus')}</TableHead>
+                  <TableHead className="font-medium text-gray-700 text-right">{t('admin.priceManagement.colActions')}</TableHead>
                 </TableRow>
               </TableHeader>
 
@@ -207,7 +216,7 @@ export default function PriceManagementPage() {
                       {getChangeDisplay(item.change ?? 0)}
                     </TableCell>
                     <TableCell>
-                        {new Date(item.last_updated).toLocaleDateString('en-GB')}
+                        {new Date(item.last_updated).toLocaleDateString(dateLocale)}
                       </TableCell>
                     <TableCell>
                       <Badge
@@ -217,7 +226,11 @@ export default function PriceManagementPage() {
                             : 'bg-red-100 text-red-800 hover:bg-red-100'
                         }`}
                       >
-                        {item.status}
+                        {item.status === 'active'
+                          ? t('admin.common.active')
+                          : item.status === 'inactive'
+                            ? t('admin.common.inactive')
+                            : item.status}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right space-x-1">
@@ -243,31 +256,14 @@ export default function PriceManagementPage() {
                         )}
                       </Button>
 
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Trash2 className="h-4 w-4 text-red-600" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Price Entry?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete the price for <strong>{item.item_name}</strong>?
-                              This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDelete(item._id)}
-                              className="bg-red-600 hover:bg-red-700 text-white"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => handleDelete(item._id, item.item_name)}
+                      >
+                        <Trash2 className="h-4 w-4 text-red-600" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -280,7 +276,7 @@ export default function PriceManagementPage() {
           {/* Pagination */}
           <div className="flex justify-center items-center gap-4 p-6 border-t border-gray-200 text-gray-600">
             <Button variant="outline" size="sm" disabled>
-              Previous
+              {t('admin.priceManagement.prev')}
             </Button>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" className="bg-teal-700 text-white border-teal-700 hover:bg-teal-800">
@@ -290,7 +286,7 @@ export default function PriceManagementPage() {
               <Button variant="outline" size="sm">3</Button>
             </div>
             <Button variant="outline" size="sm">
-              Next
+              {t('admin.priceManagement.next')}
             </Button>
           </div>
         </CardContent>
@@ -301,7 +297,7 @@ export default function PriceManagementPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader className="flex flex-row items-center justify-between">
             <DialogTitle className="text-xl font-semibold">
-              {currentItem ? 'Update Item Price' : 'Add New Item Price'}
+              {currentItem ? t('admin.priceManagement.modalEdit') : t('admin.priceManagement.modalAdd')}
             </DialogTitle>
             <Button
               variant="ghost"
@@ -317,9 +313,9 @@ export default function PriceManagementPage() {
           <form onSubmit={handleSubmit} className="space-y-6 py-4">
             {/* Item Name */}
             <div className="space-y-2">
-              <Label>Item Name</Label>
+              <Label>{t('admin.priceManagement.itemName')}</Label>
               <Input
-                placeholder="e.g., Iron/Steel"
+                placeholder={t('admin.priceManagement.itemPlaceholder')}
                 value={formData.itemName}
                 onChange={(e) => setFormData(prev => ({ ...prev, itemName: e.target.value }))}
               />
@@ -327,13 +323,13 @@ export default function PriceManagementPage() {
 
             {/* Category */}
             <div className="space-y-2">
-              <Label>Category</Label>
+              <Label>{t('admin.priceManagement.category')}</Label>
               <Select
                 value={formData.category_id}
                 onValueChange={(v) => setFormData((prev) => ({ ...prev, category_id: v }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
+                  <SelectValue placeholder={t('admin.priceManagement.selectCategory')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
@@ -347,10 +343,10 @@ export default function PriceManagementPage() {
 
             {/* Current Price */}
             <div className="space-y-2">
-              <Label>Price per Kg (LKR)</Label>
+              <Label>{t('admin.priceManagement.pricePerKg')}</Label>
               <Input
                 type="number"
-                placeholder="e.g., 200"
+                placeholder={t('admin.priceManagement.pricePlaceholder')}
                 value={formData.currentPrice}
                 onChange={(e) => setFormData(prev => ({ ...prev, currentPrice: e.target.value }))}
               />
@@ -359,8 +355,13 @@ export default function PriceManagementPage() {
             {/* Context info for edit */}
             {currentItem && (
               <div className="p-3 bg-gray-50 rounded border text-sm space-y-1">
-                <p><strong>Current Price:</strong> LKR {currentItem.current_price}/kg</p>
-                <p><strong>Last Updated:</strong> {currentItem.last_updated}</p>
+                <p>
+                  <strong>{t('admin.priceManagement.editCurrentPrice')}</strong> LKR {currentItem.current_price}
+                  {t('admin.priceManagement.perKg')}
+                </p>
+                <p>
+                  <strong>{t('admin.priceManagement.editLastUpdated')}</strong> {currentItem.last_updated}
+                </p>
               </div>
             )}
 
@@ -373,10 +374,10 @@ export default function PriceManagementPage() {
                   resetForm();
                 }}
               >
-                Cancel
+                {t('admin.common.cancel')}
               </Button>
               <Button type="submit" className="bg-teal-700 hover:bg-teal-800 text-white">
-                {currentItem ? 'Update Price' : 'Add Price'}
+                {currentItem ? t('admin.priceManagement.updatePrice') : t('admin.priceManagement.addPrice')}
               </Button>
             </DialogFooter>
           </form>
@@ -386,8 +387,8 @@ export default function PriceManagementPage() {
       {/* Empty state */}
       {priceItems.length === 0 && !loading && (
         <div className="text-center py-20 text-gray-500">
-          <p className="text-xl font-medium">No prices added yet</p>
-          <p className="mt-3">Click "Add Item Price" to start managing.</p>
+          <p className="text-xl font-medium">{t('admin.priceManagement.emptyTitle')}</p>
+          <p className="mt-3">{t('admin.priceManagement.emptyHint')}</p>
         </div>
       )}
     </div>
