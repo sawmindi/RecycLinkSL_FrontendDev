@@ -192,7 +192,10 @@ export interface CollectorPickupCitizen {
   requestId: string;
   id: string;
   name: string;
+  address: string;
   area: string;
+  lat?: number;
+  lng?: number;
   pickupId?: string;
   mobile: string;
   items: CollectorPickupItem[];
@@ -228,6 +231,23 @@ function normalizePickupCitizen(c: Record<string, unknown>): CollectorPickupCiti
     str(c.total_value) ??
     str(c.estimated_total) ??
     str(c.estimated_earnings);
+  const coords =
+    c.coordinates != null && typeof c.coordinates === "object" && !Array.isArray(c.coordinates)
+      ? (c.coordinates as Record<string, unknown>)
+      : null;
+  const lat =
+    num(c.latitude) ??
+    num(c.lat) ??
+    num((c as Record<string, unknown>).location_lat) ??
+    num((c as Record<string, unknown>).locationLat) ??
+    (coords ? num(coords.latitude) ?? num(coords.lat) : undefined);
+  const lng =
+    num(c.longitude) ??
+    num(c.lng) ??
+    num(c.lon) ??
+    num((c as Record<string, unknown>).location_lng) ??
+    num((c as Record<string, unknown>).locationLng) ??
+    (coords ? num(coords.longitude) ?? num(coords.lng) ?? num(coords.lon) : undefined);
   return {
     requestId:
       str(c.pickupId) ??
@@ -245,8 +265,23 @@ function normalizePickupCitizen(c: Record<string, unknown>): CollectorPickupCiti
       str(c.id) ??
       "",
     name: str(c.name) ?? str(c.citizen_name) ?? str(c.full_name) ?? "—",
+    address:
+      str(c.address) ??
+      str(c.street_address) ??
+      str(c.full_address) ??
+      str(c.streetAddress) ??
+      str(c.pickup_address) ??
+      str(c.pickupAddress) ??
+      str(c.delivery_address) ??
+      str(c.home_address) ??
+      str(c.citizen_address) ??
+      str(c.user_address) ??
+      str(c.location) ??
+      str(c.location_name) ??
+      "—",
     area: str(c.area) ?? str(c.citizen_area) ?? "—",
     mobile: str(c.mobile) ?? str(c.mobile_number) ?? str(c.phoneNumber) ?? str(c.phone) ?? "—",
+    ...(lat != null && lng != null ? { lat, lng } : {}),
     items,
     totalValue: total ?? "—",
   };

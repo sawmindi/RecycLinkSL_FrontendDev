@@ -8,6 +8,9 @@ export interface User {
   mobile_number?: string;
   email?: string;
   area?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
   is_active?: string;
 }
 
@@ -19,5 +22,8 @@ export interface UserData {
   mobile_number?: string;
   email?: string;
   area?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
   is_active?: string;
 }

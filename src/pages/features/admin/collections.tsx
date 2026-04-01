@@ -169,6 +169,8 @@ export function CollectionListsPage() {
                     <TableHead>{t('admin.collections.thItem')}</TableHead>
                     <TableHead>{t('admin.collections.thWeight')}</TableHead>
                     <TableHead>{t('admin.collections.thEarnings')}</TableHead>
+                    <TableHead>{t('admin.collections.thActualWeight')}</TableHead>
+                    <TableHead>{t('admin.collections.thActualEarnings')}</TableHead>
                     <TableHead>{t('admin.collections.thPriority')}</TableHead>
                     <TableHead>{t('admin.collections.thCollector')}</TableHead>
                     <TableHead>{t('admin.collections.thStatus')}</TableHead>
@@ -184,6 +186,8 @@ export function CollectionListsPage() {
                       <TableCell>{req.item_name}</TableCell>
                       <TableCell>{Number(req.rough_weight).toFixed(2)}</TableCell>
                       <TableCell>{Number(req.estimated_earnings).toFixed(2)}</TableCell>
+                      <TableCell>{Number(req.actual_weight).toFixed(2)}</TableCell>
+                      <TableCell>{Number(req.final_price).toFixed(2)}</TableCell>
                       <TableCell className="capitalize">{req.priority}</TableCell>
                       <TableCell>
                         {req.assigned_collector ? (

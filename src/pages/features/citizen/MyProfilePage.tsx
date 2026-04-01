@@ -3,11 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
+import { Textarea } from '../../../components/ui/textarea';
 import { Button } from '../../../components/ui/button';
-import { Pencil } from 'lucide-react';
+import { MapPin, Pencil } from 'lucide-react';
 import { AuthService } from '../../../services/AuthService';
 import { Util } from '../../../Util';
 import { toast } from 'react-toastify';
+import { AddressMapPickerDialog } from '../../../components/forms/AddressMapPickerDialog';
 
 export default function MyProfile() {
   const { t } = useTranslation();
@@ -20,7 +22,12 @@ export default function MyProfile() {
     mobile: '',
     email: '',
     areaDistrict: '',
+    address: '',
+    addressLatitude: undefined as number | undefined,
+    addressLongitude: undefined as number | undefined,
   });
+  const [addressPickerOpen, setAddressPickerOpen] = useState(false);
+  const addressPickerSeedRef = useRef({ address: '', area: '' });
 
   const [profileImage, setProfileImage] = useState<string>('');
   const [isEditing, setIsEditing] = useState(false);
@@ -37,6 +44,9 @@ export default function MyProfile() {
           mobile: u.mobile_number ?? '',
           email: u.email ?? '',
           areaDistrict: u.area ?? '',
+          address: u.address ?? '',
+          addressLatitude: u.latitude,
+          addressLongitude: u.longitude,
         });
         const photoId = (u as { profilePhotoId?: string }).profilePhotoId;
         if (photoId) setProfileImage(Util.fileURL(photoId));
@@ -63,6 +73,10 @@ export default function MyProfile() {
       mobile_number: formData.mobile,
       email: formData.email || undefined,
       area: formData.areaDistrict,
+      address: formData.address.trim() || undefined,
+      ...(formData.addressLatitude != null && formData.addressLongitude != null
+        ? { latitude: formData.addressLatitude, longitude: formData.addressLongitude }
+        : {}),
     });
     if (res.success) {
       toast.success(t('profile.toastUpdated'));
@@ -224,6 +238,63 @@ export default function MyProfile() {
               className="w-full md:w-1/2"
             />
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="profileAddress" className="text-sm font-medium text-gray-700">
+              {t('auth.address')}
+            </Label>
+            <p className="text-xs text-gray-500">{t('auth.addressMapHint')}</p>
+            <div className="flex max-w-2xl flex-col gap-2 sm:flex-row sm:items-start">
+              <Textarea
+                id="profileAddress"
+                name="address"
+                value={formData.address}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, address: e.target.value }))
+                }
+                disabled={!isEditing}
+                rows={3}
+                className="min-h-[96px] flex-1"
+                placeholder={t('auth.addressPlaceholder')}
+              />
+              {isEditing && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="shrink-0 gap-2 border-teal-700 text-teal-800 hover:bg-teal-50"
+                  onClick={() => {
+                    addressPickerSeedRef.current = {
+                      address: formData.address,
+                      area: formData.areaDistrict,
+                    };
+                    setAddressPickerOpen(true);
+                  }}
+                >
+                  <MapPin className="h-4 w-4" aria-hidden />
+                  {t('auth.addressPickOnMap')}
+                </Button>
+              )}
+            </div>
+            {formData.addressLatitude != null && formData.addressLongitude != null && (
+              <p className="text-xs font-medium text-teal-700">{t('auth.addressLocationSaved')}</p>
+            )}
+          </div>
+
+          <AddressMapPickerDialog
+            open={addressPickerOpen}
+            onOpenChange={setAddressPickerOpen}
+            initialAddress={addressPickerSeedRef.current.address}
+            areaHint={addressPickerSeedRef.current.area}
+            onConfirm={(r) => {
+              setFormData((prev) => ({
+                ...prev,
+                address: r.address,
+                addressLatitude: r.latitude,
+                addressLongitude: r.longitude,
+              }));
+              toast.success(t('auth.addressLocationSaved'));
+            }}
+          />
 
           <div className="flex gap-4 pt-4">
             {!isEditing ? (

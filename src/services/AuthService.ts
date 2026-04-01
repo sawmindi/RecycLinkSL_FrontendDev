@@ -13,6 +13,9 @@ export interface CitizenSignupRequest {
   email: string;
   phoneNumber: string;
   area: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
   password: string;
 }
 export interface SignupOtpVerificationRequest {

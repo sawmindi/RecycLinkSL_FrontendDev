@@ -156,14 +156,15 @@ export async function createCategory(payload: CategoryPayload): Promise<AppRespo
   const data = unwrapData<Category>(raw);
   const row = data
     ? ({
-        ...data,
-        _id: toId(data),
-        isActive: data.isActive ?? data.is_active ?? true,
-      } as Category)
+      ...data,
+      _id: toId(data),
+      isActive: data.isActive ?? data.is_active ?? true,
+    } as Category)
     : null;
   return toSuccessResponse(raw, row);
 }
 
+// Alias for createCategory
 export const addCategory = createCategory;
 
 export async function updateCategory(
@@ -175,10 +176,10 @@ export async function updateCategory(
   const data = unwrapData<Category>(raw);
   const row = data
     ? ({
-        ...data,
-        _id: toId(data),
-        isActive: data.isActive ?? data.is_active ?? true,
-      } as Category)
+      ...data,
+      _id: toId(data),
+      isActive: data.isActive ?? data.is_active ?? true,
+    } as Category)
     : null;
   return toSuccessResponse(raw, row);
 }
@@ -251,6 +252,8 @@ export interface PickupRequest {
   rough_weight: number;
   priority: string;
   estimated_earnings: number;
+  actual_weight: number;
+  final_price: number;
   status: string;
   assigned_collector?: string;
   created_at: string;
@@ -329,11 +332,11 @@ export async function createItem(payload: ItemPayload): Promise<AppResponse<Pric
   const data = unwrapData<PriceItem>(raw);
   const row = data
     ? ({
-        ...data,
-        _id: toId(data),
-        current_price: Number(data.current_price),
-        previous_price: data.previous_price != null ? Number(data.previous_price) : null,
-      } as PriceItem)
+      ...data,
+      _id: toId(data),
+      current_price: Number(data.current_price),
+      previous_price: data.previous_price != null ? Number(data.previous_price) : null,
+    } as PriceItem)
     : null;
   return toSuccessResponse(raw, row);
 }
@@ -347,11 +350,11 @@ export async function updateItem(
   const data = unwrapData<PriceItem>(raw);
   const row = data
     ? ({
-        ...data,
-        _id: toId(data),
-        current_price: Number(data.current_price),
-        previous_price: data.previous_price != null ? Number(data.previous_price) : null,
-      } as PriceItem)
+      ...data,
+      _id: toId(data),
+      current_price: Number(data.current_price),
+      previous_price: data.previous_price != null ? Number(data.previous_price) : null,
+    } as PriceItem)
     : null;
   return toSuccessResponse(raw, row);
 }
