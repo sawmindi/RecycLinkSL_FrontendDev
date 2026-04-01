@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { ArrowLeft, Eye, EyeOff, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Label } from '../../components/ui/label';
+import { Textarea } from '../../components/ui/textarea';
 import { AuthService, CitizenSignupRequest } from '../../services/AuthService';
 import { MainCitySelect } from '../../components/forms/MainCitySelect';
+import { AddressMapPickerDialog } from '../../components/forms/AddressMapPickerDialog';
 import { MAIN_CITY_VALUE_SET } from '../../data/mainCities';
 import { toast } from 'react-toastify';
 import { AuthLanguageToggle } from '../../components/auth/AuthLanguageToggle';
@@ -22,9 +24,14 @@ export function SignUpPage() {
     email: '',
     mobile: '',
     area: '',
+    address: '',
+    addressLatitude: undefined as number | undefined,
+    addressLongitude: undefined as number | undefined,
     password: '',
     confirmPassword: ''
   });
+  const [addressPickerOpen, setAddressPickerOpen] = useState(false);
+  const addressPickerSeedRef = useRef({ address: '', area: '' });
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -50,6 +57,10 @@ export function SignUpPage() {
       email: formData.email,
       phoneNumber: formData.mobile,
       area: formData.area,
+      address: formData.address.trim() || undefined,
+      ...(formData.addressLatitude != null && formData.addressLongitude != null
+        ? { latitude: formData.addressLatitude, longitude: formData.addressLongitude }
+        : {}),
       password: formData.password,
     };
 
@@ -144,6 +155,35 @@ export function SignUpPage() {
             </div>
 
             <div>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">{t('auth.address')}</Label>
+              <p className="mb-2 text-xs text-gray-500">{t('auth.addressMapHint')}</p>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
+                <Textarea
+                  placeholder={t('auth.addressPlaceholder')}
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  rows={3}
+                  className="min-h-[96px] flex-1 rounded-xl border border-gray-300 px-4 py-3 text-base focus:border-[#4a5f5c] focus:ring-2 focus:ring-[#4a5f5c]/20"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="shrink-0 gap-2 border-teal-700 text-teal-800 hover:bg-teal-50"
+                  onClick={() => {
+                    addressPickerSeedRef.current = { address: formData.address, area: formData.area };
+                    setAddressPickerOpen(true);
+                  }}
+                >
+                  <MapPin className="h-4 w-4" aria-hidden />
+                  {t('auth.addressPickOnMap')}
+                </Button>
+              </div>
+              {formData.addressLatitude != null && formData.addressLongitude != null && (
+                <p className="mt-1.5 text-xs font-medium text-teal-700">{t('auth.addressLocationSaved')}</p>
+              )}
+            </div>
+
+            <div>
               <Label className="block text-sm font-medium text-gray-700 mb-2">{t('auth.password')}</Label>
               <div className="relative">
                 <Input
@@ -198,6 +238,22 @@ export function SignUpPage() {
               {t('auth.signUpButton')}
             </Button>
           </div>
+
+          <AddressMapPickerDialog
+            open={addressPickerOpen}
+            onOpenChange={setAddressPickerOpen}
+            initialAddress={addressPickerSeedRef.current.address}
+            areaHint={addressPickerSeedRef.current.area}
+            onConfirm={(r) => {
+              setFormData((prev) => ({
+                ...prev,
+                address: r.address,
+                addressLatitude: r.latitude,
+                addressLongitude: r.longitude,
+              }));
+              toast.success(t('auth.addressLocationSaved'));
+            }}
+          />
 
           <div className="text-center mt-8">
             <p className="text-sm text-gray-600">

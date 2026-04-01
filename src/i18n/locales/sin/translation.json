@@ -2,7 +2,6 @@
   "welcome": "සාදරයෙන් පිළිගනිමු,",
   "location": "කොළඹ 7",
   "name": "සමන්",
-
   "sidebar": {
     "overview": "දළ විශ්ලේෂණය",
     "schedules": "කාලසටහන්",
@@ -24,7 +23,6 @@
     "pickupRequests": "එකතු කිරීම",
     "reports": "වාර්තා"
   },
-
   "profile": {
     "loading": "පැතිකඩ පෑමින්…",
     "fullName": "සම්පූර්ණ නම",
@@ -42,30 +40,28 @@
     "toastUpdated": "පැතිකඩ යාවත්කාලීන විය",
     "toastUpdateFail": "පැතිකඩ යාවත්කාලීන කිරීම අසාර්ථකයි"
   },
-
-  "landing":{
-    "howItWorks":"ක්‍රියා කරන ආකාරය",
-    "login":"පිවිසීම",
-    "smartWasteCollectionForSriLanka":"ශ්‍රී ලංකාව සඳහා ස්මාර්ට් අපද්‍රව්‍ය එකතු කිරීම",
-    "connectCitizensAndWasteCollectorsThroughIntelligentSchedulingAI-poweredPricePredictionsAndSeamlessCoordinationReduceNoisePollutionSaveFuelAndEarnMoneyFromYourRecyclableItems":"බුද්ධිමත් උපලේඛනගත කිරීම, AI බලයෙන් ක්‍රියාත්මක වන මිල අනාවැකි සහ බාධාවකින් තොරව සම්බන්ධීකරණය හරහා පුරවැසියන් සහ අපද්‍රව්‍ය එකතු කරන්නන් සම්බන්ධ කිරීම. ශබ්ද දූෂණය අඩු කිරීම, ඉන්ධන ඉතිරි කිරීම, සහ ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි භාණ්ඩවලින් මුදල් උපයන්න." ,
-    "getStartedAsCitizen":"පුරවැසියෙකු ලෙස ආරම්භ කරන්න",
-    "joinAsCollector":"එකතුකරන්නෙකු ලෙස එක්වන්න",
-    "aiPoweredPricing":"AI-බලගැන්වූ මිලකරණය",
-    "getInstantPriceEstimatesForYourRecyclableItemsUsingAdvancedAIAlgorithms":"උසස් AI ඇල්ගොරිතම භාවිතයෙන් ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම සඳහා ක්ෂණික මිල ඇස්තමේන්තු ලබා ගැනීම",
-    "smartScheduling":"ස්මාර්ට් කාලසටහන්ගත කිරීම",
-    "optimiseCollectionRoutesAndSchedulesToReduceFuelCostsAndTimeWastage":"ඉන්ධන පිරිවැය සහ කාලය නාස්තිය අඩු කිරීම සඳහා එකතු කිරීමේ මාර්ග සහ කාලසටහන් ප්‍රශස්ත කිරීම",
-    "communityConnection":"ප්‍රජා සම්බන්ධතාවය",
-    "connectCitizensAndCollectorsDirectlyEliminatingTheNeedForLoudAnnouncements":"පුරවැසියන් සහ එකතුකරන්නන් සෘජුවම සම්බන්ධ කිරීම, ශබ්ද නඟා නිවේදන සඳහා අවශ්‍යතාවය ඉවත් කිරීම",
-    "forCitizen":"පුරවැසියන් සඳහා",
-    "addYourItems":"ඔබේ අයිතම එකතු කරන්න",
-    "listRecyclableItems":"ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම ලැයිස්තුගත කරන්න",
-    "getPriceSuggestions":"මිල යෝජනා ලබා ගන්න",
-    "receiveInstantPriceEstimatesAndEarningPotential":"ක්ෂණික මිල ඇස්තමේන්තු සහ ඉපැයීමේ විභවය ලබා ගන්න",
-    "schedulePickup":"ලබාගැනීම් කාලසටහන්ගත කරන්න",
-    "chooseFromAvailablePickupSlotsInYourArea":"ඔබේ ප්‍රදේශයේ ඇති ලබාගැනීම් ස්ථාන වලින් තෝරන්න",
-    "forCollectors":"එකතුකරන්නන් සඳහා"
+  "landing": {
+    "howItWorks": "ක්‍රියා කරන ආකාරය",
+    "login": "පිවිසීම",
+    "smartWasteCollectionForSriLanka": "ශ්‍රී ලංකාව සඳහා ස්මාර්ට් අපද්‍රව්‍ය එකතු කිරීම",
+    "connectCitizensAndWasteCollectorsThroughIntelligentSchedulingAI-poweredPricePredictionsAndSeamlessCoordinationReduceNoisePollutionSaveFuelAndEarnMoneyFromYourRecyclableItems": "බුද්ධිමත් උපලේඛනගත කිරීම, AI බලයෙන් ක්‍රියාත්මක වන මිල අනාවැකි සහ බාධාවකින් තොරව සම්බන්ධීකරණය හරහා පුරවැසියන් සහ අපද්‍රව්‍ය එකතු කරන්නන් සම්බන්ධ කිරීම. ශබ්ද දූෂණය අඩු කිරීම, ඉන්ධන ඉතිරි කිරීම, සහ ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි භාණ්ඩවලින් මුදල් උපයන්න.",
+    "getStartedAsCitizen": "පුරවැසියෙකු ලෙස ආරම්භ කරන්න",
+    "joinAsCollector": "එකතුකරන්නෙකු ලෙස එක්වන්න",
+    "aiPoweredPricing": "AI-බලගැන්වූ මිලකරණය",
+    "getInstantPriceEstimatesForYourRecyclableItemsUsingAdvancedAIAlgorithms": "උසස් AI ඇල්ගොරිතම භාවිතයෙන් ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම සඳහා ක්ෂණික මිල ඇස්තමේන්තු ලබා ගැනීම",
+    "smartScheduling": "ස්මාර්ට් කාලසටහන්ගත කිරීම",
+    "optimiseCollectionRoutesAndSchedulesToReduceFuelCostsAndTimeWastage": "ඉන්ධන පිරිවැය සහ කාලය නාස්තිය අඩු කිරීම සඳහා එකතු කිරීමේ මාර්ග සහ කාලසටහන් ප්‍රශස්ත කිරීම",
+    "communityConnection": "ප්‍රජා සම්බන්ධතාවය",
+    "connectCitizensAndCollectorsDirectlyEliminatingTheNeedForLoudAnnouncements": "පුරවැසියන් සහ එකතුකරන්නන් සෘජුවම සම්බන්ධ කිරීම, ශබ්ද නඟා නිවේදන සඳහා අවශ්‍යතාවය ඉවත් කිරීම",
+    "forCitizen": "පුරවැසියන් සඳහා",
+    "addYourItems": "ඔබේ අයිතම එකතු කරන්න",
+    "listRecyclableItems": "ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම ලැයිස්තුගත කරන්න",
+    "getPriceSuggestions": "මිල යෝජනා ලබා ගන්න",
+    "receiveInstantPriceEstimatesAndEarningPotential": "ක්ෂණික මිල ඇස්තමේන්තු සහ ඉපැයීමේ විභවය ලබා ගන්න",
+    "schedulePickup": "ලබාගැනීම් කාලසටහන්ගත කරන්න",
+    "chooseFromAvailablePickupSlotsInYourArea": "ඔබේ ප්‍රදේශයේ ඇති ලබාගැනීම් ස්ථාන වලින් තෝරන්න",
+    "forCollectors": "එකතුකරන්නන් සඳහා"
   },
-
   "auth": {
     "toggleLanguage": "භාෂාව වෙනස් කරන්න",
     "showEnglish": "English",
@@ -94,6 +90,32 @@
     "areaRequired": "ප්‍රදේශය",
     "areaPlaceholder": "ඔබේ ප්‍රධාන නගරය / ප්‍රදේශය සොයා තෝරන්න…",
     "areaHelp": "නගර සභා, නගර සභා හෝ ප්‍රාදේශීය සභා ලැයිස්තුවෙන් ඔබේ ස්ථානයට ගැලපෙන ප්‍රධාන නගරය තෝරන්න. මෙය ඔබේ සේවා ප්‍රදේශය ලෙස සුරැකේ.",
+    "address": "ලිපිනය",
+    "addressPlaceholder": "උදා: අංක 12, පන්සල පාර",
+    "addressMapHint": "නිවැරදි ලබාගැනීම් සඳහා සිතියමෙන් ඔබේ නිවස තෝරන්න (නිර්දේශ කෙරේ).",
+    "addressPickOnMap": "සිතියමෙන් තෝරන්න",
+    "addressLocationSaved": "සිතියම් ස්ථානය සුරකින ලදී",
+    "addressPickerTitle": "සිතියමෙන් ඔබේ නිවාස ලිපිනය",
+    "addressPickerHelp": "සිතියම තට්ටු කරන්න හෝ පින් ඇදගෙන යන්න. දැන් ස්ථානයේ නම් “වත්මන් ස්ථානය” භාවිතා කරන්න. සුරැකීමට පෙර ලිපින පෙළ සංස්කරණය කළ හැක.",
+    "addressPickerUseLocation": "වත්මන් ස්ථානය භාවිතා කරන්න",
+    "addressPickerFormatting": "ලිපිනය ලබා ගනිමින්…",
+    "addressPickerLoadingMap": "සිතියම පූරණය වෙමින්…",
+    "addressPickerFormattedLabel": "ලිපිනය (සංස්කරණය කළ හැක)",
+    "addressPickerFormattedPlaceholder": "සම්පූර්ණ ලිපිනය — නිවස අංකය, පාර, ප්‍රදේශය…",
+    "addressPickerEditHint": "මෙම පෙළ හා සිතියම් ඛණ්ඩාංක එකතුකරුවන්ට යවනු ලැබේ.",
+    "addressPickerConfirm": "මෙම ලිපිනය භාවිතා කරන්න",
+    "addressPickerMapLoadError": "සිතියම පූරණය කළ නොහැකි විය. සම්බන්ධතාව පරීක්ෂා කර නැවත උත්සාහ කරන්න.",
+    "addressPickerNoGeolocation": "මෙම බ්‍රවුසරය ස්ථානය සඳහා සහය නොදක්වයි.",
+    "addressPickerLocationDenied": "ස්ථාන අවසරය ප්‍රතික්ෂේප විය. සිතියමෙන් අතින් පින් තබා තවමත් ඉදිරියට යා හැක.",
+    "addressPickerNeedAddress": "ඉදිරියට යාමට පෙර කරුණාකර ලිපිනය ඇතුළත් කරන්න හෝ තහවුරු කරන්න.",
+    "addressPickerSearchLabel": "ශ්‍රී ලංකාව තුළ ස්ථානයක් සොයන්න",
+    "addressPickerSearchPlaceholder": "වීදිය, ගොඩනැගිල්ල, නගරය, තැපැල් ප්‍රදේශය…",
+    "addressPickerSearch": "සොයන්න",
+    "addressPickerSearchHint": "ප්‍රතිඵල OpenStreetMap වෙතින් වන අතර ශ්‍රී ලංකාවට පමණක් සීමා වේ. පින් ගෙන යාමට ප්‍රතිඵලයක් තෝරන්න.",
+    "addressPickerSearchNeedQuery": "සෙවීමට ස්ථාන නාමයක් හෝ ලිපිනයක් ටයිප් කරන්න.",
+    "addressPickerSearchSlowDown": "සෙවීම් අතර තත්පරයක් රැඳී සිටින්න (නීතිසැලකිලි සීමාව).",
+    "addressPickerSearchNoResults": "ගැලපෙන ස්ථානයක් හමු නොවීය. සරල වචන හෝ වෙනත් අකුරු උත්සාහ කරන්න.",
+    "addressPickerSearchResultsLabel": "සෙවීම් ප්‍රතිඵල",
     "confirmPassword": "මුරපදය තහවුරු කරන්න",
     "signUpButton": "ලියාපදිංචි වන්න",
     "alreadyHaveAccount": "දැනටමත් ගිණුමක් තිබේ ද?",
@@ -107,7 +129,6 @@
     "viaSms": "කෙටි පණිවුඩය: .... ... ...",
     "viaEmail": "විද්‍යුත් තැපෑල: ......@gmail.com"
   },
-
   "admin": {
     "common": {
       "active": "සක්‍රිය",
@@ -271,6 +292,8 @@
       "thItem": "අයිතම",
       "thWeight": "බර (කිග්)",
       "thEarnings": "ඇස්තමේන්තු ආදායම (රු.)",
+      "thActualWeight": "සත්‍ය බර (කිග්)",
+      "thActualEarnings": "සත්‍ය  ආදායම (රු.)",
       "thPriority": "ප්‍රමුඛතාව",
       "thCollector": "පවරන ලද එකතුකරන්නා",
       "thStatus": "තත්වය",
@@ -418,7 +441,6 @@
       "toastRemoveFail": "ඉවත් කිරීම අසාර්ථකයි"
     }
   },
-
   "citizen": {
     "dashboard": {
       "quickActions": "ඉක්මන් ක්‍රියා",
@@ -464,20 +486,20 @@
     "pendingPickups": "අපේක්ෂිත ලබාගැනීම්",
     "totalWeight": "මුළු බර",
     "addItems": "අයිතම එක් කරන්න",
-    "selectYourRecyclableItemsAndGetReal-timeEstimates":"ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම තෝරා තත්‍ය කාලීන ඇස්තමේන්තු ලබා ගන්න",
-    "itemType":"අයිතම වර්ගය",
-    "selectItemType":"අයිතම වර්ගය තෝරන්න",
-    "weight":"බර",
-    "enterWeight":"බර ඇතුළත් කරන්න",
-    "description":"විස්තරය",
-    "optional":"විකල්ප",
-    "addAnyExtraDetails":"ඕනෑම අමතර විස්තර එකතු කරන්න...",
-    "getEstimate":"ඇස්තමේන්තුගත ඉපැයීම් සඳහා",
-    "estimatedEarningFor":"ඇස්තමේන්තුගත ආදායම",
-    "addToList":"ලැයිස්තුවට එක් කරන්න",
-    "addedItems":"එකතු කළ අයිතම",
-    "totalEst":"මුළු ඇස්තමේන්තුව.",
-    "proceedToSchedulePickup":"ලබාගැනීම් කාලසටහන්ගත කිරීමට ඉදිරියට යන්න",
+    "selectYourRecyclableItemsAndGetReal-timeEstimates": "ඔබේ ප්‍රතිචක්‍රීකරණය කළ හැකි අයිතම තෝරා තත්‍ය කාලීන ඇස්තමේන්තු ලබා ගන්න",
+    "itemType": "අයිතම වර්ගය",
+    "selectItemType": "අයිතම වර්ගය තෝරන්න",
+    "weight": "බර",
+    "enterWeight": "බර ඇතුළත් කරන්න",
+    "description": "විස්තරය",
+    "optional": "විකල්ප",
+    "addAnyExtraDetails": "ඕනෑම අමතර විස්තර එකතු කරන්න...",
+    "getEstimate": "ඇස්තමේන්තුගත ඉපැයීම් සඳහා",
+    "estimatedEarningFor": "ඇස්තමේන්තුගත ආදායම",
+    "addToList": "ලැයිස්තුවට එක් කරන්න",
+    "addedItems": "එකතු කළ අයිතම",
+    "totalEst": "මුළු ඇස්තමේන්තුව.",
+    "proceedToSchedulePickup": "ලබාගැනීම් කාලසටහන්ගත කිරීමට ඉදිරියට යන්න",
     "lists": {
       "filterDate": "දිනය:",
       "filterStatus": "තත්වය:",
@@ -569,7 +591,6 @@
       }
     }
   },
-
   "collector": {
     "dashboard": {
       "welcome": "සාදරයෙන් පිළිගනිමු, {{name}}",
@@ -624,7 +645,14 @@
       "pickupSkipped": "මෙම සැසිය සඳහා මඟ හරින ලදී",
       "swalSkippedTitle": "මඟ හරින ලදී",
       "swalSkippedText": "{{name}} මඟ හරින ලදී.",
-      "missingRequestId": "මෙම පේළියට pickup request _id නැත."
+      "missingRequestId": "මෙම පේළියට pickup request _id නැත.",
+      "address": "ලිපිනය",
+      "openInMaps": "Google Maps තුළ විවෘත කරන්න",
+      "routeMapTitle": "මාර්ග සිතියම - {{area}}",
+      "routeMapHint": "පුරවැසියන්ගේ ලබාගැනීම් ස්ථාන {{count}} පෙන්වයි.",
+      "mapLoading": "සිතියම පූරණය කරමින් සහ ස්ථාන හඳුනාගනිමින්...",
+      "mapNoLocations": "මෙම මාර්ගයේ පුරවැසියන් සඳහා සිතියම් අංශක සොයාගත නොහැකි විය.",
+      "mapLoadError": "සිතියම පූරණය කළ නොහැකි විය. නැවත උත්සාහ කරන්න."
     },
     "collectionHistory": {
       "title": "එකතු කිරීමේ ඉතිහාසය",
@@ -638,7 +666,6 @@
       "statusCancelled": "අවලංගු"
     }
   },
-
   "footer": {
     "copyright": "කුණු එකතු කිරීම වඩාත් බුද්ධිමත් හා නිහඬව කිරීම."
   }

@@ -2,7 +2,6 @@
   "welcome": "Welcome,",
   "location": "Colombo 7",
   "name": "Saman",
-
   "sidebar": {
     "overview": "Overview",
     "schedules": "Schedules",
@@ -24,7 +23,6 @@
     "pickupRequests": "Collections",
     "reports": "Reports"
   },
-
   "profile": {
     "loading": "Loading profile…",
     "fullName": "Full name",
@@ -42,30 +40,28 @@
     "toastUpdated": "Profile updated",
     "toastUpdateFail": "Failed to update profile"
   },
-
-  "landing":{
-    "howItWorks":"How It Works",
-    "login":"Login",
-    "smartWasteCollectionForSriLanka":"Smart Waste Collection for Sri Lanka",
-    "connectCitizensAndWasteCollectorsThroughIntelligentSchedulingAI-poweredPricePredictionsAndSeamlessCoordinationReduceNoisePollutionSaveFuelAndEarnMoneyFromYourRecyclableItems":"Connect citizens and waste collectors through intelligent scheduling, AI-powered price predictions, and seamless coordination. Reduce noise pollution, save fuel, and earn money from your recyclable items.",
-    "getStartedAsCitizen":"Get Started As Citizen ",
-    "joinAsCollector":"Join As Collectors",
-    "aiPoweredPricing":"AI-Powered Pricing",
-    "getInstantPriceEstimatesForYourRecyclableItemsUsingAdvancedAIAlgorithms":"Get instant price estimates for your recyclable items using advanced AI algorithms",
-    "smartScheduling":"Smart Scheduling",
-    "optimiseCollectionRoutesAndSchedulesToReduceFuelCostsAndTimeWastage":"Optimise collection routes and schedules to reduce fuel costs and time wastage",
-    "communityConnection":"Community Connection",
-    "connectCitizensAndCollectorsDirectlyEliminatingTheNeedForLoudAnnouncements":"Connect citizens and collectors directly, eliminating the need for loud announcements",
-    "forCitizen":"For Citizens",
-    "addYourItems":"Add Your Items",
-    "listRecyclableItems":"List recyclable items",
-    "getPriceSuggestions":"Get Price Suggestions",
-    "receiveInstantPriceEstimatesAndEarningPotential":"Receive instant price estimates and earning potential",
-    "schedulePickup":"Schedule Pickup",
-    "chooseFromAvailablePickupSlotsInYourArea":"Choose from available pickup slots in your area",
-    "forCollectors":"For Collectors"
+  "landing": {
+    "howItWorks": "How It Works",
+    "login": "Login",
+    "smartWasteCollectionForSriLanka": "Smart Waste Collection for Sri Lanka",
+    "connectCitizensAndWasteCollectorsThroughIntelligentSchedulingAI-poweredPricePredictionsAndSeamlessCoordinationReduceNoisePollutionSaveFuelAndEarnMoneyFromYourRecyclableItems": "Connect citizens and waste collectors through intelligent scheduling, AI-powered price predictions, and seamless coordination. Reduce noise pollution, save fuel, and earn money from your recyclable items.",
+    "getStartedAsCitizen": "Get Started As Citizen ",
+    "joinAsCollector": "Join As Collectors",
+    "aiPoweredPricing": "AI-Powered Pricing",
+    "getInstantPriceEstimatesForYourRecyclableItemsUsingAdvancedAIAlgorithms": "Get instant price estimates for your recyclable items using advanced AI algorithms",
+    "smartScheduling": "Smart Scheduling",
+    "optimiseCollectionRoutesAndSchedulesToReduceFuelCostsAndTimeWastage": "Optimise collection routes and schedules to reduce fuel costs and time wastage",
+    "communityConnection": "Community Connection",
+    "connectCitizensAndCollectorsDirectlyEliminatingTheNeedForLoudAnnouncements": "Connect citizens and collectors directly, eliminating the need for loud announcements",
+    "forCitizen": "For Citizens",
+    "addYourItems": "Add Your Items",
+    "listRecyclableItems": "List recyclable items",
+    "getPriceSuggestions": "Get Price Suggestions",
+    "receiveInstantPriceEstimatesAndEarningPotential": "Receive instant price estimates and earning potential",
+    "schedulePickup": "Schedule Pickup",
+    "chooseFromAvailablePickupSlotsInYourArea": "Choose from available pickup slots in your area",
+    "forCollectors": "For Collectors"
   },
-
   "auth": {
     "toggleLanguage": "Change language",
     "showEnglish": "English",
@@ -94,6 +90,32 @@
     "areaRequired": "Area",
     "areaPlaceholder": "Search and select your main city / area…",
     "areaHelp": "Choose the main city that matches your location (from Municipal, Urban, or Pradeshiya Sabha areas). This is saved as your service area.",
+    "address": "Address",
+    "addressPlaceholder": "eg: No. 12, Temple Road",
+    "addressMapHint": "Choose your home on the map for accurate pickups (recommended).",
+    "addressPickOnMap": "Pick on map",
+    "addressLocationSaved": "Map location saved",
+    "addressPickerTitle": "Your home address on the map",
+    "addressPickerHelp": "Tap the map or drag the pin to your entrance. Use “Current location” if you are there now. You can edit the address text before saving.",
+    "addressPickerUseLocation": "Use current location",
+    "addressPickerFormatting": "Getting address…",
+    "addressPickerLoadingMap": "Loading map…",
+    "addressPickerFormattedLabel": "Address (you can edit)",
+    "addressPickerFormattedPlaceholder": "Full address with house number, street, area…",
+    "addressPickerEditHint": "This text is sent to collectors together with the map coordinates.",
+    "addressPickerConfirm": "Use this address",
+    "addressPickerMapLoadError": "Could not load the map. Check your connection and try again.",
+    "addressPickerNoGeolocation": "This browser does not support location.",
+    "addressPickerLocationDenied": "Location permission was denied. You can still place the pin by hand on the map.",
+    "addressPickerNeedAddress": "Please enter or confirm an address before continuing.",
+    "addressPickerSearchLabel": "Search a place in Sri Lanka",
+    "addressPickerSearchPlaceholder": "Street, building, town, postal area…",
+    "addressPickerSearch": "Search",
+    "addressPickerSearchHint": "Results are from OpenStreetMap and limited to Sri Lanka. Pick a result to move the pin.",
+    "addressPickerSearchNeedQuery": "Type a place name or address to search.",
+    "addressPickerSearchSlowDown": "Please wait a second between searches (map data fair-use).",
+    "addressPickerSearchNoResults": "No matching place found. Try simpler words or another spelling.",
+    "addressPickerSearchResultsLabel": "Search results",
     "confirmPassword": "Confirm Password",
     "signUpButton": "Sign Up",
     "alreadyHaveAccount": "Already have an account?",
@@ -107,7 +129,6 @@
     "viaSms": "Via SMS: .... ... ...",
     "viaEmail": "Via Email: ......@gmail.com"
   },
-
   "admin": {
     "common": {
       "active": "Active",
@@ -271,6 +292,8 @@
       "thItem": "Item",
       "thWeight": "Weight (kg)",
       "thEarnings": "Est. Earnings (LKR)",
+      "thActualWeight": "Actual Weight (kg)",
+      "thActualEarnings": "Est. Actual Earnings (LKR)",
       "thPriority": "Priority",
       "thCollector": "Assigned Collector",
       "thStatus": "Status",
@@ -418,7 +441,6 @@
       "toastRemoveFail": "Failed to remove"
     }
   },
-
   "citizen": {
     "dashboard": {
       "quickActions": "Quick Actions",
@@ -464,20 +486,20 @@
     "pendingPickups": "Pending Pickups",
     "totalWeight": "Total Weight",
     "addItems": "Add Items",
-    "selectYourRecyclableItemsAndGetReal-timeEstimates":"Select your recyclable items and get real-time estimates",
-    "itemType":"Item Type",
-    "selectItemType":"Select Item Type",
-    "weight":"Weight",
-    "enterWeight":"Enter Weight",
-    "description":"Description",
-    "optional":"Optional",
-    "addAnyExtraDetails":"Add Any Extra Details...",
-    "getEstimate":"Get Estimate",
-    "estimatedEarningFor":"Estimated earning for",
-    "addToList":"Add to List",
-    "addedItems":"Added Items",
-    "totalEst":"Total Est.",
-    "proceedToSchedulePickup":"Proceed to Schedule Pickup",
+    "selectYourRecyclableItemsAndGetReal-timeEstimates": "Select your recyclable items and get real-time estimates",
+    "itemType": "Item Type",
+    "selectItemType": "Select Item Type",
+    "weight": "Weight",
+    "enterWeight": "Enter Weight",
+    "description": "Description",
+    "optional": "Optional",
+    "addAnyExtraDetails": "Add Any Extra Details...",
+    "getEstimate": "Get Estimate",
+    "estimatedEarningFor": "Estimated earning for",
+    "addToList": "Add to List",
+    "addedItems": "Added Items",
+    "totalEst": "Total Est.",
+    "proceedToSchedulePickup": "Proceed to Schedule Pickup",
     "lists": {
       "filterDate": "Date:",
       "filterStatus": "Status:",
@@ -569,7 +591,6 @@
       }
     }
   },
-
   "collector": {
     "dashboard": {
       "welcome": "Welcome, {{name}}",
@@ -624,7 +645,14 @@
       "pickupSkipped": "Skipped for this session",
       "swalSkippedTitle": "Skipped",
       "swalSkippedText": "{{name}} was marked as skipped.",
-      "missingRequestId": "Pickup request _id is missing for this row."
+      "missingRequestId": "Pickup request _id is missing for this row.",
+      "address": "Address",
+      "openInMaps": "Open in Google Maps",
+      "routeMapTitle": "Route map - {{area}}",
+      "routeMapHint": "Showing {{count}} citizen pickup locations.",
+      "mapLoading": "Loading map and locating citizens...",
+      "mapNoLocations": "We could not find map coordinates for the citizens in this route.",
+      "mapLoadError": "Map could not be loaded. Please try again."
     },
     "collectionHistory": {
       "title": "Collection History",
@@ -638,7 +666,6 @@
       "statusCancelled": "Cancelled"
     }
   },
-
   "footer": {
     "copyright": "Making waste collection smarter and quieter."
   }

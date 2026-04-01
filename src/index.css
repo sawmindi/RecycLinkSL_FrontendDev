@@ -77,6 +77,18 @@
   @apply text-center text-3xl font-bold;
 }
 
+.address-map-picker-dialog .leaflet-container {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  background: #e5e7eb;
+}
+
+.leaflet-div-icon.recyclink-leaflet-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
 .auth-subheading {
   @apply text-center text-xl mb-8;
 }
@@ -287,7 +299,6 @@
   font-family: "Cormorant Garamond", serif !important;
 }
 
-/* Custom size styles for Quill editor */
 .ql-size-8px {
   font-size: 8px !important;
 }
