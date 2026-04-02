@@ -18,6 +18,7 @@ import {
   deleteItem,
   type PriceItem,
 } from '../../../services/AdminService';
+import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export default function PriceManagementPage() {
   const { t, i18n } = useTranslation();
@@ -141,7 +142,7 @@ export default function PriceManagementPage() {
     return <span className="text-gray-500">—</span>;
   };
 
-  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-GB';
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
   return (
     <div className="space-y-10">
@@ -216,7 +217,7 @@ export default function PriceManagementPage() {
                       {getChangeDisplay(item.change ?? 0)}
                     </TableCell>
                     <TableCell>
-                        {new Date(item.last_updated).toLocaleDateString(dateLocale)}
+                        {formatDisplayDate(item.last_updated, dateLocale)}
                       </TableCell>
                     <TableCell>
                       <Badge
@@ -360,7 +361,8 @@ export default function PriceManagementPage() {
                   {t('admin.priceManagement.perKg')}
                 </p>
                 <p>
-                  <strong>{t('admin.priceManagement.editLastUpdated')}</strong> {currentItem.last_updated}
+                  <strong>{t('admin.priceManagement.editLastUpdated')}</strong>{' '}
+                  {formatDisplayDate(currentItem.last_updated, dateLocale)}
                 </p>
               </div>
             )}

@@ -8,6 +8,7 @@ import { Card, CardContent } from '../../../components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getCitizenNotifications } from '../../../services/CitizenService';
+import { formatSmartDateTime, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 const iconMap: Record<string, LucideIcon> = {
   'item-added': Package,
@@ -28,7 +29,8 @@ type NotificationItem = {
 };
 
 export function NotificationsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
   const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
   const [notificationsData, setNotificationsData] = useState<NotificationItem[]>([]);
@@ -192,7 +194,7 @@ export function NotificationsPage() {
                       {notif.title}
                     </h3>
                     <span className="text-sm text-gray-500 whitespace-nowrap">
-                      {notif.timestamp}
+                      {formatSmartDateTime(notif.timestamp, dateLocale)}
                     </span>
                   </div>
 

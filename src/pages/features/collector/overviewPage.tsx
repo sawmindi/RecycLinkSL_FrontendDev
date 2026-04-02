@@ -12,12 +12,12 @@ import {
   type CollectorDashboardStats,
   type CollectorRouteSummary,
 } from '../../../services/CollectorService';
-
+import { formatDisplayTimeHm, formatShortWeekdayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export function OverviewPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-LK';
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
   const [collectorName, setCollectorName] = useState<string>('');
   const [areaName, setAreaName] = useState<string>('');
@@ -115,13 +115,11 @@ export function OverviewPage() {
                 )}
                 {routesToday.map((route, index) => {
                   const dateLabel = route.schedule_date
-                    ? new Date(route.schedule_date).toLocaleDateString(dateLocale, {
-                        weekday: 'short',
-                        month: 'short',
-                        day: 'numeric',
-                      })
+                    ? formatShortWeekdayDate(route.schedule_date, dateLocale)
                     : t('citizen.lists.emDash');
-                  const timeLabel = route.schedule_time || t('citizen.lists.emDash');
+                  const timeLabel = route.schedule_time
+                    ? formatDisplayTimeHm(route.schedule_time, dateLocale)
+                    : t('citizen.lists.emDash');
                   return (
                   <Card
                     key={route._id || index}

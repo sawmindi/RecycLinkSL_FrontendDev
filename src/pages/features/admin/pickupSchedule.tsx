@@ -22,6 +22,7 @@ import {
   type PickupSchedule,
   type PriceItem,
 } from '../../../services/AdminService';
+import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 function isItemActive(it: PriceItem): boolean {
   const s = (it.status || '').toLowerCase();
@@ -30,7 +31,7 @@ function isItemActive(it: PriceItem): boolean {
 
 export function PickupScheduleManagementPage() {
   const { t, i18n } = useTranslation();
-  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : undefined;
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
   const [schedules, setSchedules] = useState<PickupSchedule[]>([]);
   const [priceItems, setPriceItems] = useState<PriceItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -82,8 +83,8 @@ export function PickupScheduleManagementPage() {
     setCurrentSchedule(schedule);
     setFormData({
       area: schedule.area,
-      schedule_date: schedule.schedule_date.split('T')[0], 
-      schedule_time: schedule.schedule_time,               
+      schedule_date: schedule.schedule_date.split('T')[0], // format for date input
+      schedule_time: schedule.schedule_time,                // HH:mm
       items: schedule.items,
     });
     setIsEditModalOpen(true);
@@ -223,7 +224,7 @@ export function PickupScheduleManagementPage() {
                     <TableRow key={sch._id} className="hover:bg-gray-50">
                       <TableCell className="font-medium">{sch.area}</TableCell>
                       <TableCell>
-                        {new Date(sch.schedule_date).toLocaleDateString(dateLocale)}
+                        {formatDisplayDate(sch.schedule_date, dateLocale)}
                       </TableCell>
                       <TableCell>{sch.schedule_time.slice(0, 5)}</TableCell>
                       <TableCell>{sch.items}</TableCell>
@@ -245,7 +246,7 @@ export function PickupScheduleManagementPage() {
                             handleDelete(
                               sch._id,
                               sch.area,
-                              new Date(sch.schedule_date).toLocaleDateString(dateLocale)
+                              formatDisplayDate(sch.schedule_date, dateLocale)
                             )
                           }
                         >

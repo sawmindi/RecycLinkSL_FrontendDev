@@ -6,6 +6,7 @@ import { Card, CardContent } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { getCitizenPickupRequests, type CitizenPickupRequest } from '../../../services/CitizenService';
+import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 type EarningStatusKey = 'collected' | 'scheduled' | 'pending';
 
@@ -13,7 +14,7 @@ export function EarningsPage() {
   const { t, i18n } = useTranslation();
   const [requests, setRequests] = useState<CitizenPickupRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-US';
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
   useEffect(() => {
     getCitizenPickupRequests()
@@ -33,7 +34,7 @@ export function EarningsPage() {
             ? 'scheduled'
             : 'pending';
       const dateFmt = (d: string | undefined) =>
-        d ? new Date(d).toLocaleDateString(dateLocale, { day: 'numeric', month: 'short', year: 'numeric' }) : t('citizen.lists.emDash');
+        d ? formatDisplayDate(d, dateLocale) : t('citizen.lists.emDash');
       const sched = r.schedule_date ? dateFmt(r.schedule_date) : t('citizen.lists.emDash');
 
       let pickupInfo = '';

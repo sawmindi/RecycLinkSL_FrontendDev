@@ -23,9 +23,11 @@ import {
   type CollectorCategoryAssignment,
   type PickupRequest,
 } from '../../../services/AdminService';
+import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export function CollectorAssignmentPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
   const [activeTab, setActiveTab] = useState<'categories' | 'pickups'>('categories');
   const [collectors, setCollectors] = useState<Collector[]>([]);
   const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
@@ -216,7 +218,7 @@ export function CollectorAssignmentPage() {
                         <TableCell className="font-medium">{a.collector_name}</TableCell>
                         <TableCell>{a.category_name}</TableCell>
                         <TableCell>{a.area}</TableCell>
-                        <TableCell>{a.assigned_date}</TableCell>
+                        <TableCell>{formatDisplayDate(a.assigned_date, dateLocale)}</TableCell>
                         <TableCell>
                           <Badge className={a.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
                             {a.status === 'active'

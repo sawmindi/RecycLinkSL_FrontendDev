@@ -6,9 +6,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { getCollectorHistory, type CollectorHistoryEntry } from '../../../services/CollectorService';
+import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export function CollectionHistoryPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
   const [collectionHistory, setCollectionHistory] = useState<CollectorHistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -135,7 +137,7 @@ export function CollectionHistoryPage() {
                 <Calendar className="h-5 w-5 text-teal-700" />
                 <p>
                   {t('collector.collectionHistory.collectedOnBy', {
-                    date: entry.date,
+                    date: formatDisplayDate(entry.date, dateLocale),
                     collector: entry.collector,
                   })}
                 </p>

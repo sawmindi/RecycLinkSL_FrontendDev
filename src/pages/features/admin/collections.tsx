@@ -17,9 +17,11 @@ import {
   type PickupRequest,
   type Collector,
 } from '../../../services/AdminService';
+import { formatDisplayDateTime, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export function CollectionListsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
   const [requests, setRequests] = useState<PickupRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
@@ -197,7 +199,7 @@ export function CollectionListsPage() {
                         )}
                       </TableCell>
                       <TableCell>{getStatusBadge(req.status)}</TableCell>
-                      <TableCell>{req.created_at}</TableCell>
+                      <TableCell>{formatDisplayDateTime(req.created_at, dateLocale)}</TableCell>
 
                       <TableCell className="text-right space-x-2">
                         {req.status === 'pending' && (

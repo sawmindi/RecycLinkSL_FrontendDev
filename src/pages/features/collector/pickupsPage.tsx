@@ -24,6 +24,7 @@ import {
 } from '../../../services/CollectorService';
 import { sortPickupCitizensByMainCityRoute } from '../../../data/pickupRouteOrder';
 import { ensureLeafletLoaded, createThemeMapPinIcon } from '../../../lib/leafletCdn';
+import { formatDisplayDate, formatDisplayTimeHm, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 type RouteMapPoint = {
   id: string;
@@ -139,7 +140,6 @@ async function geocodePhotonRaw(query: string): Promise<{ lat: number; lng: numb
   )}&limit=1&lang=en&bbox=${PHOTON_BBOX}`;
   const hit = await tryUrl(withBbox);
   if (hit) return hit;
-
   const noBbox = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=1&lang=en`;
   return tryUrl(noBbox);
 }
@@ -371,7 +371,8 @@ async function geocodeCitizenToPoints(
 
 
 export function PickupsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
   const [pickupRoutes, setPickupRoutes] = useState<CollectorPickupRoute[]>([]);
   const [expandedRoute, setExpandedRoute] = useState<string | null>(null);
@@ -665,13 +666,13 @@ export function PickupsPage() {
                 <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-600">
                   <span className="flex items-center gap-1.5">
                     <Clock className="h-4 w-4 shrink-0 text-teal-600" />
-                    <span className="whitespace-nowrap">{route.date}</span>
+                    <span className="whitespace-nowrap">{formatDisplayDate(route.date, dateLocale)}</span>
                     <span className="hidden sm:inline">•</span>
-                    <span className="hidden sm:inline whitespace-nowrap">{route.time}</span>
+                    <span className="hidden sm:inline whitespace-nowrap">{formatDisplayTimeHm(route.time, dateLocale)}</span>
                   </span>
                   <span className="flex items-center gap-1.5 sm:hidden">
                     <Clock className="h-4 w-4 shrink-0 text-transparent" />
-                    <span className="text-gray-500">{route.time}</span>
+                    <span className="text-gray-500">{formatDisplayTimeHm(route.time, dateLocale)}</span>
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Users className="h-4 w-4 shrink-0 text-teal-600" />

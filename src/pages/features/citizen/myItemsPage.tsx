@@ -6,6 +6,7 @@ import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
 import { getCitizenPickupRequests, type CitizenPickupRequest } from '../../../services/CitizenService';
+import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 type ItemStatusKey = 'collected' | 'scheduled' | 'pending';
 
@@ -13,7 +14,7 @@ export function MyItemsPage() {
   const { t, i18n } = useTranslation();
   const [items, setItems] = useState<CitizenPickupRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-US';
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
   useEffect(() => {
     getCitizenPickupRequests()
@@ -32,8 +33,7 @@ export function MyItemsPage() {
           : r.status === 'assigned' || r.status === 'scheduled'
             ? 'scheduled'
             : 'pending';
-      const dateStr = (d: string | undefined) =>
-        d ? new Date(d).toLocaleDateString(dateLocale, { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      const dateStr = (d: string | undefined) => (d ? formatDisplayDate(d, dateLocale) : '');
       const scheduleDate = r.schedule_date ? dateStr(r.schedule_date) : '';
 
       let footerScheduled = '';
@@ -56,9 +56,7 @@ export function MyItemsPage() {
         statusKey,
         weight: `${Number(r.rough_weight) || 0} ${t('citizen.lists.kg')}`,
         estimatedValue: `LKR ${(Number(r.estimated_earnings) || 0).toFixed(2)}`,
-        dateAdded: r.created_at
-          ? new Date(r.created_at).toLocaleDateString(dateLocale, { day: 'numeric', month: 'short', year: 'numeric' })
-          : t('citizen.lists.emDash'),
+        dateAdded: r.created_at ? formatDisplayDate(r.created_at, dateLocale) : t('citizen.lists.emDash'),
         description: '',
         footerScheduled,
         footerCollected,
