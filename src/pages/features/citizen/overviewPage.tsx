@@ -10,10 +10,16 @@ import {
   type CitizenDashboardStats,
   type CitizenPickupRequest,
 } from '../../../services/CitizenService';
+import {
+  formatDayMonthBadge,
+  formatDisplayTimeHm,
+  formatWeekdayLong,
+  getDateLocaleFromLanguage,
+} from '../../../lib/formatDate';
 
 export default function Overview() {
   const { t, i18n } = useTranslation();
-  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-US';
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
   const [userName, setUserName] = useState<string>('');
   const [userLocation, setUserLocation] = useState<string>('');
   const [stats, setStats] = useState<CitizenDashboardStats>({});
@@ -90,13 +96,6 @@ export default function Overview() {
     'E-Waste': 'bg-teal-100 text-teal-700',
   };
 
-  const formatPickupDate = (d?: string, time?: string) => {
-    if (!d) return { date: '—', day: '—', time: time || '—' };
-    const dt = new Date(d);
-    const dateStr = dt.toLocaleDateString(dateLocale, { month: 'short', day: 'numeric', year: 'numeric' });
-    const dayStr = dt.toLocaleDateString(dateLocale, { weekday: 'long' });
-    return { date: dateStr, day: dayStr, time: time || '—' };
-  };
   return (
     <div className="space-y-10">
       {/* Welcome */}
@@ -189,7 +188,9 @@ export default function Overview() {
 
         <div className="space-y-3">
           {upcomingPickups.map((pickup) => {
-            const { date, day, time } = formatPickupDate(pickup.schedule_date, pickup.schedule_time);
+            const { month: monthShort, day: dayNum } = formatDayMonthBadge(pickup.schedule_date, dateLocale);
+            const weekday = formatWeekdayLong(pickup.schedule_date, dateLocale);
+            const timeLabel = formatDisplayTimeHm(pickup.schedule_time, dateLocale);
             const typeName = pickup.item_name || pickup.category_name || t('citizen.dashboard.itemFallback');
             return (
               <div
@@ -199,15 +200,15 @@ export default function Overview() {
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-[#043937] text-white shadow-sm">
                     <span className="text-[10px] font-semibold uppercase leading-none tracking-wide text-teal-300">
-                      {date.split(' ')[0]}
+                      {monthShort}
                     </span>
                     <span className="text-lg font-bold leading-none">
-                      {date.split(' ')[1]?.replace(',', '') ?? '—'}
+                      {dayNum}
                     </span>
                   </div>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-sm font-semibold text-gray-800">{day}</span>
+                      <span className="text-sm font-semibold text-gray-800">{weekday}</span>
                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${typeColors[typeName] ?? 'bg-gray-100 text-gray-600'}`}>
                         {typeName}
                       </span>
@@ -215,7 +216,7 @@ export default function Overview() {
                     <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3 text-gray-400" />
-                        {time}
+                        {timeLabel}
                       </span>
                       <span className="flex items-center gap-1">
                         <MapPin className="h-3 w-3 text-gray-400" />

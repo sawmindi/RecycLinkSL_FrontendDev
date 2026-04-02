@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Badge } from '../../../components/ui/badge';
 import { Card, CardContent } from '../../../components/ui/card';
 import { getCollectorNotifications, type CollectorNotification } from '../../../services/CollectorService';
+import { formatSmartDateTime, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 function notificationIcon(type: string) {
   switch (type) {
@@ -25,8 +26,9 @@ function notificationIcon(type: string) {
 }
 
 export function NotificationsPage() {
-  const { t } = useTranslation();
-  const [filter, setFilter] = useState('all');
+  const { i18n } = useTranslation();
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
+  const [filter, setFilter] = useState('all'); // all / unread
   const [notifications, setNotifications] = useState<CollectorNotification[]>([]);
 
   useEffect(() => {
@@ -122,7 +124,7 @@ export function NotificationsPage() {
                       {notif.title}
                     </h3>
                     <span className="text-sm text-gray-500 whitespace-nowrap">
-                      {notif.timestamp}
+                      {formatSmartDateTime(notif.timestamp, dateLocale)}
                     </span>
                   </div>
 

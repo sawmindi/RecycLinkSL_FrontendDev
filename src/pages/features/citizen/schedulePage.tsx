@@ -22,12 +22,13 @@ import {
   type ScheduleAreaResolution,
 } from '../../../data/scheduleAreaForCitizen';
 import i18n from '../../../i18n';
+import { formatDisplayTimeHm, formatScheduleSlotDateLong, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export function SchedulePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-US';
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
   const [hasItems, setHasItems] = useState<boolean>(false);
   const [scheduleSlots, setScheduleSlots] = useState<CitizenScheduleSlot[]>([]);
@@ -294,20 +295,13 @@ export function SchedulePage() {
                   <div className="flex items-center gap-3 text-gray-700">
                     <Calendar className="h-5 w-5 text-teal-700" />
                     <span>
-                      {slot.schedule_date
-                        ? new Date(slot.schedule_date).toLocaleDateString(dateLocale, {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })
-                        : '—'}
+                      {slot.schedule_date ? formatScheduleSlotDateLong(slot.schedule_date, dateLocale) : '—'}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-3 text-gray-700">
                     <Clock className="h-5 w-5 text-teal-700" />
-                    <span>{slot.schedule_time || '—'}</span>
+                    <span>{formatDisplayTimeHm(slot.schedule_time, dateLocale)}</span>
                   </div>
 
                   <div className="flex items-center gap-3 text-gray-700">

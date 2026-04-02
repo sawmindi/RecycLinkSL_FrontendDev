@@ -5,10 +5,11 @@ import { Card, CardContent } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
 import { Progress } from '../../../components/ui/progress';
 import { getCollectorSchedules, type CollectorScheduleWithBookings } from '../../../services/CollectorService';
-
+import { formatDisplayTimeHm, formatScheduleSlotDateLong, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export function ScheduleManagementPage() {
-  const { t } = useTranslation();
+  const { i18n } = useTranslation();
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
   const [routesToday, setRoutesToday] = useState<CollectorScheduleWithBookings[]>([]);
 
   useEffect(() => {
@@ -38,14 +39,9 @@ export function ScheduleManagementPage() {
               route.maxBookings > 0 ? (route.bookings / route.maxBookings) * 100 : 0;
             const isFull = route.bookings >= route.maxBookings;
             const dateLabel = route.schedule_date
-              ? new Date(route.schedule_date).toLocaleDateString('en-LK', {
-                  weekday: 'long',
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                })
+              ? formatScheduleSlotDateLong(route.schedule_date, dateLocale)
               : '—';
-            const timeLabel = route.schedule_time || '—';
+            const timeLabel = formatDisplayTimeHm(route.schedule_time, dateLocale);
 
             return (
               <Card

@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Card, CardContent } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
 import { getCitizenHistory, getCitizenPickupRequests, type CitizenHistoryEntry, type CitizenPickupRequest } from '../../../services/CitizenService';
+import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 type HistoryRaw =
   | { type: 'api'; entries: CitizenHistoryEntry[] }
@@ -14,7 +15,7 @@ export function HistoryPage() {
   const { t, i18n } = useTranslation();
   const [raw, setRaw] = useState<HistoryRaw | null>(null);
   const [loading, setLoading] = useState(true);
-  const dateLocale = i18n.language.startsWith('si') ? 'si-LK' : 'en-US';
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
   useEffect(() => {
     let cancelled = false;
@@ -48,9 +49,7 @@ export function HistoryPage() {
     const byDate = raw.completed.reduce<
       { date: string; collector: string; total: number; items: { type: string; weight: string; value: string }[] }[]
     >((acc, r) => {
-      const date = r.schedule_date
-        ? new Date(r.schedule_date).toLocaleDateString(dateLocale, { day: 'numeric', month: 'short', year: 'numeric' })
-        : t('citizen.lists.emDash');
+      const date = r.schedule_date ? formatDisplayDate(r.schedule_date, dateLocale) : t('citizen.lists.emDash');
       const existing = acc.find((e) => e.date === date && e.collector === (r.assigned_collector ?? ''));
       const item = {
         type: r.item_name || r.category_name || t('citizen.dashboard.itemFallback'),
@@ -153,7 +152,7 @@ export function HistoryPage() {
                 <h3 className="text-xl font-semibold text-teal-900 flex items-center gap-3">
                   <Calendar className="h-5 w-5 text-teal-700" />
                   {t('citizen.history.dateCollectedBy', {
-                    date: entry.collection_date,
+                    date: formatDisplayDate(entry.collection_date, dateLocale),
                     name: entry.collector_name ?? t('citizen.lists.emDash'),
                   })}
                 </h3>

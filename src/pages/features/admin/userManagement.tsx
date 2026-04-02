@@ -16,9 +16,11 @@ import { MainCitySelect } from '../../../components/forms/MainCitySelect';
 import { PRADESHIYA_SABHA_VALUE_SET } from '../../../data/pradeshiyaSabhas';
 import { MAIN_CITY_VALUE_SET } from '../../../data/mainCities';
 import { getUsers, createUser, updateUser, deleteUser, type AdminUser } from '../../../services/AdminService';
+import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export function UserManagementPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = getDateLocaleFromLanguage(i18n.language);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [editUser, setEditUser] = useState<AdminUser | null>(null);
@@ -440,7 +442,7 @@ export function UserManagementPage() {
                       <TableCell>{user.mobile_number}</TableCell>
                       <TableCell>{user.email || '—'}</TableCell>
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
-                      <TableCell>{user.joined_date}</TableCell>
+                      <TableCell>{formatDisplayDate(user.joined_date, dateLocale)}</TableCell>
                       <TableCell>{getStatusBadge(user.is_active)}</TableCell>
                       <TableCell className="text-right space-x-3">
                         <Button

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { normalizeApiDateOnly, normalizeScheduleTime } from "../lib/formatDate";
 import { Util } from "../Util";
 import { AppResponse } from "../models/Response";
 import { isApiFailure, networkError, toFailureResponse, toSuccessResponse } from "../util/apiResponse";
@@ -296,15 +297,8 @@ function normalizePickupRoute(raw: Record<string, unknown>): CollectorPickupRout
     normalizePickupCitizen(typeof c === "object" && c != null ? (c as Record<string, unknown>) : {})
   );
 
-  const dateRaw = raw.date ?? raw.schedule_date;
-  const dateStr =
-    dateRaw != null
-      ? typeof dateRaw === "string"
-        ? dateRaw
-        : new Date(dateRaw as string | number).toISOString().split("T")[0]
-      : "";
-
-  const timeStr = String(raw.time ?? raw.schedule_time ?? "");
+  const dateStr = normalizeApiDateOnly(raw.date ?? raw.schedule_date);
+  const timeStr = normalizeScheduleTime(raw.time ?? raw.schedule_time);
 
   return {
     id,
