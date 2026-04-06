@@ -344,21 +344,8 @@ export async function completeCollectorPickup(
   return toSuccessResponse(raw, null);
 }
 
-export interface CancelPickupPayload {
-  citizenId: string;
-  status?: string;
-}
-
-export async function cancelCollectorPickup(
-  requestId: string,
-  payload: CancelPickupPayload
-): Promise<AppResponse<null>> {
-  const raw = await asApiBody(
-    axios.post(Util.apiUrl(`collector/pickups/${requestId}/cancel`), payload)
-  );
-  if (isApiFailure(raw)) return toFailureResponse(raw, "Cancel pickup failed", null);
-  return toSuccessResponse(raw, null);
-}
+export type { CancelPickupPayload } from "./pickupCancel";
+export { cancelCollectorPickupRequest as cancelCollectorPickup } from "./pickupCancel";
 
 export interface CollectorHistoryEntry {
   _id: string;

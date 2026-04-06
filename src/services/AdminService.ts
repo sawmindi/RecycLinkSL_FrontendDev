@@ -210,6 +210,7 @@ export interface CollectorCategoryAssignmentPayload {
   category_id: string;
   area: string;
 }
+
 export interface CollectorCategoryAssignment {
   _id: string;
   collector_name: string;
@@ -247,6 +248,7 @@ export interface PickupRequest {
   _id: string;
   citizen_name: string;
   citizen_area: string;
+  citizen_id?: string;
   item_name: string;
   category_name?: string;
   rough_weight: number;
@@ -259,11 +261,33 @@ export interface PickupRequest {
   created_at: string;
 }
 
+function normalizeCitizenIdFromRequestRow(row: Record<string, unknown>): string {
+  for (const k of ["citizen_id", "citizenId", "user_id", "userId"]) {
+    const v = row[k];
+    if (typeof v === "string" && v.trim()) return v.trim();
+  }
+  const nested = row.citizen ?? row.user ?? row.citizenUser;
+  if (nested && typeof nested === "object") {
+    const o = nested as Record<string, unknown>;
+    if (typeof o._id === "string" && o._id.trim()) return o._id.trim();
+    if (o._id != null) return String(o._id);
+  }
+  return "";
+}
+
 export async function getPickupRequests(): Promise<AppResponse<PickupRequest[]>> {
   const raw = await axios.get<unknown>(Util.apiUrl("pickup-requests/admin"));
   if (isApiFailure(raw)) return toFailureResponse(raw, "Failed to load pickup requests", []);
   const list = unwrapList<PickupRequest & { id?: unknown }>(raw);
-  return toSuccessResponse(raw, list.map((r) => ({ ...r, _id: toId(r) })) as PickupRequest[]);
+  const normalized = list.map((r) => {
+    const row = r as unknown as Record<string, unknown>;
+    return {
+      ...(r as PickupRequest),
+      _id: toId(r),
+      citizen_id: normalizeCitizenIdFromRequestRow(row),
+    };
+  }) as PickupRequest[];
+  return toSuccessResponse(raw, normalized);
 }
 
 export async function updatePickupRequestStatus(_id: string, status: string): Promise<AppResponse<null>> {

@@ -71,7 +71,6 @@ export function formatScheduleSlotDateLong(value: string | number | Date | null 
   }).format(d);
 }
 
-/** e.g. "Wed, 1 Apr" for route cards */
 export function formatShortWeekdayDate(value: string | number | Date | null | undefined, locale = 'en-LK'): string {
   const d = parseFlexibleDate(value);
   if (!d) return '—';
@@ -83,7 +82,6 @@ export function formatShortWeekdayDate(value: string | number | Date | null | un
   }).format(d);
 }
 
-/** Month label + day number for small calendar badges */
 export function formatDayMonthBadge(
   value: string | number | Date | null | undefined,
   locale = 'en-LK'
@@ -96,7 +94,6 @@ export function formatDayMonthBadge(
   };
 }
 
-/** Normalize API values like `2026-04-01T17:49:06.515Z` to `YYYY-MM-DD` for forms and lists */
 export function normalizeApiDateOnly(raw: unknown): string {
   if (raw == null || raw === '') return '';
   if (typeof raw === 'number') {
@@ -112,7 +109,6 @@ export function normalizeApiDateOnly(raw: unknown): string {
   return Number.isNaN(d.getTime()) ? '' : d.toISOString().slice(0, 10);
 }
 
-/** Normalize time to HH:mm from `17:49:06` or ISO datetime */
 export function normalizeScheduleTime(raw: unknown): string {
   if (raw == null) return '';
   const s = String(raw).trim();
@@ -143,7 +139,6 @@ export function formatDisplayTimeHm(value: string | null | undefined, locale = '
   }).format(d);
 }
 
-/** If value looks like an ISO/API datetime, format it; otherwise return as-is (e.g. demo i18n strings). */
 export function formatSmartDateTime(value: string | undefined | null, locale = 'en-LK'): string {
   if (value == null || !String(value).trim()) return '—';
   const s = String(value).trim();

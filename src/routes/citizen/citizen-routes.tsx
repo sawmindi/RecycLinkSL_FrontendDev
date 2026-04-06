@@ -7,7 +7,7 @@ import { HistoryPage } from "../../pages/features/citizen/historyPage"
 import { CitizenLayout } from "../../components/layout/CitizenLayout"
 import OverviewPage from "../../pages/features/citizen/overviewPage"
 import MyProfilePage from "../../pages/features/citizen/MyProfilePage"
-import { NotificationsPage } from "../../pages/features/citizen/notificationPage"
+// import { NotificationsPage } from "../../pages/features/citizen/notificationPage"
 
 export const CitizenRoutes = () => {
     return (
@@ -19,7 +19,7 @@ export const CitizenRoutes = () => {
             <Route path="my-items"    element={<MyItemsPage />} />
             <Route path="earnings" element={<EarningsPage />} />
             <Route path="history"  element={<HistoryPage />} />
-            <Route path="notifications" element={<NotificationsPage />} />
+            {/* <Route path="notifications" element={<NotificationsPage />} /> */}
             <Route path="profile" element={<MyProfilePage />} />
         </Route>
         </Routes>

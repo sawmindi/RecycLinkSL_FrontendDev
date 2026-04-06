@@ -5,7 +5,7 @@ import MyProfilePage from "../../pages/features/citizen/MyProfilePage"
 import { PickupsPage } from "../../pages/features/collector/pickupsPage"
 import { ScheduleManagementPage } from "../../pages/features/collector/scheduleManagePage"
 import { CollectionHistoryPage } from "../../pages/features/collector/collectionHistoryPage"
-import { NotificationsPage } from "../../pages/features/collector/notificationPage"
+// import { NotificationsPage } from "../../pages/features/collector/notificationPage"
 
 export const CollectorRoutes = () => {
     return (
@@ -15,7 +15,7 @@ export const CollectorRoutes = () => {
             <Route path="pickups" element={<PickupsPage />} />
              <Route path="schedule-management" element={<ScheduleManagementPage />} />
             <Route path="collection-history"    element={<CollectionHistoryPage />} />
-           <Route path="notifications" element={<NotificationsPage />} /> 
+           {/* <Route path="notifications" element={<NotificationsPage />} />  */}
             <Route path="profile" element={<MyProfilePage />} /> 
         </Route>
         </Routes>

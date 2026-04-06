@@ -9,7 +9,6 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
-import { toast } from 'react-toastify';
 import {
   getCategoriesForSelect,
   getItems,
@@ -145,20 +144,20 @@ export default function PriceManagementPage() {
   const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-10 px-2 sm:px-0">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-gray-900 mb-1 sm:mb-2">
             {t('admin.priceManagement.title')}
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600">
             {t('admin.priceManagement.subtitle')}
           </p>
         </div>
 
         <Button
-          className="bg-teal-700 hover:bg-teal-800 text-white gap-2"
+          className="bg-teal-700 hover:bg-teal-800 text-white gap-2 w-full sm:w-auto"
           onClick={() => openModal()}
         >
           <Plus className="h-4 w-4" />
@@ -169,9 +168,6 @@ export default function PriceManagementPage() {
       {/* Table Card */}
       <Card className="border-none shadow-lg">
         <CardContent className="p-0">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900">{t('admin.priceManagement.sectionTitle')}</h3>
-          </div>
 
           {loading ? (
             <div className="p-10 text-center text-gray-500">{t('admin.priceManagement.loading')}</div>
@@ -181,47 +177,115 @@ export default function PriceManagementPage() {
               <p className="mt-3">{t('admin.priceManagement.emptyHint')}</p>
             </div>
           ) : (
+            <>
+              {/* Desktop table — hidden on mobile */}
+              <div className="hidden md:block overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50">
+                      <TableHead>{t('admin.priceManagement.colItem')}</TableHead>
+                      <TableHead>{t('admin.priceManagement.colCategory')}</TableHead>
+                      <TableHead>{t('admin.priceManagement.colCurrent')}</TableHead>
+                      <TableHead>{t('admin.priceManagement.colPrevious')}</TableHead>
+                      <TableHead>{t('admin.priceManagement.colChange')}</TableHead>
+                      <TableHead>{t('admin.priceManagement.colUpdated')}</TableHead>
+                      <TableHead>{t('admin.priceManagement.colStatus')}</TableHead>
+                      <TableHead className="text-center">{t('admin.priceManagement.colActions')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
 
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50">
-                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colItem')}</TableHead>
-                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colCategory')}</TableHead>
-                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colCurrent')}</TableHead>
-                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colPrevious')}</TableHead>
-                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colChange')}</TableHead>
-                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colUpdated')}</TableHead>
-                  <TableHead className="font-medium text-gray-700">{t('admin.priceManagement.colStatus')}</TableHead>
-                  <TableHead className="font-medium text-gray-700 text-right">{t('admin.priceManagement.colActions')}</TableHead>
-                </TableRow>
-              </TableHeader>
+                  <TableBody>
+                    {priceItems.map((item) => (
+                      <TableRow
+                        key={item._id}
+                        className={`hover:bg-gray-50 ${item.status === 'inactive' ? 'opacity-60 bg-gray-50' : ''}`}
+                      >
+                        <TableCell className="font-medium">{item.item_name}</TableCell>
+                        <TableCell>
+                          <Badge variant="secondary" className="bg-gray-100 text-gray-700">
+                            {item.category_name}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{item.current_price.toFixed(2)}</TableCell>
+                        <TableCell>
+                          {item.previous_price ? item.previous_price.toFixed(2) : '—'}
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {getChangeDisplay(item.change ?? 0)}
+                        </TableCell>
+                        <TableCell>
+                          {formatDisplayDate(item.last_updated, dateLocale)}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            className={`px-3 py-1 ${
+                              item.status === 'active'
+                                ? 'bg-green-100 text-green-800 hover:bg-green-100'
+                                : 'bg-red-100 text-red-800 hover:bg-red-100'
+                            }`}
+                          >
+                            {item.status === 'active'
+                              ? t('admin.common.active')
+                              : item.status === 'inactive'
+                                ? t('admin.common.inactive')
+                                : item.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right space-x-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => openModal(item)}
+                          >
+                            <Edit className="h-4 w-4 text-gray-600" />
+                          </Button>
 
-              <TableBody>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => handleToggleActive(item._id, item.status)}
+                          >
+                            {item.status === 'active' ? (
+                              <ToggleLeft className="h-5 w-5 text-orange-600" />
+                            ) : (
+                              <ToggleRight className="h-5 w-5 text-green-600" />
+                            )}
+                          </Button>
+
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => handleDelete(item._id, item.item_name)}
+                          >
+                            <Trash2 className="h-4 w-4 text-red-600" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile cards — shown only on small screens */}
+              <div className="md:hidden divide-y divide-gray-100">
                 {priceItems.map((item) => (
-                  <TableRow
+                  <div
                     key={item._id}
-                    className={`hover:bg-gray-50 ${item.status === 'inactive' ? 'opacity-60 bg-gray-50' : ''}`}
+                    className={`p-4 space-y-3 ${item.status === 'inactive' ? 'opacity-60 bg-gray-50' : ''}`}
                   >
-                    <TableCell className="font-medium">{item.item_name}</TableCell>
-                    <TableCell>
-                      <Badge variant="secondary" className="bg-gray-100 text-gray-700">
-                        {item.category_name}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{item.current_price.toFixed(2)}</TableCell>
-                    <TableCell>
-                        {item.previous_price ? item.previous_price.toFixed(2) : '—'}
-                      </TableCell>
-                    <TableCell className="font-medium">
-                      {getChangeDisplay(item.change ?? 0)}
-                    </TableCell>
-                    <TableCell>
-                        {formatDisplayDate(item.last_updated, dateLocale)}
-                      </TableCell>
-                    <TableCell>
+                    {/* Top row: item name + status badge */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="font-semibold text-gray-900">{item.item_name}</p>
+                        <Badge variant="secondary" className="bg-gray-100 text-gray-700 mt-1">
+                          {item.category_name}
+                        </Badge>
+                      </div>
                       <Badge
-                        className={`px-3 py-1 ${
+                        className={`shrink-0 px-3 py-1 ${
                           item.status === 'active'
                             ? 'bg-green-100 text-green-800 hover:bg-green-100'
                             : 'bg-red-100 text-red-800 hover:bg-red-100'
@@ -233,8 +297,32 @@ export default function PriceManagementPage() {
                             ? t('admin.common.inactive')
                             : item.status}
                       </Badge>
-                    </TableCell>
-                    <TableCell className="text-right space-x-1">
+                    </div>
+
+                    {/* Details grid */}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                      <div>
+                        <span className="text-gray-500">{t('admin.priceManagement.colCurrent')}: </span>
+                        <span className="text-gray-800 font-medium">{item.current_price.toFixed(2)}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.priceManagement.colPrevious')}: </span>
+                        <span className="text-gray-800">
+                          {item.previous_price ? item.previous_price.toFixed(2) : '—'}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.priceManagement.colChange')}: </span>
+                        <span className="font-medium">{getChangeDisplay(item.change ?? 0)}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.priceManagement.colUpdated')}: </span>
+                        <span className="text-gray-800">{formatDisplayDate(item.last_updated, dateLocale)}</span>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-1 pt-1">
                       <Button
                         variant="ghost"
                         size="icon"
@@ -265,17 +353,15 @@ export default function PriceManagementPage() {
                       >
                         <Trash2 className="h-4 w-4 text-red-600" />
                       </Button>
-                    </TableCell>
-                  </TableRow>
+                    </div>
+                  </div>
                 ))}
-              </TableBody>
-            </Table>
-          </div>
-
+              </div>
+            </>
           )}
 
           {/* Pagination */}
-          <div className="flex justify-center items-center gap-4 p-6 border-t border-gray-200 text-gray-600">
+          <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 p-4 sm:p-6 border-t border-gray-200 text-gray-600">
             <Button variant="outline" size="sm" disabled>
               {t('admin.priceManagement.prev')}
             </Button>
@@ -295,7 +381,7 @@ export default function PriceManagementPage() {
 
       {/* Add/Edit Price Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-w-[calc(100vw-2rem)] mx-auto">
           <DialogHeader className="flex flex-row items-center justify-between">
             <DialogTitle className="text-xl font-semibold">
               {currentItem ? t('admin.priceManagement.modalEdit') : t('admin.priceManagement.modalAdd')}
@@ -367,7 +453,7 @@ export default function PriceManagementPage() {
               </div>
             )}
 
-            <DialogFooter className="pt-4">
+            <DialogFooter className="flex-col-reverse sm:flex-row gap-2 sm:gap-0 pt-4">
               <Button
                 type="button"
                 variant="outline"
