@@ -63,7 +63,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
     { path: '/admin/collector-assignment', label: t('sidebar.collectorAssignment'), icon: Ambulance },
     { path: '/admin/price-management', label: t('sidebar.priceManagement'), icon: HandCoins },
     { path: '/admin/user-management', label: t('sidebar.userManagement'), icon: Users },
-    // { path: '/admin/reports', label: t('sidebar.reports'), icon: File },
+    { path: '/admin/reports', label: t('sidebar.reports'), icon: File },
     // { path: '/admin/notifications', label: t('sidebar.notifications'), icon: Bell },
   ];
 

@@ -26,7 +26,6 @@ export function UserManagementPage() {
   const [editUser, setEditUser] = useState<AdminUser | null>(null);
   const [addModalOpen, setAddModalOpen] = useState(false);
 
-  // Form for Add New User
   const [addForm, setAddForm] = useState({
     full_name: '',
     mobile_number: '',
@@ -36,7 +35,6 @@ export function UserManagementPage() {
     role: 'CITIZEN',
   });
 
-  // Form for Edit User
   const [editForm, setEditForm] = useState({
     full_name: '',
     mobile_number: '',
@@ -76,7 +74,6 @@ export function UserManagementPage() {
   const handleEditSubmit = async () => {
     if (!editUser) return;
 
-    // Validate mobile number (exactly 10 digits)
     if (!/^\d{10}$/.test(editForm.mobile_number)) {
       await swalError(t('admin.userManagement.toastMobileInvalid'));
       return;
@@ -114,7 +111,6 @@ export function UserManagementPage() {
   };
 
   const handleAddSubmit = async () => {
-    // Validate required fields
     if (!addForm.full_name || !addForm.mobile_number || !addForm.area || !addForm.password || !addForm.role) {
       await swalError(t('admin.userManagement.toastFillAll'));
       return;
@@ -233,32 +229,32 @@ export function UserManagementPage() {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-10 px-2 sm:px-0">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-gray-900 mb-1 sm:mb-2">
             {t('admin.userManagement.title')}
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600">
             {t('admin.userManagement.subtitle')}
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Dialog open={addModalOpen} onOpenChange={setAddModalOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-teal-700 hover:bg-teal-800 text-white gap-2">
+              <Button className="bg-teal-700 hover:bg-teal-800 text-white gap-2 flex-1 sm:flex-none">
                 <UserPlus className="h-4 w-4" />
                 {t('admin.userManagement.addUser')}
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-lg max-w-[calc(100vw-2rem)] mx-auto">
               <DialogHeader>
                 <DialogTitle>{t('admin.userManagement.addModalTitle')}</DialogTitle>
               </DialogHeader>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 py-4">
                 <div className="space-y-2">
                   <Label>
                     {t('admin.userManagement.fullName')} <span className="text-red-600">*</span>
@@ -334,17 +330,11 @@ export function UserManagementPage() {
                 <div className="space-y-2 md:col-span-2">
                   <Label>
                     {addForm.role === 'COLLECTOR' ? (
-                      <>
-                        {t('admin.userManagement.labelAreaPS')} <span className="text-red-600">*</span>
-                      </>
+                      <>{t('admin.userManagement.labelAreaPS')} <span className="text-red-600">*</span></>
                     ) : addForm.role === 'CITIZEN' ? (
-                      <>
-                        {t('admin.userManagement.labelAreaCity')} <span className="text-red-600">*</span>
-                      </>
+                      <>{t('admin.userManagement.labelAreaCity')} <span className="text-red-600">*</span></>
                     ) : (
-                      <>
-                        {t('admin.userManagement.labelAreaAdmin')} <span className="text-red-600">*</span>
-                      </>
+                      <>{t('admin.userManagement.labelAreaAdmin')} <span className="text-red-600">*</span></>
                     )}
                   </Label>
                   {addForm.role === 'COLLECTOR' ? (
@@ -389,7 +379,7 @@ export function UserManagementPage() {
                 </div>
               </div>
 
-              <DialogFooter>
+              <DialogFooter className="flex-col-reverse sm:flex-row gap-2 sm:gap-0">
                 <Button variant="outline" onClick={() => setAddModalOpen(false)}>
                   {t('admin.common.cancel')}
                 </Button>
@@ -409,7 +399,7 @@ export function UserManagementPage() {
         </div>
       </div>
 
-      {/* Table */}
+      {/* Table Card */}
       <Card className="border-none shadow-lg">
         <CardContent className="p-0">
           {loading ? (
@@ -420,122 +410,234 @@ export function UserManagementPage() {
               <p className="mt-3">{t('admin.userManagement.emptyHint')}</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead>{t('admin.userManagement.thName')}</TableHead>
-                    <TableHead>{t('admin.userManagement.thArea')}</TableHead>
-                    <TableHead>{t('admin.userManagement.thMobile')}</TableHead>
-                    <TableHead>{t('admin.userManagement.thEmail')}</TableHead>
-                    <TableHead>{t('admin.userManagement.thRole')}</TableHead>
-                    <TableHead>{t('admin.userManagement.thJoined')}</TableHead>
-                    <TableHead>{t('admin.common.status')}</TableHead>
-                    <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.map((user) => (
-                    <TableRow key={user._id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">{user.full_name}</TableCell>
-                      <TableCell>{user.area}</TableCell>
-                      <TableCell>{user.mobile_number}</TableCell>
-                      <TableCell>{user.email || '—'}</TableCell>
-                      <TableCell>{getRoleBadge(user.role)}</TableCell>
-                      <TableCell>{formatDisplayDate(user.joined_date, dateLocale)}</TableCell>
-                      <TableCell>{getStatusBadge(user.is_active)}</TableCell>
-                      <TableCell className="text-right space-x-3">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleEditOpen(user)}
-                        >
-                          <Edit className="h-4 w-4 text-gray-600" />
-                        </Button>
+            <>
+              {/* Desktop table — hidden on mobile */}
+              <div className="hidden md:block overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50">
+                      <TableHead>{t('admin.userManagement.thName')}</TableHead>
+                      <TableHead>{t('admin.userManagement.thArea')}</TableHead>
+                      <TableHead>{t('admin.userManagement.thMobile')}</TableHead>
+                      <TableHead>{t('admin.userManagement.thEmail')}</TableHead>
+                      <TableHead>{t('admin.userManagement.thRole')}</TableHead>
+                      <TableHead>{t('admin.userManagement.thJoined')}</TableHead>
+                      <TableHead>{t('admin.common.status')}</TableHead>
+                      <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((user) => (
+                      <TableRow key={user._id} className="hover:bg-gray-50">
+                        <TableCell className="font-medium">{user.full_name}</TableCell>
+                        <TableCell>{user.area}</TableCell>
+                        <TableCell>{user.mobile_number}</TableCell>
+                        <TableCell>{user.email || '—'}</TableCell>
+                        <TableCell>{getRoleBadge(user.role)}</TableCell>
+                        <TableCell>{formatDisplayDate(user.joined_date, dateLocale)}</TableCell>
+                        <TableCell>{getStatusBadge(user.is_active)}</TableCell>
+                        <TableCell className="text-right space-x-3">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleEditOpen(user)}
+                          >
+                            <Edit className="h-4 w-4 text-gray-600" />
+                          </Button>
 
-                        {user.is_active ? (
-                          // Active → show Deactivate
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-8 w-8">
-                                <UserX className="h-4 w-4 text-orange-600" />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>{t('admin.userManagement.deactivateTitle')}</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  {t('admin.userManagement.deactivateDesc', { name: user.full_name })}
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>{t('admin.common.cancel')}</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => handleToggleActive(user)}
-                                  className="bg-orange-600 hover:bg-orange-700 text-white"
-                                >
-                                  {t('admin.userManagement.deactivate')}
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        ) : (
-                          // Inactive → show Activate + Delete
-                          <>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleToggleActive(user)}
-                            >
-                              <UserCheck className="h-4 w-4 text-green-600" />
-                            </Button>
-
+                          {user.is_active ? (
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
                                 <Button variant="ghost" size="icon" className="h-8 w-8">
-                                  <Trash2 className="h-4 w-4 text-red-600" />
+                                  <UserX className="h-4 w-4 text-orange-600" />
                                 </Button>
                               </AlertDialogTrigger>
                               <AlertDialogContent>
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle>{t('admin.userManagement.deletePermanentTitle')}</AlertDialogTitle>
+                                  <AlertDialogTitle>{t('admin.userManagement.deactivateTitle')}</AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    {t('admin.userManagement.deletePermanentDesc', { name: user.full_name })}
+                                    {t('admin.userManagement.deactivateDesc', { name: user.full_name })}
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>{t('admin.common.cancel')}</AlertDialogCancel>
                                   <AlertDialogAction
-                                    onClick={() => handleDelete(user._id)}
-                                    className="bg-red-600 hover:bg-red-700 text-white"
+                                    onClick={() => handleToggleActive(user)}
+                                    className="bg-orange-600 hover:bg-orange-700 text-white"
                                   >
-                                    {t('admin.userManagement.deletePermanent')}
+                                    {t('admin.userManagement.deactivate')}
                                   </AlertDialogAction>
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             </AlertDialog>
-                          </>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                          ) : (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleToggleActive(user)}
+                              >
+                                <UserCheck className="h-4 w-4 text-green-600" />
+                              </Button>
+
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                                    <Trash2 className="h-4 w-4 text-red-600" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>{t('admin.userManagement.deletePermanentTitle')}</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      {t('admin.userManagement.deletePermanentDesc', { name: user.full_name })}
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>{t('admin.common.cancel')}</AlertDialogCancel>
+                                    <AlertDialogAction
+                                      onClick={() => handleDelete(user._id)}
+                                      className="bg-red-600 hover:bg-red-700 text-white"
+                                    >
+                                      {t('admin.userManagement.deletePermanent')}
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile cards — shown only on small screens */}
+              <div className="md:hidden divide-y divide-gray-100">
+                {users.map((user) => (
+                  <div key={user._id} className="p-4 space-y-3">
+                    {/* Top row: name + status */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="font-semibold text-gray-900">{user.full_name}</p>
+                        <p className="text-sm text-gray-500">{user.area}</p>
+                      </div>
+                      {getStatusBadge(user.is_active)}
+                    </div>
+
+                    {/* Details grid */}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                      <div>
+                        <span className="text-gray-500">{t('admin.userManagement.thMobile')}: </span>
+                        <span className="text-gray-800">{user.mobile_number}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.userManagement.thRole')}: </span>
+                        {getRoleBadge(user.role)}
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-gray-500">{t('admin.userManagement.thEmail')}: </span>
+                        <span className="text-gray-800">{user.email || '—'}</span>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-gray-500">{t('admin.userManagement.thJoined')}: </span>
+                        <span className="text-gray-800">{formatDisplayDate(user.joined_date, dateLocale)}</span>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-1 pt-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => handleEditOpen(user)}
+                      >
+                        <Edit className="h-4 w-4 text-gray-600" />
+                      </Button>
+
+                      {user.is_active ? (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <UserX className="h-4 w-4 text-orange-600" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg mx-auto">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>{t('admin.userManagement.deactivateTitle')}</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {t('admin.userManagement.deactivateDesc', { name: user.full_name })}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter className="flex-col-reverse sm:flex-row gap-2 sm:gap-0">
+                              <AlertDialogCancel>{t('admin.common.cancel')}</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleToggleActive(user)}
+                                className="bg-orange-600 hover:bg-orange-700 text-white"
+                              >
+                                {t('admin.userManagement.deactivate')}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      ) : (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => handleToggleActive(user)}
+                          >
+                            <UserCheck className="h-4 w-4 text-green-600" />
+                          </Button>
+
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <Trash2 className="h-4 w-4 text-red-600" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg mx-auto">
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>{t('admin.userManagement.deletePermanentTitle')}</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  {t('admin.userManagement.deletePermanentDesc', { name: user.full_name })}
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter className="flex-col-reverse sm:flex-row gap-2 sm:gap-0">
+                                <AlertDialogCancel>{t('admin.common.cancel')}</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDelete(user._id)}
+                                  className="bg-red-600 hover:bg-red-700 text-white"
+                                >
+                                  {t('admin.userManagement.deletePermanent')}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </CardContent>
       </Card>
 
       {/* Edit User Modal */}
       <Dialog open={!!editUser} onOpenChange={() => setEditUser(null)}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-w-[calc(100vw-2rem)] mx-auto">
           <DialogHeader>
             <DialogTitle>
               {editUser ? t('admin.userManagement.editTitle', { name: editUser.full_name }) : ''}
             </DialogTitle>
           </DialogHeader>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 py-4">
             <div className="space-y-2">
               <Label>
                 {t('admin.userManagement.fullName')} <span className="text-red-600">*</span>
@@ -608,17 +710,11 @@ export function UserManagementPage() {
             <div className="space-y-2 md:col-span-2">
               <Label>
                 {editForm.role === 'COLLECTOR' ? (
-                  <>
-                    {t('admin.userManagement.labelAreaPS')} <span className="text-red-600">*</span>
-                  </>
+                  <>{t('admin.userManagement.labelAreaPS')} <span className="text-red-600">*</span></>
                 ) : editForm.role === 'CITIZEN' ? (
-                  <>
-                    {t('admin.userManagement.labelAreaCity')} <span className="text-red-600">*</span>
-                  </>
+                  <>{t('admin.userManagement.labelAreaCity')} <span className="text-red-600">*</span></>
                 ) : (
-                  <>
-                    {t('admin.userManagement.labelAreaAdmin')} <span className="text-red-600">*</span>
-                  </>
+                  <>{t('admin.userManagement.labelAreaAdmin')} <span className="text-red-600">*</span></>
                 )}
               </Label>
               {editForm.role === 'COLLECTOR' ? (
@@ -670,7 +766,7 @@ export function UserManagementPage() {
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="flex-col-reverse sm:flex-row gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setEditUser(null)}>
               {t('admin.common.cancel')}
             </Button>

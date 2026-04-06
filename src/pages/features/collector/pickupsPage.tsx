@@ -85,7 +85,6 @@ function buildCompactQueries(address: string, area: string, council: string): st
 
   if (address) {
     const a = address.trim();
-
     add(a);
     if (area) {
       add(endsWithSriLanka(a) ? `${a}, ${area}` : `${a}, ${area}, Sri Lanka`);
@@ -622,13 +621,13 @@ export function PickupsPage() {
             <CardContent className="p-0">
 
               {/* Route Header */}
-              <div className="p-4 sm:p-6">
+              <div className="p-3 sm:p-6">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <Badge className="shrink-0 bg-teal-700 text-white px-3 py-1 text-xs sm:px-4 sm:py-1.5">
+                  <div className="flex items-center gap-2 min-w-0 sm:gap-3">
+                    <Badge className="shrink-0 bg-teal-700 text-white px-2.5 py-1 text-xs sm:px-4 sm:py-1.5">
                       {t('collector.dashboard.badgeSchedule')}
                     </Badge>
-                    <h3 className="truncate text-lg font-semibold text-teal-900 sm:text-xl">
+                    <h3 className="truncate text-base font-semibold text-teal-900 sm:text-xl">
                       {route.area}
                     </h3>
                   </div>
@@ -663,19 +662,19 @@ export function PickupsPage() {
                 </div>
 
                 {/* Meta info row */}
-                <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-600">
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-gray-600 sm:mt-4 sm:gap-x-5 sm:gap-y-2 sm:text-sm">
                   <span className="flex items-center gap-1.5">
-                    <Clock className="h-4 w-4 shrink-0 text-teal-600" />
+                    <Clock className="h-3.5 w-3.5 shrink-0 text-teal-600 sm:h-4 sm:w-4" />
                     <span className="whitespace-nowrap">{formatDisplayDate(route.date, dateLocale)}</span>
                     <span className="hidden sm:inline">•</span>
                     <span className="hidden sm:inline whitespace-nowrap">{formatDisplayTimeHm(route.time, dateLocale)}</span>
                   </span>
                   <span className="flex items-center gap-1.5 sm:hidden">
-                    <Clock className="h-4 w-4 shrink-0 text-transparent" />
+                    <Clock className="h-3.5 w-3.5 shrink-0 text-transparent" />
                     <span className="text-gray-500">{formatDisplayTimeHm(route.time, dateLocale)}</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Users className="h-4 w-4 shrink-0 text-teal-600" />
+                    <Users className="h-3.5 w-3.5 shrink-0 text-teal-600 sm:h-4 sm:w-4" />
                     {t('collector.pickups.citizensOnRoute', { count: route.citizens })}
                   </span>
                 </div>
@@ -691,13 +690,12 @@ export function PickupsPage() {
                     return (
                       <div
                         key={citizen.id || `citizen-${idx}`}
-                        className={`p-4 sm:p-6 ${
+                        className={`p-3 sm:p-6 ${
                           idx < details.length - 1 ? 'border-b border-gray-100' : ''
                         } ${completed || skipped ? 'opacity-60' : ''}`}
                       >
-                        
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                          <div className="min-w-0">
+                          <div className="min-w-0 flex-1">
                             <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
                               {t('collector.pickups.citizenDetails')}
                             </p>
@@ -707,18 +705,18 @@ export function PickupsPage() {
                             <div className="mt-1 space-y-0.5">
                               <button
                                 type="button"
-                                className="flex items-center gap-1.5 text-sm text-teal-700 hover:text-teal-900 hover:underline"
+                                className="flex items-start gap-1.5 text-sm text-teal-700 hover:text-teal-900 hover:underline"
                                 onClick={() => openAddressInGoogleMaps(citizen.address, citizen.area)}
                                 title={t('collector.pickups.openInMaps')}
                               >
-                                <MapPin className="h-3.5 w-3.5 shrink-0 text-teal-700" />
-                                <span className="truncate">
+                                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-teal-700" />
+                                <span className="break-words text-left">
                                   {t('collector.pickups.address')}: {citizen.address}
                                 </span>
                               </button>
-                              <p className="flex items-center gap-1.5 text-sm text-gray-500">
-                                <Home className="h-3.5 w-3.5 shrink-0 text-gray-400" />
-                                <span className="truncate">{citizen.area}</span>
+                              <p className="flex items-start gap-1.5 text-sm text-gray-500">
+                                <Home className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
+                                <span className="break-words">{citizen.area}</span>
                               </p>
                               <p className="flex items-center gap-1.5 text-sm text-gray-500">
                                 <Phone className="h-3.5 w-3.5 shrink-0 text-gray-400" />
@@ -726,9 +724,9 @@ export function PickupsPage() {
                               </p>
                             </div>
                           </div>
-                          <div className="sm:text-right">
-                            <p className="text-xs text-gray-400">{t('collector.pickups.estTotal')}</p>
-                            <p className="text-xl font-bold text-teal-800 sm:text-2xl">
+                          <div className="flex items-center justify-between sm:block sm:text-right">
+                            <p className="text-xs text-gray-400 sm:block">{t('collector.pickups.estTotal')}</p>
+                            <p className="text-xl font-bold text-teal-800 sm:mt-0.5 sm:text-2xl">
                               {citizen.totalValue}
                             </p>
                           </div>
@@ -753,7 +751,7 @@ export function PickupsPage() {
                                     {item.estWeight}
                                   </span>
                                 </span>
-                                <span className="font-semibold text-teal-700">{item.estValue}</span>
+                                <span className="ml-3 shrink-0 font-semibold text-teal-700">{item.estValue}</span>
                               </div>
                             ))}
                           </div>
@@ -787,12 +785,12 @@ export function PickupsPage() {
 
                         {/* Action buttons */}
                         {!completed && !skipped && (
-                          <div className="mt-4 flex gap-3">
+                          <div className="mt-4 flex gap-2 sm:gap-3">
                             <Button
                               type="button"
                               variant="outline"
                               size="sm"
-                              className="flex-1 border-red-300 text-red-600 hover:bg-red-50 sm:flex-none sm:px-6"
+                              className="flex-1 border-red-300 text-xs text-red-600 hover:bg-red-50 sm:flex-none sm:px-6 sm:text-sm"
                               onClick={() => handleCancelPickup(route.id, citizen)}
                             >
                               {t('admin.common.cancel')}
@@ -800,7 +798,7 @@ export function PickupsPage() {
                             <Button
                               type="button"
                               size="sm"
-                              className="flex-1 bg-teal-700 text-white hover:bg-teal-800 sm:flex-none sm:px-6"
+                              className="flex-1 bg-teal-700 text-xs text-white hover:bg-teal-800 sm:flex-none sm:px-6 sm:text-sm"
                               onClick={() => openCompleteModal(route.id, citizen)}
                             >
                               {t('collector.pickups.complete')}
@@ -841,7 +839,7 @@ export function PickupsPage() {
         </div>
       )}
 
-      {/*  Complete Pickup Modal*/}
+      {/*  Route Map Modal */}
       <Dialog
         open={isRouteMapOpen}
         onOpenChange={(open) => {
@@ -853,37 +851,37 @@ export function PickupsPage() {
           }
         }}
       >
-        <DialogContent className="max-w-5xl p-0 overflow-hidden">
-          <DialogHeader className="px-5 pt-5 pb-2 sm:px-6 sm:pt-6">
-            <DialogTitle className="text-lg font-semibold sm:text-xl">
+        <DialogContent className="w-[calc(100vw-1.5rem)] max-w-5xl rounded-2xl p-0 overflow-hidden sm:w-[calc(100vw-3rem)]">
+          <DialogHeader className="px-4 pt-4 pb-2 sm:px-6 sm:pt-6">
+            <DialogTitle className="text-base font-semibold leading-snug sm:text-xl">
               {t('collector.pickups.routeMapTitle', { area: routeForMap?.area ?? t('citizen.lists.emDash') })}
             </DialogTitle>
           </DialogHeader>
-          <div className="px-5 pb-5 sm:px-6 sm:pb-6">
-            <p className="mb-3 text-sm text-gray-500">
+          <div className="px-4 pb-4 sm:px-6 sm:pb-6">
+            <p className="mb-3 text-xs text-gray-500 sm:text-sm">
               {t('collector.pickups.routeMapHint', { count: routeForMap?.citizensDetails?.length ?? 0 })}
             </p>
 
             {isMapLoading && (
-              <div className="flex h-[420px] items-center justify-center rounded-xl border bg-gray-50 text-sm text-gray-500">
+              <div className="flex h-[240px] items-center justify-center rounded-xl border bg-gray-50 text-sm text-gray-500 sm:h-[420px]">
                 {t('collector.pickups.mapLoading')}
               </div>
             )}
 
             {!isMapLoading && mapError && (
-              <div className="flex h-[420px] items-center justify-center rounded-xl border border-amber-200 bg-amber-50 px-6 text-center text-sm text-amber-800">
+              <div className="flex h-[240px] items-center justify-center rounded-xl border border-amber-200 bg-amber-50 px-6 text-center text-sm text-amber-800 sm:h-[420px]">
                 {mapError}
               </div>
             )}
 
             {!isMapLoading && !mapError && (
-              <div id="collector-route-map" className="h-[420px] w-full rounded-xl border" />
+              <div id="collector-route-map" className="h-[240px] w-full rounded-xl border sm:h-[420px]" />
             )}
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Complete Pickup Modal */}
+      {/* Complete Pickup Modal  */}
       <Dialog
         open={isCompleteModalOpen}
         onOpenChange={(open) => {
@@ -896,14 +894,14 @@ export function PickupsPage() {
           }
         }}
       >
-        <DialogContent className="w-[calc(100vw-2rem)] max-w-lg rounded-2xl p-0 sm:w-full">
-          <DialogHeader className="px-5 pt-5 pb-0 sm:px-6 sm:pt-6">
-            <DialogTitle className="text-lg font-semibold sm:text-xl">
+        <DialogContent className="w-[calc(100vw-1.5rem)] max-w-lg rounded-2xl p-0 sm:w-full">
+          <DialogHeader className="px-4 pt-4 pb-0 sm:px-6 sm:pt-6">
+            <DialogTitle className="text-base font-semibold sm:text-xl">
               {t('collector.pickups.modalTitle')}
             </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-5 px-5 py-4 sm:px-6 sm:py-5">
+          <div className="space-y-4 px-4 py-4 sm:space-y-5 sm:px-6 sm:py-5">
             {/* Summary banner */}
             <div className="rounded-xl bg-teal-50 px-4 py-3 sm:px-5 sm:py-4">
               <p className="text-sm font-medium text-teal-800">
@@ -927,13 +925,13 @@ export function PickupsPage() {
                   >
                     {/* Mobile layout */}
                     <div className="flex items-center justify-between sm:hidden">
-                      <div>
-                        <p className="text-sm font-semibold text-gray-800">{item.type}</p>
+                      <div className="min-w-0 flex-1 pr-3">
+                        <p className="truncate text-sm font-semibold text-gray-800">{item.type}</p>
                         <p className="text-xs text-gray-500">
                           {t('collector.pickups.estWeightInline', { weight: item.estWeight })}
                         </p>
                       </div>
-                      <div className="w-32">
+                      <div className="w-28 shrink-0">
                         <Input
                           placeholder={t('collector.pickups.actualKgPlaceholder')}
                           className="h-8 border-teal-400 text-xs"
@@ -995,19 +993,19 @@ export function PickupsPage() {
             </div>
           </div>
 
-          <DialogFooter className="flex-row gap-2 border-t border-gray-100 px-5 py-4 sm:px-6">
+          <DialogFooter className="flex-row gap-2 border-t border-gray-100 px-4 py-3 sm:px-6 sm:py-4">
             <Button
               variant="outline"
               type="button"
               onClick={closeCompleteModal}
-              className="flex-1 text-sm sm:flex-none sm:px-6"
+              className="flex-1 text-xs sm:flex-none sm:px-6 sm:text-sm"
             >
               {t('admin.common.cancel')}
             </Button>
             <Button
               type="button"
               onClick={handleCompletePickup}
-              className="flex-1 bg-teal-700 text-sm hover:bg-teal-800 sm:flex-none sm:px-6"
+              className="flex-1 bg-teal-700 text-xs hover:bg-teal-800 sm:flex-none sm:px-6 sm:text-sm"
             >
               {t('collector.pickups.completePickup')}
             </Button>

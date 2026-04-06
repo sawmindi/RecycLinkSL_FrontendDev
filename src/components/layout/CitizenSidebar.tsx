@@ -64,7 +64,7 @@ export function CitizenSidebar({ isOpen = false, onClose }: CitizenSidebarProps)
     { path: '/citizen/my-items', label: t('sidebar.myItems'), icon: Package },
     { path: '/citizen/earnings', label: t('sidebar.earnings'), icon: DollarSign },
     { path: '/citizen/history', label: t('sidebar.history'), icon: History },
-    { path: '/citizen/notifications', label: t('sidebar.notifications'), icon: Bell },
+    // { path: '/citizen/notifications', label: t('sidebar.notifications'), icon: Bell },
   ];
 
   const isActive = (path: string) =>

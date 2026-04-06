@@ -8,7 +8,7 @@ import { CollectorAssignmentPage } from "../../pages/features/admin/collectorAss
 import PriceManagementPage from "../../pages/features/admin/priceManagement"
 import { CollectionListsPage } from "../../pages/features/admin/collections"
 import { UserManagementPage } from "../../pages/features/admin/userManagement"
-// import ReportsPage from "@/pages/features/admin/reportsPage"
+import ReportsPage from "@/pages/features/admin/reportsPage"
 
 export const AdminRoutes = () => {
     return (
@@ -22,7 +22,7 @@ export const AdminRoutes = () => {
             <Route path="collector-assignment" element={<CollectorAssignmentPage/>} />
             <Route path="price-management" element={<PriceManagementPage/>} />
             <Route path="user-management" element={<UserManagementPage/>} /> 
-            {/* <Route path="reports" element={<ReportsPage/>} /> */}
+            <Route path="reports" element={<ReportsPage/>} />
                 {/* <Route path="route-optimisation" element={< RouteOptimisation Page/>} /> */}
              {/*<Route path="schedule-management" element={<ScheduleManagementPage />} />
             <Route path="collection-history"    element={<CollectionHistoryPage />} />

@@ -83,8 +83,8 @@ export function PickupScheduleManagementPage() {
     setCurrentSchedule(schedule);
     setFormData({
       area: schedule.area,
-      schedule_date: schedule.schedule_date.split('T')[0], // format for date input
-      schedule_time: schedule.schedule_time,                // HH:mm
+      schedule_date: schedule.schedule_date.split('T')[0],
+      schedule_time: schedule.schedule_time,
       items: schedule.items,
     });
     setIsEditModalOpen(true);
@@ -166,20 +166,20 @@ export function PickupScheduleManagementPage() {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-10 px-2 sm:px-0">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-gray-900 mb-1 sm:mb-2">
             {t('admin.pickupSchedule.title')}
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600">
             {t('admin.pickupSchedule.subtitle')}
           </p>
         </div>
 
         <Button
-          className="bg-teal-700 hover:bg-teal-800 text-white gap-2"
+          className="bg-teal-700 hover:bg-teal-800 text-white gap-2 w-full sm:w-auto"
           onClick={handleOpenAddModal}
         >
           <Plus className="h-4 w-4" />
@@ -190,12 +190,6 @@ export function PickupScheduleManagementPage() {
       {/* Table */}
       <Card className="border-none shadow-lg">
         <CardContent className="p-0">
-          <div className="p-6 border-b border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-teal-700" />
-              {t('admin.pickupSchedule.sectionAll')}
-            </h3>
-          </div>
 
           {loading ? (
             <div className="p-10 text-center text-gray-500">{t('admin.pickupSchedule.loading')}</div>
@@ -206,34 +200,68 @@ export function PickupScheduleManagementPage() {
               <p className="mt-3">{t('admin.pickupSchedule.emptyHint')}</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead>{t('admin.pickupSchedule.thArea')}</TableHead>
-                    <TableHead>{t('admin.pickupSchedule.thDate')}</TableHead>
-                    <TableHead>{t('admin.pickupSchedule.thTime')}</TableHead>
-                    <TableHead>{t('admin.pickupSchedule.thItems')}</TableHead>
-                    {/* <TableHead>{t('admin.pickupSchedule.thCollector')}</TableHead> */}
-                    <TableHead>{t('admin.common.status')}</TableHead>
-                    <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {schedules.map((sch) => (
-                    <TableRow key={sch._id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">{sch.area}</TableCell>
-                      <TableCell>
-                        {formatDisplayDate(sch.schedule_date, dateLocale)}
-                      </TableCell>
-                      <TableCell>{sch.schedule_time.slice(0, 5)}</TableCell>
-                      <TableCell>{sch.items}</TableCell>
-                      {/* <TableCell>{sch.collector_name ?? t('admin.pickupSchedule.unassigned')}</TableCell> */}
-                      <TableCell>{getStatusBadge(sch.status)}</TableCell>
-                      <TableCell className="text-right space-x-2">
+            <>
+              {/* Desktop table */}
+              <div className="hidden md:block overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50">
+                      <TableHead>{t('admin.pickupSchedule.thArea')}</TableHead>
+                      <TableHead>{t('admin.pickupSchedule.thDate')}</TableHead>
+                      <TableHead>{t('admin.pickupSchedule.thTime')}</TableHead>
+                      <TableHead>{t('admin.pickupSchedule.thItems')}</TableHead>
+                      <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {schedules.map((sch) => (
+                      <TableRow key={sch._id} className="hover:bg-gray-50">
+                        <TableCell className="font-medium">{sch.area}</TableCell>
+                        <TableCell>
+                          {formatDisplayDate(sch.schedule_date, dateLocale)}
+                        </TableCell>
+                        <TableCell>{sch.schedule_time.slice(0, 5)}</TableCell>
+                        <TableCell>{sch.items}</TableCell>
+                        <TableCell className="text-right space-x-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleOpenEditModal(sch)}
+                          >
+                            <Edit className="h-4 w-4 text-gray-600" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() =>
+                              handleDelete(
+                                sch._id,
+                                sch.area,
+                                formatDisplayDate(sch.schedule_date, dateLocale)
+                              )
+                            }
+                          >
+                            <Trash2 className="h-4 w-4 text-red-600" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile cards */}
+              <div className="md:hidden divide-y divide-gray-100">
+                {schedules.map((sch) => (
+                  <div key={sch._id} className="p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="font-semibold text-gray-900">{sch.area}</p>
+                      <div className="flex items-center gap-1 shrink-0">
                         <Button
                           variant="ghost"
                           size="icon"
+                          className="h-8 w-8"
                           onClick={() => handleOpenEditModal(sch)}
                         >
                           <Edit className="h-4 w-4 text-gray-600" />
@@ -252,12 +280,28 @@ export function PickupScheduleManagementPage() {
                         >
                           <Trash2 className="h-4 w-4 text-red-600" />
                         </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                      </div>
+                    </div>
+
+                    {/* Details */}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                      <div>
+                        <span className="text-gray-500">{t('admin.pickupSchedule.thDate')}: </span>
+                        <span className="text-gray-800">{formatDisplayDate(sch.schedule_date, dateLocale)}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.pickupSchedule.thTime')}: </span>
+                        <span className="text-gray-800">{sch.schedule_time.slice(0, 5)}</span>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-gray-500">{t('admin.pickupSchedule.thItems')}: </span>
+                        <span className="text-gray-800">{sch.items}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </CardContent>
       </Card>
@@ -268,7 +312,7 @@ export function PickupScheduleManagementPage() {
         setIsEditModalOpen(false);
         resetForm();
       }}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-w-[calc(100vw-2rem)] mx-auto">
           <DialogHeader>
             <DialogTitle>
               {currentSchedule ? t('admin.pickupSchedule.modalEdit') : t('admin.pickupSchedule.modalAdd')}
@@ -336,7 +380,7 @@ export function PickupScheduleManagementPage() {
               <p className="text-xs text-gray-500">{t('admin.pickupSchedule.itemHelp')}</p>
             </div>
 
-            <DialogFooter className="pt-4">
+            <DialogFooter className="flex-col-reverse sm:flex-row gap-2 sm:gap-0 pt-4">
               <Button variant="outline" type="button" onClick={resetForm}>
                 {t('admin.common.cancel')}
               </Button>

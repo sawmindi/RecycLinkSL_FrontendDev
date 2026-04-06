@@ -120,10 +120,22 @@ export function OverviewPage() {
                   <h3 className="text-xl font-semibold text-gray-900 mb-6">
                     {t('admin.overview.chartAreaTitle')}
                   </h3>
-                  <div className="h-80">
+                  <div className="h-96">   
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={areaPickupsData.length ? areaPickupsData : [{ area: '-', pickups: 0 }]} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                        <XAxis dataKey="area" angle={-45} textAnchor="end" height={70} />
+                      <BarChart 
+                        data={areaPickupsData.length ? areaPickupsData : [{ area: 'No Data', pickups: 0 }]} 
+                        margin={{ top: 20, right: 30, left: 20, bottom: 80 }}  
+                      >
+                        <XAxis 
+                          dataKey="area" 
+                          angle={-45} 
+                          textAnchor="end" 
+                          height={80}                    
+                          tickMargin={10}                
+                          interval={0}                   
+                          minTickGap={10}                
+                          fontSize={12}                  
+                        />
                         <YAxis />
                         <Tooltip />
                         <Bar dataKey="pickups" fill="#0f766e" radius={[4, 4, 0, 0]} />

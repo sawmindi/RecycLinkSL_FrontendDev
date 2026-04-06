@@ -17,6 +17,7 @@ import {
   type PickupRequest,
   type Collector,
 } from '../../../services/AdminService';
+import { cancelAdminPickupRequest } from '../../../services/pickupCancel';
 import { formatDisplayDateTime, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
 export function CollectionListsPage() {
@@ -101,6 +102,28 @@ export function CollectionListsPage() {
     }
   };
 
+  const handleCancelPickupApi = async (req: PickupRequest) => {
+    const ok = await swalConfirm({
+      title: t('admin.collections.confirmCancelPickup'),
+      text: t('admin.collections.confirmCancelPickupText', { citizen: req.citizen_name }),
+      confirmButtonText: t('admin.collections.btnCancelRequest'),
+      cancelButtonText: t('admin.common.cancel'),
+    });
+    if (!ok) return;
+
+    const citizenId = req.citizen_id?.trim();
+    const res = await cancelAdminPickupRequest(req._id, {
+      ...(citizenId ? { citizenId } : {}),
+      status: 'cancelled',
+    });
+    if (res.success) {
+      await swalSuccess(t('admin.collections.toastCancelOk'));
+      fetchRequests();
+    } else {
+      await swalError(t('admin.collections.toastCancelFail'), res.message);
+    }
+  };
+
   const filteredRequests = statusFilter === 'all'
     ? requests
     : requests.filter(r => r.status.toLowerCase() === statusFilter.toLowerCase());
@@ -119,21 +142,21 @@ export function CollectionListsPage() {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-10 px-2 sm:px-0">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-gray-900 mb-1 sm:mb-2">
             {t('admin.collections.title')}
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600">
             {t('admin.collections.subtitle')}
           </p>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-44">
+            <SelectTrigger className="w-36 sm:w-44">
               <SelectValue placeholder={t('admin.collections.filterPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
@@ -151,7 +174,7 @@ export function CollectionListsPage() {
         </div>
       </div>
 
-      {/* Table Card */}
+      {/* Table Card — desktop */}
       <Card className="border-none shadow-lg">
         <CardContent className="p-0">
           {loading ? (
@@ -162,89 +185,181 @@ export function CollectionListsPage() {
               <p className="mt-3">{t('admin.collections.emptyHint')}</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead>{t('admin.collections.thCitizen')}</TableHead>
-                    <TableHead>{t('admin.collections.thArea')}</TableHead>
-                    <TableHead>{t('admin.collections.thItem')}</TableHead>
-                    <TableHead>{t('admin.collections.thWeight')}</TableHead>
-                    <TableHead>{t('admin.collections.thEarnings')}</TableHead>
-                    <TableHead>{t('admin.collections.thActualWeight')}</TableHead>
-                    <TableHead>{t('admin.collections.thActualEarnings')}</TableHead>
-                    <TableHead>{t('admin.collections.thPriority')}</TableHead>
-                    <TableHead>{t('admin.collections.thCollector')}</TableHead>
-                    <TableHead>{t('admin.collections.thStatus')}</TableHead>
-                    <TableHead>{t('admin.collections.thDate')}</TableHead>
-                    <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredRequests.map((req) => (
-                    <TableRow key={req._id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">{req.citizen_name}</TableCell>
-                      <TableCell>{req.citizen_area}</TableCell>
-                      <TableCell>{req.item_name}</TableCell>
-                      <TableCell>{Number(req.rough_weight).toFixed(2)}</TableCell>
-                      <TableCell>{Number(req.estimated_earnings).toFixed(2)}</TableCell>
-                      <TableCell>{Number(req.actual_weight).toFixed(2)}</TableCell>
-                      <TableCell>{Number(req.final_price).toFixed(2)}</TableCell>
-                      <TableCell className="capitalize">{req.priority}</TableCell>
-                      <TableCell>
+            <>
+              {/* Desktop table — hidden on mobile */}
+              <div className="hidden md:block overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50">
+                      <TableHead>{t('admin.collections.thCitizen')}</TableHead>
+                      <TableHead>{t('admin.collections.thArea')}</TableHead>
+                      <TableHead>{t('admin.collections.thItem')}</TableHead>
+                      <TableHead>{t('admin.collections.thWeight')}</TableHead>
+                      <TableHead>{t('admin.collections.thEarnings')}</TableHead>
+                      <TableHead>{t('admin.collections.thActualWeight')}</TableHead>
+                      <TableHead>{t('admin.collections.thActualEarnings')}</TableHead>
+                      <TableHead>{t('admin.collections.thPriority')}</TableHead>
+                      <TableHead>{t('admin.collections.thCollector')}</TableHead>
+                      <TableHead>{t('admin.collections.thStatus')}</TableHead>
+                      <TableHead>{t('admin.collections.thDate')}</TableHead>
+                      {/* <TableHead className="text-right">{t('admin.common.actions')}</TableHead> */}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredRequests.map((req) => (
+                      <TableRow key={req._id} className="hover:bg-gray-50">
+                        <TableCell className="font-medium">{req.citizen_name}</TableCell>
+                        <TableCell>{req.citizen_area}</TableCell>
+                        <TableCell>{req.item_name}</TableCell>
+                        <TableCell>{Number(req.rough_weight).toFixed(2)}</TableCell>
+                        <TableCell>{Number(req.estimated_earnings).toFixed(2)}</TableCell>
+                        <TableCell>{Number(req.actual_weight).toFixed(2)}</TableCell>
+                        <TableCell>{Number(req.final_price).toFixed(2)}</TableCell>
+                        <TableCell className="capitalize">{req.priority}</TableCell>
+                        <TableCell>
+                          {req.assigned_collector ? (
+                            <span className="font-medium text-blue-700">{req.assigned_collector}</span>
+                          ) : (
+                            <span className="text-gray-500">{t('admin.collections.unassigned')}</span>
+                          )}
+                        </TableCell>
+                        <TableCell>{getStatusBadge(req.status)}</TableCell>
+                        <TableCell>{formatDisplayDateTime(req.created_at, dateLocale)}</TableCell>
+
+                        <TableCell className="text-right space-x-2">
+                          {(req.status.toLowerCase() === 'pending' || req.status.toLowerCase() === 'assigned') && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700"
+                              onClick={() => void handleCancelPickupApi(req)}
+                            >
+                              <XCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnCancelRequest')}
+                            </Button>
+                          )}
+
+                          {req.status.toLowerCase() === 'assigned' && (
+                            <>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleReassign(req)}
+                              >
+                                {t('admin.collections.btnReassign')}
+                              </Button>
+
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleStatusChange(req._id, 'completed')}
+                              >
+                                <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnComplete')}
+                              </Button>
+                            </>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile cards */}
+              <div className="md:hidden divide-y divide-gray-100">
+                {filteredRequests.map((req) => (
+                  <div key={req._id} className="p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="font-semibold text-gray-900">{req.citizen_name}</p>
+                        <p className="text-sm text-gray-500">{req.citizen_area}</p>
+                      </div>
+                      {getStatusBadge(req.status)}
+                    </div>
+
+                    {/* Details grid */}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                      <div>
+                        <span className="text-gray-500">{t('admin.collections.thItem')}: </span>
+                        <span className="text-gray-800">{req.item_name}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.collections.thPriority')}: </span>
+                        <span className="text-gray-800 capitalize">{req.priority}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.collections.thWeight')}: </span>
+                        <span className="text-gray-800">{Number(req.rough_weight).toFixed(2)}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.collections.thEarnings')}: </span>
+                        <span className="text-gray-800">{Number(req.estimated_earnings).toFixed(2)}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.collections.thActualWeight')}: </span>
+                        <span className="text-gray-800">{Number(req.actual_weight).toFixed(2)}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">{t('admin.collections.thActualEarnings')}: </span>
+                        <span className="text-gray-800">{Number(req.final_price).toFixed(2)}</span>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-gray-500">{t('admin.collections.thCollector')}: </span>
                         {req.assigned_collector ? (
                           <span className="font-medium text-blue-700">{req.assigned_collector}</span>
                         ) : (
                           <span className="text-gray-500">{t('admin.collections.unassigned')}</span>
                         )}
-                      </TableCell>
-                      <TableCell>{getStatusBadge(req.status)}</TableCell>
-                      <TableCell>{formatDisplayDateTime(req.created_at, dateLocale)}</TableCell>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-gray-500">{t('admin.collections.thDate')}: </span>
+                        <span className="text-gray-800">{formatDisplayDateTime(req.created_at, dateLocale)}</span>
+                      </div>
+                    </div>
 
-                      <TableCell className="text-right space-x-2">
-                        {req.status === 'pending' && (
+                    {/* Actions */}
+                    {/* <div className="flex flex-wrap gap-2 pt-1">
+                      {(req.status.toLowerCase() === 'pending' || req.status.toLowerCase() === 'assigned') && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-red-600 hover:text-red-700"
+                          onClick={() => void handleCancelPickupApi(req)}
+                        >
+                          <XCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnCancelRequest')}
+                        </Button>
+                      )}
+
+                      {req.status.toLowerCase() === 'assigned' && (
+                        <>
                           <Button
                             variant="outline"
                             size="sm"
-                            className="text-red-600 hover:text-red-700"
-                            onClick={() => handleStatusChange(req._id, 'cancelled')}
+                            onClick={() => handleReassign(req)}
                           >
-                            <XCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnCancelRequest')}
+                            {t('admin.collections.btnReassign')}
                           </Button>
-                        )}
 
-                        {req.status === 'assigned' && (
-                          <>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleReassign(req)}
-                            >
-                              {t('admin.collections.btnReassign')}
-                            </Button>
-
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleStatusChange(req._id, 'completed')}
-                            >
-                              <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnComplete')}
-                            </Button>
-                          </>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleStatusChange(req._id, 'completed')}
+                          >
+                            <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnComplete')}
+                          </Button>
+                        </>
+                      )}
+                    </div> */}
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </CardContent>
       </Card>
 
       {/* Reassign Modal */}
       <Dialog open={reassignModalOpen} onOpenChange={setReassignModalOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-w-[calc(100vw-2rem)] mx-auto">
           <DialogHeader>
             <DialogTitle>{t('admin.collections.modalReassign')}</DialogTitle>
           </DialogHeader>
@@ -282,7 +397,7 @@ export function CollectionListsPage() {
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="flex-col-reverse sm:flex-row gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setReassignModalOpen(false)}>
               {t('admin.common.cancel')}
             </Button>
