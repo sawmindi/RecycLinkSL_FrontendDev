@@ -219,7 +219,7 @@ export default function ReportsPage() {
           </h1>
           <p className="text-base md:text-lg text-gray-600">{t('admin.reports.subtitle')}</p>
         </div>
-        <Button
+        {/* <Button
           variant="outline"
           size="icon"
           onClick={() => void loadAll()}
@@ -228,7 +228,7 @@ export default function ReportsPage() {
           className="self-start sm:self-auto"
         >
           <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-        </Button>
+        </Button> */}
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">

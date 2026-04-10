@@ -59,9 +59,8 @@ export function CollectorSidebar({ isOpen = false, onClose }: CollectorSidebarPr
   const navItems = [
     { path: '/collector/overview', label: t('sidebar.overview'), icon: Home },
     { path: '/collector/pickups', label: t('sidebar.pickups'), icon: Truck },
-    // { path: '/collector/schedule-management', label: t('sidebar.scheduleManagement'), icon: Calendar },
     { path: '/collector/collection-history', label: t('sidebar.collectionHistory'), icon: History },
-    { path: '/collector/notifications', label: t('sidebar.notifications'), icon: Bell },
+    // { path: '/collector/notifications', label: t('sidebar.notifications'), icon: Bell },
   ];
 
   const isActive = (path: string) =>

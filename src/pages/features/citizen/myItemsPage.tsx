@@ -13,7 +13,7 @@ import { swalConfirm, swalError, swalSuccess } from '../../../lib/swal';
 
 type ItemStatusKey = 'collected' | 'scheduled' | 'pending' | 'cancelled';
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 1;
 
 export function MyItemsPage() {
   const { t, i18n } = useTranslation();
@@ -208,7 +208,7 @@ export function MyItemsPage() {
                 <SelectItem value="thisweek">{t('citizen.lists.thisWeek')}</SelectItem>
                 <SelectItem value="thismonth">{t('citizen.lists.thisMonth')}</SelectItem>
                 <SelectItem value="lastmonth">{t('citizen.lists.lastMonth')}</SelectItem>
-                <SelectItem value="last2months">{t('citizen.lists.last2months')}</SelectItem>
+                <SelectItem value="last2months">{t('citizen.lists.last2Months')}</SelectItem>
                 <SelectItem value="all">{t('citizen.lists.allTime')}</SelectItem>
               </SelectContent>
             </Select>
@@ -343,7 +343,7 @@ export function MyItemsPage() {
 
       {/* Pagination */}
       {!loading && totalPages > 1 && (
-        <div className="flex items-center justify-between pt-8 border-t border-gray-200">
+        <div className="flex items-center justify-between pt-8">
           <Button
             variant="outline"
             size="sm"
@@ -389,9 +389,6 @@ export function MyItemsPage() {
         <div className="text-center py-16 text-gray-500">
           <p className="text-xl">{t('citizen.myItems.noItemsTitle')}</p>
           <p className="mt-2">{t('citizen.myItems.noItemsHint')}</p>
-          <Button className="mt-6 bg-teal-700 hover:bg-teal-800">
-            {t('citizen.myItems.addItemsNow')}
-          </Button>
         </div>
       )}
     </div>

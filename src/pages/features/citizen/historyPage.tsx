@@ -291,7 +291,7 @@ export function HistoryPage() {
 
       {/* Pagination */}
       {!loading && totalPages > 1 && (
-        <div className="flex items-center justify-between pt-10 border-t border-gray-200">
+        <div className="flex items-center justify-between pt-10">
           <Button
             variant="outline"
             size="sm"
