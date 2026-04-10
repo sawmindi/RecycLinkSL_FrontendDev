@@ -289,7 +289,8 @@ export function UserManagementPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>{t('admin.userManagement.emailOptional')}</Label>
+                  <Label>{t('admin.userManagement.email')} <span className="text-red-600">*</span>
+                  </Label>
                   <Input
                     type="email"
                     value={addForm.email}
@@ -393,9 +394,9 @@ export function UserManagementPage() {
             </DialogContent>
           </Dialog>
 
-          <Button variant="outline" size="icon" onClick={fetchUsers}>
+          {/* <Button variant="outline" size="icon" onClick={fetchUsers}>
             <RefreshCw className="h-5 w-5" />
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -670,7 +671,7 @@ export function UserManagementPage() {
             </div>
 
             <div className="space-y-2">
-              <Label>{t('admin.userManagement.emailOptional')}</Label>
+              <Label>{t('admin.userManagement.email')}</Label>
               <Input
                 type="email"
                 value={editForm.email}

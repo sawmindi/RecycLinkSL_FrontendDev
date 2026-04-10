@@ -20,6 +20,8 @@ import {
 import { cancelAdminPickupRequest } from '../../../services/pickupCancel';
 import { formatDisplayDateTime, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
+const PAGE_SIZE = 10;
+
 export function CollectionListsPage() {
   const { t, i18n } = useTranslation();
   const dateLocale = getDateLocaleFromLanguage(i18n.language);
@@ -30,6 +32,7 @@ export function CollectionListsPage() {
   const [reassignModalOpen, setReassignModalOpen] = useState(false);
   const [reassignRequest, setReassignRequest] = useState<PickupRequest | null>(null);
   const [selectedCollectorId, setSelectedCollectorId] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchRequests();
@@ -46,6 +49,7 @@ export function CollectionListsPage() {
         estimated_earnings: Number(req.estimated_earnings || 0),
       }));
       setRequests(formatted);
+      setCurrentPage(1);
     } else {
       await swalError(t('admin.collections.toastLoadFail'), res.message);
     }
@@ -60,6 +64,7 @@ export function CollectionListsPage() {
   const collectionStatusLabel = (raw: string) => {
     const s = raw.toLowerCase();
     if (s === 'pending') return t('admin.collections.statusPending');
+    if (s === 'scheduled') return t('admin.collections.statusScheduled');
     if (s === 'assigned') return t('admin.collections.statusAssigned');
     if (s === 'completed') return t('admin.collections.statusCompleted');
     if (s === 'cancelled') return t('admin.collections.statusCancelled');
@@ -128,6 +133,27 @@ export function CollectionListsPage() {
     ? requests
     : requests.filter(r => r.status.toLowerCase() === statusFilter.toLowerCase());
 
+  const hasActionableRows = filteredRequests.some(
+    r => r.status.toLowerCase() === 'pending' || r.status.toLowerCase() === 'assigned'
+  );
+
+  const totalPages = Math.max(1, Math.ceil(filteredRequests.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+  const pagedRequests = filteredRequests.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  const getPageNumbers = (): number[] => {
+    const delta = 2;
+    const left = Math.max(1, safePage - delta);
+    const right = Math.min(totalPages, safePage + delta);
+    const range: number[] = [];
+    for (let i = left; i <= right; i++) range.push(i);
+    return range;
+  };
+
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
       pending: 'bg-yellow-100 text-yellow-800',
@@ -155,7 +181,13 @@ export function CollectionListsPage() {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-4">
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select
+            value={statusFilter}
+            onValueChange={(v) => {
+              setStatusFilter(v);
+              setCurrentPage(1);
+            }}
+          >
             <SelectTrigger className="w-36 sm:w-44">
               <SelectValue placeholder={t('admin.collections.filterPlaceholder')} />
             </SelectTrigger>
@@ -167,14 +199,14 @@ export function CollectionListsPage() {
               <SelectItem value="cancelled">{t('admin.collections.statusCancelled')}</SelectItem>
             </SelectContent>
           </Select>
-
+{/* 
           <Button variant="outline" size="icon" onClick={fetchRequests}>
             <RefreshCw className="h-4 w-4" />
-          </Button>
+          </Button> */}
         </div>
       </div>
 
-      {/* Table Card — desktop */}
+      {/* Table Card */}
       <Card className="border-none shadow-lg">
         <CardContent className="p-0">
           {loading ? (
@@ -186,7 +218,7 @@ export function CollectionListsPage() {
             </div>
           ) : (
             <>
-              {/* Desktop table — hidden on mobile */}
+              {/* Desktop table */}
               <div className="hidden md:block overflow-x-auto">
                 <Table>
                   <TableHeader>
@@ -202,11 +234,13 @@ export function CollectionListsPage() {
                       <TableHead>{t('admin.collections.thCollector')}</TableHead>
                       <TableHead>{t('admin.collections.thStatus')}</TableHead>
                       <TableHead>{t('admin.collections.thDate')}</TableHead>
-                      {/* <TableHead className="text-right">{t('admin.common.actions')}</TableHead> */}
+                      {hasActionableRows && (
+                        <TableHead className="text-right">{t('admin.common.actions')}</TableHead>
+                      )}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredRequests.map((req) => (
+                    {pagedRequests.map((req) => (
                       <TableRow key={req._id} className="hover:bg-gray-50">
                         <TableCell className="font-medium">{req.citizen_name}</TableCell>
                         <TableCell>{req.citizen_area}</TableCell>
@@ -226,38 +260,40 @@ export function CollectionListsPage() {
                         <TableCell>{getStatusBadge(req.status)}</TableCell>
                         <TableCell>{formatDisplayDateTime(req.created_at, dateLocale)}</TableCell>
 
-                        <TableCell className="text-right space-x-2">
-                          {(req.status.toLowerCase() === 'pending' || req.status.toLowerCase() === 'assigned') && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-red-600 hover:text-red-700"
-                              onClick={() => void handleCancelPickupApi(req)}
-                            >
-                              <XCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnCancelRequest')}
-                            </Button>
-                          )}
-
-                          {req.status.toLowerCase() === 'assigned' && (
-                            <>
+                        {hasActionableRows && (
+                          <TableCell className="text-right space-x-2">
+                            {(req.status.toLowerCase() === 'pending' || req.status.toLowerCase() === 'assigned') && (
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => handleReassign(req)}
+                                className="text-red-600 hover:text-red-700"
+                                onClick={() => void handleCancelPickupApi(req)}
                               >
-                                {t('admin.collections.btnReassign')}
+                                <XCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnCancelRequest')}
                               </Button>
+                            )}
 
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleStatusChange(req._id, 'completed')}
-                              >
-                                <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnComplete')}
-                              </Button>
-                            </>
-                          )}
-                        </TableCell>
+                            {req.status.toLowerCase() === 'assigned' && (
+                              <>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleReassign(req)}
+                                >
+                                  {t('admin.collections.btnReassign')}
+                                </Button>
+
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleStatusChange(req._id, 'completed')}
+                                >
+                                  <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnComplete')}
+                                </Button>
+                              </>
+                            )}
+                          </TableCell>
+                        )}
                       </TableRow>
                     ))}
                   </TableBody>
@@ -266,7 +302,7 @@ export function CollectionListsPage() {
 
               {/* Mobile cards */}
               <div className="md:hidden divide-y divide-gray-100">
-                {filteredRequests.map((req) => (
+                {pagedRequests.map((req) => (
                   <div key={req._id} className="p-4 space-y-3">
                     <div className="flex items-start justify-between gap-2">
                       <div>
@@ -276,7 +312,6 @@ export function CollectionListsPage() {
                       {getStatusBadge(req.status)}
                     </div>
 
-                    {/* Details grid */}
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
                       <div>
                         <span className="text-gray-500">{t('admin.collections.thItem')}: </span>
@@ -316,9 +351,8 @@ export function CollectionListsPage() {
                       </div>
                     </div>
 
-                    {/* Actions */}
-                    {/* <div className="flex flex-wrap gap-2 pt-1">
-                      {(req.status.toLowerCase() === 'pending' || req.status.toLowerCase() === 'assigned') && (
+                    {(req.status.toLowerCase() === 'pending' || req.status.toLowerCase() === 'assigned') && (
+                      <div className="flex flex-wrap gap-2 pt-1">
                         <Button
                           variant="outline"
                           size="sm"
@@ -327,31 +361,72 @@ export function CollectionListsPage() {
                         >
                           <XCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnCancelRequest')}
                         </Button>
-                      )}
 
-                      {req.status.toLowerCase() === 'assigned' && (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleReassign(req)}
-                          >
-                            {t('admin.collections.btnReassign')}
-                          </Button>
+                        {req.status.toLowerCase() === 'assigned' && (
+                          <>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleReassign(req)}
+                            >
+                              {t('admin.collections.btnReassign')}
+                            </Button>
 
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleStatusChange(req._id, 'completed')}
-                          >
-                            <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnComplete')}
-                          </Button>
-                        </>
-                      )}
-                    </div> */}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleStatusChange(req._id, 'completed')}
+                            >
+                              <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.collections.btnComplete')}
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 p-4 sm:p-6 text-gray-600">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={safePage === 1}
+                    onClick={() => goToPage(safePage - 1)}
+                  >
+                    {t('admin.priceManagement.prev')}
+                  </Button>
+
+                  <div className="flex gap-2">
+                    {getPageNumbers().map((page) => (
+                      <Button
+                        key={page}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => goToPage(page)}
+                        className={
+                          page === safePage
+                            ? 'bg-teal-700 text-white border-teal-700 hover:bg-teal-800'
+                            : ''
+                        }
+                      >
+                        {page}
+                      </Button>
+                    ))}
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={safePage === totalPages}
+                    onClick={() => goToPage(safePage + 1)}
+                  >
+                    {t('admin.priceManagement.next')}
+                  </Button>
+                </div>
+              )}
             </>
           )}
         </CardContent>

@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Label } from '../../../components/ui/label';
 import { Input } from '../../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+import { swalConfirm, swalError, swalSuccess } from '../../../lib/swal';
 import {
   getCategoriesForSelect,
   getItems,
@@ -19,6 +20,8 @@ import {
 } from '../../../services/AdminService';
 import { formatDisplayDate, getDateLocaleFromLanguage } from '../../../lib/formatDate';
 
+const PAGE_SIZE = 10;
+
 export default function PriceManagementPage() {
   const { t, i18n } = useTranslation();
   const [priceItems, setPriceItems] = useState<PriceItem[]>([]);
@@ -26,6 +29,7 @@ export default function PriceManagementPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<PriceItem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [formData, setFormData] = useState({
     category_id: '',
@@ -52,6 +56,7 @@ export default function PriceManagementPage() {
     const res = await getItems();
     if (res.success) {
       setPriceItems(res.data);
+      setCurrentPage(1);
     } else {
       await swalError(t('admin.priceManagement.toastLoadPrices'), res.message);
     }
@@ -143,6 +148,23 @@ export default function PriceManagementPage() {
 
   const dateLocale = getDateLocaleFromLanguage(i18n.language);
 
+  const totalPages = Math.max(1, Math.ceil(priceItems.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+  const pagedItems = priceItems.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  const getPageNumbers = (): number[] => {
+    const delta = 2;
+    const left = Math.max(1, safePage - delta);
+    const right = Math.min(totalPages, safePage + delta);
+    const range: number[] = [];
+    for (let i = left; i <= right; i++) range.push(i);
+    return range;
+  };
+
   return (
     <div className="space-y-6 sm:space-y-10 px-2 sm:px-0">
       {/* Header */}
@@ -195,7 +217,7 @@ export default function PriceManagementPage() {
                   </TableHeader>
 
                   <TableBody>
-                    {priceItems.map((item) => (
+                    {pagedItems.map((item) => (
                       <TableRow
                         key={item._id}
                         className={`hover:bg-gray-50 ${item.status === 'inactive' ? 'opacity-60 bg-gray-50' : ''}`}
@@ -269,14 +291,13 @@ export default function PriceManagementPage() {
                 </Table>
               </div>
 
-              {/* Mobile cards — shown only on small screens */}
+              {/* Mobile cards */}
               <div className="md:hidden divide-y divide-gray-100">
-                {priceItems.map((item) => (
+                {pagedItems.map((item) => (
                   <div
                     key={item._id}
                     className={`p-4 space-y-3 ${item.status === 'inactive' ? 'opacity-60 bg-gray-50' : ''}`}
                   >
-                    {/* Top row: item name + status badge */}
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <p className="font-semibold text-gray-900">{item.item_name}</p>
@@ -361,21 +382,45 @@ export default function PriceManagementPage() {
           )}
 
           {/* Pagination */}
-          <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 p-4 sm:p-6 border-t border-gray-200 text-gray-600">
-            <Button variant="outline" size="sm" disabled>
-              {t('admin.priceManagement.prev')}
-            </Button>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="bg-teal-700 text-white border-teal-700 hover:bg-teal-800">
-                1
+          {!loading && totalPages > 1 && (
+            <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 p-4 sm:p-6 text-gray-600">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={safePage === 1}
+                onClick={() => goToPage(safePage - 1)}
+              >
+                {t('admin.priceManagement.prev')}
               </Button>
-              <Button variant="outline" size="sm">2</Button>
-              <Button variant="outline" size="sm">3</Button>
+
+              <div className="flex gap-2">
+                {getPageNumbers().map((page) => (
+                  <Button
+                    key={page}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => goToPage(page)}
+                    className={
+                      page === safePage
+                        ? 'bg-teal-700 text-white border-teal-700 hover:bg-teal-800'
+                        : ''
+                    }
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={safePage === totalPages}
+                onClick={() => goToPage(safePage + 1)}
+              >
+                {t('admin.priceManagement.next')}
+              </Button>
             </div>
-            <Button variant="outline" size="sm">
-              {t('admin.priceManagement.next')}
-            </Button>
-          </div>
+          )}
         </CardContent>
       </Card>
 

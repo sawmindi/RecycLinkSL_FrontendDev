@@ -3,7 +3,6 @@ import { Plus, Edit, Trash2, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { swalConfirm, swalError, swalSuccess } from '../../../lib/swal';
-import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
@@ -149,19 +148,6 @@ export function PickupScheduleManagementPage() {
       fetchSchedules();
     } else {
       await swalError(t('admin.pickupSchedule.toastDeleteFail'), res.message);
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'Assigned':
-        return <Badge className="bg-blue-100 text-blue-800">{t('admin.pickupSchedule.schStatusAssigned')}</Badge>;
-      case 'Pending':
-        return <Badge className="bg-yellow-100 text-yellow-800">{t('admin.pickupSchedule.schStatusPending')}</Badge>;
-      case 'Completed':
-        return <Badge className="bg-green-100 text-green-800">{t('admin.pickupSchedule.schStatusCompleted')}</Badge>;
-      default:
-        return <Badge variant="secondary">{status}</Badge>;
     }
   };
 
@@ -391,15 +377,6 @@ export function PickupScheduleManagementPage() {
           </form>
         </DialogContent>
       </Dialog>
-
-      {/* Empty state */}
-      {!loading && schedules.length === 0 && (
-        <div className="text-center py-20 text-gray-500">
-          <Calendar className="h-16 w-16 mx-auto mb-6 opacity-40" />
-          <p className="text-xl font-medium">{t('admin.pickupSchedule.emptyFooterTitle')}</p>
-          <p className="mt-3">{t('admin.pickupSchedule.emptyFooterHint')}</p>
-        </div>
-      )}
     </div>
   );
 }

@@ -124,20 +124,6 @@ export function CategoriesPage() {
     }
   };
 
-  // const handleToggleActive = async (category: Category) => {
-  //   try {
-  //     await fetch(`http://localhost:4000/api/categories/${category._id}`, {
-  //       method: 'PUT',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ is_active: !category.isActive }),
-  //     });
-  //     toast.success(`Category ${!category.isActive ? 'activated' : 'deactivated'}`);
-  //     fetchCategories();
-  //   } catch (err) {
-  //     toast.error('Status update failed');
-  //   }
-  // };
-
   return (
     <div className="space-y-10">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

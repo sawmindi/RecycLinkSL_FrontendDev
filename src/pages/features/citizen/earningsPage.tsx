@@ -182,7 +182,7 @@ export function EarningsPage() {
                 <SelectItem value="thisweek">{t('citizen.lists.thisWeek')}</SelectItem>
                 <SelectItem value="thismonth">{t('citizen.lists.thisMonth')}</SelectItem>
                 <SelectItem value="lastmonth">{t('citizen.lists.lastMonth')}</SelectItem>
-                <SelectItem value="last2months">{t('citizen.lists.last2months')}</SelectItem>
+                <SelectItem value="last2months">{t('citizen.lists.last2Months')}</SelectItem>
                 <SelectItem value="all">{t('citizen.lists.allTime')}</SelectItem>
               </SelectContent>
             </Select>
@@ -295,7 +295,7 @@ export function EarningsPage() {
 
       {/* Pagination */}
       {!loading && totalPages > 1 && (
-        <div className="flex items-center justify-between pt-8 border-t border-gray-200">
+        <div className="flex items-center justify-between pt-8">
           <Button
             variant="outline"
             size="sm"
