@@ -1,0 +1,34 @@
+import { Route, Routes } from "react-router-dom"
+import { AdminLayout } from "../../components/layout/AdminLayout"
+import { OverviewPage } from "../../pages/features/admin/overviewPage"
+import { MyProfilePage } from "../../pages/features/admin/myProfilePage"
+import {PickupScheduleManagementPage} from "../../pages/features/admin/pickupSchedule"
+import { CategoriesPage } from "../../pages/features/admin/categories"
+import { CollectorAssignmentPage } from "../../pages/features/admin/collectorAssignment"
+import PriceManagementPage from "../../pages/features/admin/priceManagement"
+import { CollectionListsPage } from "../../pages/features/admin/collections"
+import { UserManagementPage } from "../../pages/features/admin/userManagement"
+import ReportsPage from "@/pages/features/admin/reportsPage"
+
+export const AdminRoutes = () => {
+    return (
+        <Routes>
+        <Route element={<AdminLayout />}>
+            <Route path="overview" element={<OverviewPage/>} />
+            <Route path="profile" element={<MyProfilePage />} />
+            <Route path="pickup-requests" element={<CollectionListsPage />} />
+            <Route path="pickup-schedule" element={<PickupScheduleManagementPage />} />
+            <Route path="categories" element={<CategoriesPage/>}/>
+            <Route path="collector-assignment" element={<CollectorAssignmentPage/>} />
+            <Route path="price-management" element={<PriceManagementPage/>} />
+            <Route path="user-management" element={<UserManagementPage/>} /> 
+            <Route path="reports" element={<ReportsPage/>} />
+                {/* <Route path="route-optimisation" element={< RouteOptimisation Page/>} /> */}
+             {/*<Route path="schedule-management" element={<ScheduleManagementPage />} />
+            <Route path="collection-history"    element={<CollectionHistoryPage />} />
+           <Route path="notifications" element={<NotificationsPage />} /> 
+              */}
+        </Route>
+        </Routes>
+         )
+}

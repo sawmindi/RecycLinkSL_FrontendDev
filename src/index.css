@@ -77,6 +77,18 @@
   @apply text-center text-3xl font-bold;
 }
 
+.address-map-picker-dialog .leaflet-container {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  background: #e5e7eb;
+}
+
+.leaflet-div-icon.recyclink-leaflet-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
 .auth-subheading {
   @apply text-center text-xl mb-8;
 }
@@ -287,7 +299,6 @@
   font-family: "Cormorant Garamond", serif !important;
 }
 
-/* Custom size styles for Quill editor */
 .ql-size-8px {
   font-size: 8px !important;
 }
@@ -602,4 +613,31 @@
 
 .form {
   overscroll-behavior: none;
+}
+
+.Toastify__toast--warning {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  border-left: 6px solid #d97706 !important;
+}
+
+.Toastify__toast--success {
+  background: #ecfdf5 !important;
+  color: #065f46 !important;
+  border-left: 6px solid #059669 !important;
+}
+
+.Toastify__toast {
+  font-family: 'Inter', system-ui, sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.swal2-container {
+  z-index: 2147483646 !important;
+  pointer-events: auto !important;
+}
+.swal2-backdrop {
+  z-index: 2147483645 !important;
+  pointer-events: auto !important;
 }
